@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/07 16:27:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/11 11:23:17 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define PROMPT "\001\033[1;33m\002minishell >$ \001\033[0m\002"
+
 typedef enum e_bool
 {
 	FALSE = 0,
@@ -25,6 +27,7 @@ typedef enum e_bool
 
 typedef enum e_token
 {
+	CMD,
 	STRING,
 	ESPACE,
 	VAR,
@@ -37,8 +40,11 @@ typedef enum e_token
 
 typedef struct s_pars_node
 {
-	t_token	type;
-	char	*content;
+	t_token				type;
+	char				*content;
+	struct s_pars_node	*next;
+	struct s_pars_node	*prev;
+	int					index;
 }	t_pars_node;
 
 typedef struct s_pars_list
