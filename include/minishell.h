@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 11:23:17 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:55:40 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include "parsing.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -25,34 +26,12 @@ typedef enum e_bool
 	TRUE = 1
 }	t_bool;
 
-typedef enum e_token
+typedef struct s_env
 {
-	CMD,
-	STRING,
-	ESPACE,
-	VAR,
-	REDIR_IN,
-	REDIR_OUT,
-	D_QUOTE,
-	S_QUOTE,
-	PIPE
-}	t_token;
-
-typedef struct s_pars_node
-{
-	t_token				type;
-	char				*content;
-	struct s_pars_node	*next;
-	struct s_pars_node	*prev;
-	int					index;
-}	t_pars_node;
-
-typedef struct s_pars_list
-{
-	t_pars_node	*start;
-	t_pars_node	*end;
-	int			length;
-}	t_pars_list;
-
+	char			*id;	// Nom de la variable d'env
+	char			*value;	// valeur de la variable
+	char			*raw;	// Representation brute "nom=valeur"
+	struct s_env	*next;
+}	t_env
 
 #endif
