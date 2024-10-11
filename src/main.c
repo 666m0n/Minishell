@@ -6,13 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 13:38:49 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:27:43 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_loop(/*variable d'env a init avant*/)
+int	handle_loop(t_ctx *ctx)
 {
 	char	*line;
 
@@ -22,13 +22,26 @@ int	handle_loop(/*variable d'env a init avant*/)
 		line = readline(PROMPT);
 		if (line == NULL)
 			break ;
+		else if (check_line(line) == 0)
+		{
+			add_history(line);
+			line = NULL;
+		}
 	}
 	return (0);
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **envp)
 {
+	t_ctx	*ctx;
+
 	(void) av;
 	(void) ac;
-	handle_loop();
+	ctx = init_ctx(envp);
+	if (!ctx)
+		return (EXIT_FAILURE);
+	handle_loop(ctx);
+	free_all(ctx);
+	ft_putstr_fd("ciao !\n", 2);
+	return (EXIT_FAILURE);
 }

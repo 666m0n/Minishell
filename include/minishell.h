@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 13:55:40 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:25:58 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,18 @@ typedef enum e_bool
 
 typedef struct s_env
 {
-	char			*id;	// Nom de la variable d'env
-	char			*value;	// valeur de la variable
-	char			*raw;	// Representation brute "nom=valeur"
+	char			*id;
+	char			*value;
+	char			*raw;
 	struct s_env	*next;
-}	t_env
+}	t_env;
 
+typedef struct s_ctx
+{
+	int				def_in;		// FD d'entree par defaut
+	int				def_out;	// FD de sortie par defaut
+	unsigned char	exit_code;	// code de sortie de la derniere commande
+	t_env			*envp;
+
+}	t_ctx;
 #endif
