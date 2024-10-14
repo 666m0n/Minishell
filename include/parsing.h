@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 14:34:07 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:00:51 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ typedef struct s_pars_node
 	char				*content;
 	struct s_pars_node	*next;
 	struct s_pars_node	*prev;
-	int					index;
 }	t_pars_node;
 
 typedef struct s_pars_list
@@ -52,10 +51,12 @@ void		lexer(char *line, t_ctx *ctx);
 t_pars_node	*lexer_last_node(t_pars_node *token);
 t_pars_node	*lexer_new_node(t_token type, char *content, int len,
 				t_pars_node **token);
-void		lexer_init_node(t_pars_node *new_node, t_token type, char *content);
+void		lexer_init_node(t_pars_node *new_node, t_token type, char *content,
+				int n);
 int			quote_len(char *str, char quote);
 int			get_str_len(char *str);
 int			lex_get_len(char *str, t_token type);
 t_token		ex_get_type(char *str);
+char		*ft_strndup(const char *s, size_t n);
 
 #endif

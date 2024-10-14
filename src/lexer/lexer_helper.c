@@ -6,11 +6,37 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 14:05:51 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 14:55:11 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_strndup(const char *s, size_t n)
+{
+	char	*result;
+	size_t	len;
+	size_t	i;
+
+	len = 0;
+	while (len < n && s[len] != '\0')
+	{
+		len++;
+	}
+	result = (char *)malloc(len + 1);
+	if (!result)
+	{
+		return (NULL);
+	}
+	i = 0;
+	while (i < len)
+	{
+		result[i] = s[i];
+		i++;
+	}
+	result[len] = '\0';
+	return (result);
+}
 
 int	quote_len(char *str, char quote)
 {

@@ -6,19 +6,19 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 10:33:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 14:16:34 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:00:01 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-void	lexer_init_node(t_pars_node *new_node, t_token type, char *content)
+void	lexer_init_node(t_pars_node *new_node, t_token type, char *content,
+	int n)
 {
 	new_node->next = NULL;
 	new_node->prev = NULL;
-	new_node->content = ft_strdup(content);
+	new_node->content = ft_strndup(content, n);
 	new_node->type = type;
-	new_node->index = 0;
 }
 
 t_pars_node	*lexer_new_node(t_token type, char *content, int len,
@@ -32,7 +32,7 @@ t_pars_node	*lexer_new_node(t_token type, char *content, int len,
 	new_node = ft_calloc(1, sizeof(t_pars_node));
 	if (!new_node)
 		return (free(new_node), NULL);
-	lexer_init_node(new_node, type, content);
+	lexer_init_node(new_node, type, content, len);
 	if (!*token)
 	{
 		*token = new_node;
