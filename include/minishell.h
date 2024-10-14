@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 16:25:58 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:35:27 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 # include <readline/history.h>
 
 # define PROMPT "\001\033[1;33m\002minishell >$ \001\033[0m\002"
+
+typedef enum e_return
+{
+	SUCCESS = 0,
+	ERROR = -1
+}	t_return;
 
 typedef enum e_bool
 {

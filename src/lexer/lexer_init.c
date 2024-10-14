@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 10:33:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 11:11:50 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:15:08 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,15 @@ void	lexer_new_node(t_token type, char *content, t_pars_node **token)
 	}
 	else
 	{
-		last = ft_lst_get_last(*token);
+		last = lexer_last_node(*token);
 		last->next = new_node;
 		new_node->prev = last;
 	}
+}
+
+t_pars_node	*lexer_last_node(t_pars_node *token)
+{
+	while (token->next != NULL)
+		token = token->next;
+	return (token);
 }

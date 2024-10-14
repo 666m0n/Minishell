@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 13:28:39 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:40:19 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ typedef enum e_token
 	STRING,
 	ESPACE,
 	VAR,
-	REDIR_IN,
+	APPEND,
+	HEREDOC,
+	REDIR_IN, // mettre le nom de ficher dedans directemet (voir avec Manu)
 	REDIR_OUT,
 	D_QUOTE,
 	S_QUOTE,

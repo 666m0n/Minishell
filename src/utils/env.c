@@ -6,12 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:09:29 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 16:36:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 09:59:24 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include  "minishell.h"
 
+// pour stocker les var d'env dans une liste chainee
 t_env	*create_env_list(char **envp)
 {
 	t_env	*env_list;
@@ -50,6 +51,7 @@ void	env_del_one(t_env *env)
 	free(env);
 }
 
+//clean la liste chainee des var d'env
 void	env_free(t_env *env)
 {
 	t_env	*tmp;

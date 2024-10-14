@@ -6,13 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 16:27:43 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:36:49 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_loop(t_ctx *ctx)
+t_return	handle_loop(t_ctx *ctx)
 {
 	char	*line;
 
@@ -28,7 +28,7 @@ int	handle_loop(t_ctx *ctx)
 			line = NULL;
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	main(int ac, char **av, char **envp)

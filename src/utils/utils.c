@@ -6,12 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/11 16:30:35 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:00:22 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//liste chainee du contexte du prgrm
 t_ctx	*init_ctx(char **envp)
 {
 	t_ctx	*ctx;
