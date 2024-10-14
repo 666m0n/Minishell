@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 10:35:27 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 14:35:22 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_ctx
 	int				def_in;		// FD d'entree par defaut
 	int				def_out;	// FD de sortie par defaut
 	unsigned char	exit_code;	// code de sortie de la derniere commande
+	t_pars_node		*lexer_output;
 	t_env			*envp;
 
 }	t_ctx;

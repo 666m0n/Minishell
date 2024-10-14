@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 12:18:21 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 14:05:51 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 
 int	quote_len(char *str, char quote)
 {
-	int	len;
+	int	i;
+
+	i = 1;
+	while (str[i] && str[i] != quote)
+		i++;
+	return (i);
 }
 
 int	get_str_len(char *str)
 {
 	int	i;
-	int len;
+	int	len;
 
 	i = 1;
 	len = ft_strlen(str);
@@ -30,7 +35,13 @@ int	get_str_len(char *str)
 			i += quote_len(&(str[i]), '\'');
 		else if (str[i] == '\"')
 			i += quote_len(&(str[i]), '\"');
+		else if (str[i] == '|' || str[i] == '<' || str[i] == '>'
+			|| str[i] == ' ' || str[i] == '\t' || str[i] == '\''
+			|| str[i] == '\"')
+			break ;
+		i++;
 	}
+	return (i);
 }
 
 int	lex_get_len(char *str, t_token type)
@@ -40,7 +51,7 @@ int	lex_get_len(char *str, t_token type)
 	len = 0;
 	if (type == HEREDOC || type == APPEND)
 		len = 2;
-	else if (type == REDIR_IN || type == REDIR_OUT || type == PIPE)
+	else if (type == INFILE || type == OUTFILE || type == PIPE)
 		len = 1;
 	else if (type == STRING)
 		len = get_str_len(str);
@@ -54,14 +65,14 @@ t_token	lex_get_type(char *str)
 		if (str[1] == '<')
 			return (HEREDOC);
 		else
-			return (REDIR_IN);
+			return (INFILE);
 	}
 	else if (str[0] == '>')
 	{
 		if (str[1] == '>')
 			return (APPEND);
 		else
-			return (REDIR_OUT);
+			return (OUTFILE);
 	}
 	else if (str[0] == '|')
 		return (PIPE);

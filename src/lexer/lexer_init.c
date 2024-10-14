@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 10:33:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 10:15:08 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 14:16:34 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	lexer_init_node(t_pars_node *new_node, t_token type, char *content)
 	new_node->index = 0;
 }
 
-void	lexer_new_node(t_token type, char *content, t_pars_node **token)
+t_pars_node	*lexer_new_node(t_token type, char *content, int len,
+	t_pars_node **token)
 {
 	t_pars_node	*new_node;
 	t_pars_node	*last;
@@ -30,7 +31,7 @@ void	lexer_new_node(t_token type, char *content, t_pars_node **token)
 		return ;
 	new_node = ft_calloc(1, sizeof(t_pars_node));
 	if (!new_node)
-		return ;
+		return (free(new_node), NULL);
 	lexer_init_node(new_node, type, content);
 	if (!*token)
 	{
@@ -44,6 +45,7 @@ void	lexer_new_node(t_token type, char *content, t_pars_node **token)
 		last->next = new_node;
 		new_node->prev = last;
 	}
+	return (new_node);
 }
 
 t_pars_node	*lexer_last_node(t_pars_node *token)
