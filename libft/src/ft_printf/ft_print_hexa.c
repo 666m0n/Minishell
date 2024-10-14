@@ -6,11 +6,10 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 13:59:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/06/06 12:22:01 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:15:18 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_printf.h"
 #include "../include/libft.h"
 
 int	ft_hexalen(unsigned long n)

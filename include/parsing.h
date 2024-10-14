@@ -6,12 +6,14 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 15:00:51 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:31:01 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
+
+typedef struct s_ctx	t_ctx;
 
 typedef enum e_token
 {
@@ -46,7 +48,7 @@ typedef struct s_pars_list
 }	t_pars_list;
 
 
-t_pars_node	*lexer_create(char *str, t_ctx *ctx, t_pars_node **token);
+t_pars_node	*lexer_create(char *str, t_pars_node **token);
 void		lexer(char *line, t_ctx *ctx);
 t_pars_node	*lexer_last_node(t_pars_node *token);
 t_pars_node	*lexer_new_node(t_token type, char *content, int len,
@@ -56,7 +58,7 @@ void		lexer_init_node(t_pars_node *new_node, t_token type, char *content,
 int			quote_len(char *str, char quote);
 int			get_str_len(char *str);
 int			lex_get_len(char *str, t_token type);
-t_token		ex_get_type(char *str);
+t_token		lex_get_type(char *str);
 char		*ft_strndup(const char *s, size_t n);
 
 #endif

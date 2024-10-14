@@ -6,11 +6,10 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 11:55:40 by sviallon          #+#    #+#             */
-/*   Updated: 2024/06/06 14:37:31 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:15:26 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_printf.h"
 #include "../include/libft.h"
 
 int	ft_putchar(int c)

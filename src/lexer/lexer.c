@@ -6,14 +6,14 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 14:31:20 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:30:50 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // rassemble les infos pour le token et creer le node
-t_pars_node	*lexer_create(char *str, t_ctx *ctx, t_pars_node **token)
+t_pars_node	*lexer_create(char *str, t_pars_node **token)
 {
 	t_pars_node	*new;
 	t_token		type;
@@ -37,7 +37,7 @@ void	lexer(char *line, t_ctx *ctx)
 	{
 		if (line[i] != ' ' && line[i] != '\t')
 		{
-			tmp = lexer_create(&(line[i]), ctx, &token);
+			tmp = lexer_create(&(line[i]), &token);
 			if (tmp)
 				i += lex_get_len(&(line[i]), tmp->type);
 		}

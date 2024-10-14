@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/10/14 15:13:55 by sviallon         ###   ########.fr        #
+#    Updated: 2024/10/14 16:01:58 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC_DIR	= src/
 OBJ_DIR	= obj/
 CC	= cc
 CFLAGS	= -Wall -Werror -Wextra -g3
+LDFLAGS += -lreadline
 RM	= rm -rf
 AR	= ar rcs
 LIBCOMP = -L./$(LIBFT) -l:libft.a
@@ -42,6 +43,10 @@ UTLS		= env utils
 MAIN_DIR	= main/
 MAIN		= main
 
+SRC_FILES+=$(addprefix $(LEXER_DIR),$(LXR))
+SRC_FILES+=$(addprefix $(UTILS_DIR),$(UTLS))
+SRC_FILES+=$(addprefix $(MAIN_DIR),$(MAIN))
+
 SRC	= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 
@@ -51,7 +56,7 @@ all	:	$(NAME)
 
 $(NAME)	:	$(OBJ)
 		@make -C $(LIBFT)
-		@$(CC) $(CFLAGS) $(OBJ) $(LIBCOMP)-o $(NAME)
+		@$(CC) $(CFLAGS) $(OBJ) $(LIBCOMP) $(LDFLAGS) -o $(NAME)
 		@echo "$(GREEN)Minishell compiled!$(DEF_COLOR)"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJSF)
@@ -59,8 +64,8 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJSF)
 		@$(CC) $(CFLAGS) -MMD -MP -I $(INCLUDE) -c $< -o $@
 
 $(OBJSF) :
-		@mkdir -p $(OBJ_DIR)
-
+		@mkdir -p $(OBJ_DIR)$(LEXER_DIR) $(OBJ_DIR)$(UTILS_DIR) $(OBJ_DIR)$(MAIN_DIR)
+		@touch $(OBJSF)
 clean:
 		@$(RM) $(OBJ_DIR)
 		@$(RM) $(OBJSF)

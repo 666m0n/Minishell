@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 10:36:49 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:39:16 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 t_return	handle_loop(t_ctx *ctx)
 {
 	char	*line;
+	t_ctx	*ballec;
 
+	ballec = ctx;
 	line = NULL;
 	while (1)
 	{
@@ -27,6 +29,8 @@ t_return	handle_loop(t_ctx *ctx)
 			add_history(line);
 			line = NULL;
 		}
+		if (line)
+			free(line);
 	}
 	return (SUCCESS);
 }
