@@ -6,51 +6,47 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 10:33:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 15:27:45 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:24:20 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-void	lexer_init_node(t_pars_node *new_node, t_token type, char *content,
-	int n)
+t_pars_node	*lexer_new_token(char *content, int n, t_token type, t_ctx *ctx)
 {
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	new_node->content = ft_strndup(content, n);
-	new_node->type = type;
-}
+	t_pars_node	*token;
+	char		*new;
 
-t_pars_node	*lexer_new_node(t_token type, char *content, int len,
-	t_pars_node **token)
-{
-	t_pars_node	*new_node;
-	t_pars_node	*last;
-
-	if (!content || !token)
+	token = malloc(sizeof(t_token));
+	if (token == NULL)
 		return (NULL);
-	new_node = ft_calloc(1, sizeof(t_pars_node));
-	if (!new_node)
-		return (free(new_node), NULL);
-	lexer_init_node(new_node, type, content, len);
-	if (!*token)
+	new = ft_strndup(content, n);
+	if (!new)
 	{
-		*token = new_node;
-		new_node->prev = NULL;
-		new_node->next = NULL;
+		free(token);
+		return (NULL);
 	}
-	else
-	{
-		last = lexer_last_node(*token);
-		last->next = new_node;
-		new_node->prev = last;
-	}
-	return (new_node);
+	token->content = new;
+	token->type = type;
+	token->ctx = ctx;
+	token->next = NULL;
+	return (token);
 }
 
-t_pars_node	*lexer_last_node(t_pars_node *token)
+t_pars_node	*lex_last_tok(t_pars_node *token)
 {
 	while (token->next != NULL)
 		token = token->next;
 	return (token);
+}
+
+int	tok_add_back(t_pars_node **head, t_pars_node *new)
+{
+	if (new == NULL)
+		return (1);
+	if (*head == NULL)
+		*head = new;
+	else
+		lex_last_tok(*head)->next = new;
+	return (0);
 }
