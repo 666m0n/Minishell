@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/15 11:41:48 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:31:22 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,21 @@ t_pars_node	*lexer(char *line, t_ctx *ctx)
 
 	i = 0;
 	token = NULL;
-	while (line[i])
+	if (handles_quotes(line))
 	{
-		if (line[i] != ' ' && line[i] != '\t')
+		while (line[i])
 		{
-			temp = lexer_create(&(line[i]), ctx);
-			if (temp == NULL)
+			if (line[i] != ' ' && line[i] != '\t')
 			{
-				free_token(token);
-				return (NULL);
+				temp = lexer_create(&(line[i]), ctx);
+				if (temp == NULL)
+					return (free_token(token), NULL);
+				tok_add_back(&(token), temp);
+				i += ft_strlen(temp->content);
 			}
-			tok_add_back(&(token), temp);
-			i += ft_strlen(temp->content);
+			else
+				i++;
 		}
-		else
-			i++;
 	}
 	return (token);
 }

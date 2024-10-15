@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 10:33:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/15 11:24:20 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:14:43 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,27 @@ int	tok_add_back(t_pars_node **head, t_pars_node *new)
 		*head = new;
 	else
 		lex_last_tok(*head)->next = new;
+	return (0);
+}
+
+static int	handle_quotes(char *s)
+{
+	int	i;
+	int	d_quote;
+	int	s_quote;
+
+	i = 0;
+	d_quote = 0;
+	s_quote = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'' && !d_quote)
+			s_quote = !s_quote;
+		if (s[i] == '\"' && !s_quote)
+			d_quote = !d_quote;
+		i++;
+	}
+	if (d_quote % 2 != 0 || s_quote % 2 != 0)
+		return (printf("%s", QUOTE_ERROR), 1);
 	return (0);
 }

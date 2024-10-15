@@ -6,12 +6,14 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/15 11:42:08 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:21:26 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
+
+# define QUOTE_ERROR "syntax error : missing quote\n"
 
 typedef struct s_ctx	t_ctx;
 
