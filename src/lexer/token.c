@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:30:56 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/15 11:34:57 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:51:45 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,14 @@ void	free_token(t_pars_node *token)
 		token = token->next;
 		free_one_token(tmp);
 	}
+}
+
+int	close_quote_len(char *s, char c)
+{
+	int	i;
+
+	i = 1;
+	while (s[i] && s[i] != c)
+		i++;
+	return (i + 1);
 }

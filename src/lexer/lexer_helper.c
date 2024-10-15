@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 14:55:11 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:50:38 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,13 @@ int	lex_get_len(char *str, t_token type)
 	len = 0;
 	if (type == HEREDOC || type == APPEND)
 		len = 2;
-	else if (type == INFILE || type == OUTFILE || type == PIPE)
+	else if (type == INFILE || type == OUTFILE || type == PIPE
+		|| type == ESPACE)
 		len = 1;
 	else if (type == STRING)
 		len = get_str_len(str);
+	else if (type == D_QUOTE)
+		len = close_quote_len(str, '\"');
 	return (len);
 }
 
@@ -102,5 +105,11 @@ t_token	lex_get_type(char *str)
 	}
 	else if (str[0] == '|')
 		return (PIPE);
+	else if (str[0] == ' ')
+		return (ESPACE);
+	else if (str[0] == '\"')
+		return (D_QUOTE);
+	else if (str[0] == '\'')
+		return (S_QUOTE);
 	return (STRING);
 }
