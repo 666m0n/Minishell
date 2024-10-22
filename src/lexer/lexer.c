@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/15 17:31:22 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/22 22:21:30 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_pars_node	*lexer_create(char *str, t_ctx *ctx)
 	return (new);
 }
 
+//fonction principale pour tokenisation
 t_pars_node	*lexer(char *line, t_ctx *ctx)
 {
 	t_pars_node	*token;

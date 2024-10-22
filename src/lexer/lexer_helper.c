@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/15 17:50:38 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/22 22:46:40 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	quote_len(char *str, char quote)
 	return (i);
 }
 
+// calcule la longueur de chaque mot, et obtient directement la longueur
+//des trucs quoted
 int	get_str_len(char *str)
 {
 	int	i;
@@ -80,10 +82,8 @@ int	lex_get_len(char *str, t_token type)
 	else if (type == INFILE || type == OUTFILE || type == PIPE
 		|| type == ESPACE)
 		len = 1;
-	else if (type == STRING)
+	else
 		len = get_str_len(str);
-	else if (type == D_QUOTE)
-		len = close_quote_len(str, '\"');
 	return (len);
 }
 

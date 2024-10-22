@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 10:33:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/15 17:14:43 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/22 22:42:06 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_pars_node	*lexer_new_token(char *content, int n, t_token type, t_ctx *ctx)
 	t_pars_node	*token;
 	char		*new;
 
-	token = malloc(sizeof(t_token));
+	token = malloc(sizeof(t_pars_node));
 	if (token == NULL)
 		return (NULL);
 	new = ft_strndup(content, n);
