@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 15:05:43 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:07:47 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_pars_node	*lexer(char *line, t_ctx *ctx)
 
 	i = 0;
 	token = NULL;
-	if (handle_quotes(line))
+	if (!handle_quotes(line))
 	{
 		while (line[i])
 		{
