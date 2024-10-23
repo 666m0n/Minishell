@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 11:39:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:43:14 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,14 @@ void	free_simple_cmd(t_simple_cmd *cmd)
 		free_redirection(cmd->redirections);
 		free(cmd);
 		cmd = tmp;
+	}
+}
+
+void	free_command(t_command *cmd)
+{
+	if (cmd != NULL)
+	{
+		free_simple_cmd(cmd->cmd);
+		free(cmd);
 	}
 }

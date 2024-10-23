@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:16:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 11:24:34 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:46:21 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,19 @@ void	free_redirection(t_redirection *redir)
 		free(redir);
 		redir = tmp;
 	}
+}
+
+void	add_redirection(t_simple_cmd *cmd, t_redirection *new_redir)
+{
+	t_redirection	*current;
+
+	if (cmd->redirections == NULL)
+	{
+		cmd->redirections = new_redir;
+		return ;
+	}
+	current = cmd->redirections;
+	while (current->next != NULL)
+		current = current->next;
+	current->next = new_redir;
 }

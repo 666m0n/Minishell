@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 11:34:06 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:42:45 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef enum e_token
 	PIPE
 }	t_token;
 
+// implementer le prev utile pour la gestion d'erreur,
+// pour l'expand dans le heredoc
 typedef struct s_pars_node
 {
 	t_token				type;
