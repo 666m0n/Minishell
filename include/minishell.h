@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 15:56:35 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:40:37 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,19 @@ typedef struct s_ctx
 
 }	t_ctx;
 
-int		main(int ac, char **av, char **envp);
-int		check_line(char *line);
-void	free_all(t_ctx	*ctx);
-t_ctx	*init_ctx(char **envp);
-t_env	*create_env_list(char **envp);
-void	env_del_one(t_env *env);
-void	env_free(t_env *env);
+int			main(int ac, char **av, char **envp);
+int			check_line(char *line);
+void		free_all(t_ctx	*ctx);
+t_ctx		*init_ctx(char **envp);
+t_env		*create_env_list(char **envp);
+void		env_del_one(t_env *env);
+void		env_free(t_env *env);
+t_return	handle_loop(t_ctx *ctx);
+void		free_all(t_ctx *ctx);
+
+//test
+
+void		print_tokens(t_pars_node *tokens);
+void		print_command(t_command *cmd);
 
 #endif

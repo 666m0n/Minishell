@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 22:52:49 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 13:57:35 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:10:55 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 //test lexer
-void print_tokens(t_pars_node *tokens)
+void	rint_tokens(t_pars_node *tokens)
 {
 	t_pars_node	*current = tokens;
 	int			i = 1;
@@ -43,7 +43,7 @@ void print_tokens(t_pars_node *tokens)
 }
 
 //test parsing
-void print_command(t_command *cmd)
+void	print_command(t_command *cmd)
 {
 	t_simple_cmd *current;
 	t_redirection *redir;

@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 11:42:45 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:44:11 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,38 @@ typedef struct s_command
 	int				exit_status; // pour gerer $?
 }	t_command;
 
-t_pars_node	*lexer_create(char *str, t_ctx *ctx);
-t_pars_node	*lexer_last_node(t_pars_node *token);
-t_pars_node	*lexer_new_token(char *content, int n, t_token type, t_ctx *ctx);
-void		lexer_init_node(t_pars_node *new_node, t_token type, char *content,
-				int n);
-t_pars_node	*lexer(char *line, t_ctx *ctx);
-int			quote_len(char *str, char quote);
-int			get_str_len(char *str);
-int			lex_get_len(char *str, t_token type);
-t_token		lex_get_type(char *str);
-char		*ft_strndup(const char *s, size_t n);
-int			tok_add_back(t_pars_node **head, t_pars_node *new);
-void		free_one_token(t_pars_node	*token);
-void		free_token(t_pars_node *token);
+t_pars_node		*lexer_create(char *str, t_ctx *ctx);
+t_pars_node		*lex_last_tok(t_pars_node *token);
+t_pars_node		*lexer_new_token(char *content, int n, t_token type,
+					t_ctx *ctx);
+void			lexer_init_node(t_pars_node *new_node, t_token type,
+					char *content, int n);
+t_pars_node		*lexer(char *line, t_ctx *ctx);
+int				quote_len(char *str, char quote);
+int				get_str_len(char *str);
+int				lex_get_len(char *str, t_token type);
+t_token			lex_get_type(char *str);
+char			*ft_strndup(const char *s, size_t n);
+int				tok_add_back(t_pars_node **head, t_pars_node *new);
+void			free_one_token(t_pars_node	*token);
+void			free_token(t_pars_node *token);
+static int		handle_quotes(char *s);
+int				close_quote_len(char *s, char c);
+
+//parser
+
+t_simple_cmd	*new_simple_cmd(void);
+void			free_simple_cmd(t_simple_cmd *cmd);
+void			free_command(t_command *cmd);
+int				parser_handler(t_pars_node **token);
+int				handle_argument(t_simple_cmd *cmd, t_pars_node *token);
+t_command		*parser(t_pars_node *tokens);
+t_redirection	*new_redirection(t_token type, char *file);
+void			free_redirection(t_redirection *redir);
+void			add_redirection(t_simple_cmd *cmd, t_redirection *new_redir);
+int				is_redirection(t_token type);
+int				handle_redirection(t_simple_cmd *cmd, t_pars_node *token);
+
 
 
 #endif

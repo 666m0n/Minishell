@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/10/14 16:01:58 by sviallon         ###   ########.fr        #
+#    Updated: 2024/10/23 14:05:22 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,14 +35,22 @@ WHITE = \033[0;97m
 
 # Sources
 LEXER_DIR	= lexer/
-LXR			= lexer_helper lexer_init lexer
+LXR			= lexer_helper lexer_init lexer token
 
 UTILS_DIR	= utils/
-UTLS		= env utils
+UTLS		= utils
+
+PARSER_DIR	= parser/
+PRS			= cmd parser redir
+
+BUILTINS	= builtins/
+BLTN		= env
 
 MAIN_DIR	= main/
-MAIN		= main
+MAIN		= main test
 
+SRC_FILES+=$(addprefix $(PARSER_DIR),$(PRS))
+SRC_FILES+=$(addprefix $(BUILTINS),$(BLTN))
 SRC_FILES+=$(addprefix $(LEXER_DIR),$(LXR))
 SRC_FILES+=$(addprefix $(UTILS_DIR),$(UTLS))
 SRC_FILES+=$(addprefix $(MAIN_DIR),$(MAIN))
