@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 13:58:03 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:24:02 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_return	handle_loop(t_ctx *ctx)
 			}
 		}
 		free(line);
-		line= NULL;
+		line = NULL;
 	}
 	return (SUCCESS);
 }
@@ -50,6 +50,8 @@ void	free_all(t_ctx *ctx)
 {
 	if (!ctx)
 		return ;
+	if (ctx->envp)
+		env_free(ctx->envp);
 	rl_clear_history();
 	free(ctx);
 }
@@ -64,7 +66,7 @@ int	main(int ac, char **av, char **envp)
 	ctx = init_ctx(envp);
 	if (!ctx)
 		return (EXIT_FAILURE);
-	handle_loop(ctx);
+	status = handle_loop(ctx);
 	free_all(ctx);
 	if (status == SUCCESS)
 	{

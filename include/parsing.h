@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 14:44:11 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:05:55 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char			*ft_strndup(const char *s, size_t n);
 int				tok_add_back(t_pars_node **head, t_pars_node *new);
 void			free_one_token(t_pars_node	*token);
 void			free_token(t_pars_node *token);
-static int		handle_quotes(char *s);
+int				handle_quotes(char *s);
 int				close_quote_len(char *s, char c);
 
 //parser

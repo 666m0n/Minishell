@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 22:52:49 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 14:10:55 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:22:23 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 //test lexer
-void	rint_tokens(t_pars_node *tokens)
+void	print_tokens(t_pars_node *tokens)
 {
 	t_pars_node	*current = tokens;
 	int			i = 1;
@@ -27,15 +27,20 @@ void	rint_tokens(t_pars_node *tokens)
 		printf("  Type: ");
 		switch(current->type)
 		{
-			case STRING: printf("STRING\n"); break;
-			case D_QUOTE: printf("D_QUOTE\n"); break;
-			case S_QUOTE: printf("S_QUOTE\n"); break;
-			case PIPE: printf("PIPE\n"); break;
-			case INFILE: printf("INFILE\n"); break;
-			case OUTFILE: printf("OUTFILE\n"); break;
-			case HEREDOC: printf("HEREDOC\n"); break;
-			case APPEND: printf("APPEND\n"); break;
-			case ESPACE: printf("ESPACE\n"); break;
+			case CMD:       printf("CMD\n"); break;
+			case STRING:    printf("STRING\n"); break;
+			case ESPACE:    printf("ESPACE\n"); break;
+			case VAR:       printf("VAR\n"); break;
+			case APPEND:    printf("APPEND\n"); break;
+			case INFILE:    printf("INFILE\n"); break;
+			case OUTFILE:   printf("OUTFILE\n"); break;
+			case HEREDOC:   printf("HEREDOC\n"); break;
+			case REDIR_IN:  printf("REDIR_IN\n"); break;
+			case REDIR_OUT: printf("REDIR_OUT\n"); break;
+			case D_QUOTE:   printf("D_QUOTE\n"); break;
+			case S_QUOTE:   printf("S_QUOTE\n"); break;
+			case PIPE:      printf("PIPE\n"); break;
+			default:        printf("UNKNOWN\n"); break;
 		}
 		current = current->next;
 	}

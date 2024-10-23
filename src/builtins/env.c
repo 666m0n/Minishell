@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:09:29 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 09:59:24 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:28:25 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_env	*create_env_list(char **envp)
 	{
 		new_node = malloc(sizeof(t_env));
 		new_node->raw = ft_strdup(envp[i]);
-		*equals = strchr(new_node->raw, '=');
+		equals = strchr(new_node->raw, '=');
 		if (equals)
 		{
 			*equals = '\0';
@@ -42,13 +42,12 @@ t_env	*create_env_list(char **envp)
 
 void	env_del_one(t_env *env)
 {
-	if (env->id)
-		free(env->id);
-	if (env->value)
-		free(env->value);
-	if (env->raw)
-		free(env->raw);
-	free(env);
+	if (env)
+	{
+		if (env->raw)
+			free(env->raw);
+		free(env);
+	}
 }
 
 //clean la liste chainee des var d'env

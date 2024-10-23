@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/14 10:00:22 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:24:15 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,6 @@ t_ctx	*init_ctx(char **envp)
 	ctx->def_out = STDOUT_FILENO;
 	ctx->exit_code = 0;
 	return (ctx);
-}
-
-void	free_all(t_ctx	*ctx)
-{
-	if (ctx)
-	{
-		if (ctx->envp)
-			env_free(ctx->envp);
-		free(ctx);
-	}
-	rl_clear_history();
 }
 
 int	check_line(char *line)

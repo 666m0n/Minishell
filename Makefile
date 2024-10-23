@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/10/23 14:05:22 by sviallon         ###   ########.fr        #
+#    Updated: 2024/10/23 14:52:03 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,8 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJSF)
 		@$(CC) $(CFLAGS) -MMD -MP -I $(INCLUDE) -c $< -o $@
 
 $(OBJSF) :
-		@mkdir -p $(OBJ_DIR)$(LEXER_DIR) $(OBJ_DIR)$(UTILS_DIR) $(OBJ_DIR)$(MAIN_DIR)
+		@mkdir -p $(OBJ_DIR)$(LEXER_DIR) $(OBJ_DIR)$(UTILS_DIR) $(OBJ_DIR)$(MAIN_DIR) \
+				$(OBJ_DIR)$(PARSER_DIR) $(OBJ_DIR)$(BUILTINS)
 		@touch $(OBJSF)
 clean:
 		@$(RM) $(OBJ_DIR)

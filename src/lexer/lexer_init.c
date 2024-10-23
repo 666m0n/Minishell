@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 10:33:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/22 22:42:06 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:05:36 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	tok_add_back(t_pars_node **head, t_pars_node *new)
 	return (0);
 }
 
-static int	handle_quotes(char *s)
+int	handle_quotes(char *s)
 {
 	int	i;
 	int	d_quote;

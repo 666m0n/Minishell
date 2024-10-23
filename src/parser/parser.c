@@ -6,13 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 13:31:57 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:09:25 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parser_handler(t_pars_node **token)
+/* int	parser_handler(t_pars_node **token)
 {
 	int	error;
 
@@ -20,7 +20,7 @@ int	parser_handler(t_pars_node **token)
 	if (parser_quotes(*token) != 0)
 		error = 1;
 	return (error);
-}
+} */
 
 int	handle_argument(t_simple_cmd *cmd, t_pars_node *token)
 {
@@ -51,7 +51,7 @@ int	handle_argument(t_simple_cmd *cmd, t_pars_node *token)
 		free(new_args);
 		return (EXIT_FAILURE);
 	}
-	new_args[i + 1] == NULL;
+	new_args[i + 1] = NULL;
 	if (cmd->args != NULL)
 		free(cmd->args);
 	cmd->args = new_args;
