@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/15 17:21:26 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:34:06 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,25 @@ typedef struct s_pars_list
 	int			length;
 }	t_pars_list;
 
+typedef struct s_redirection
+{
+	t_token					type;
+	char					*file;
+	struct s_redirection	*next;
+}	t_redirection;
+
+typedef struct s_simple_cmd
+{
+	char				**args;
+	t_redirection		*redirections;
+	struct s_simple_cmd	*pipe;
+}	t_simple_cmd;
+
+typedef struct s_command
+{
+	t_simple_cmd	*cmd; // premiere cmd
+	int				exit_status; // pour gerer $?
+}	t_command;
 
 t_pars_node	*lexer_create(char *str, t_ctx *ctx);
 t_pars_node	*lexer_last_node(t_pars_node *token);
