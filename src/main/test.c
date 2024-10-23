@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 22:52:49 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/22 22:55:09 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:57:35 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+//test lexer
 void print_tokens(t_pars_node *tokens)
 {
 	t_pars_node	*current = tokens;
 	int			i = 1;
 
+	printf("\n=== TOKENS ===\n");
 	while (current)
 	{
 		printf("Token %d:\n", i++);
@@ -34,7 +37,47 @@ void print_tokens(t_pars_node *tokens)
 			case APPEND: printf("APPEND\n"); break;
 			case ESPACE: printf("ESPACE\n"); break;
 		}
-		printf("\n");
 		current = current->next;
+	}
+	printf("=============\n\n");
+}
+
+//test parsing
+void print_command(t_command *cmd)
+{
+	t_simple_cmd *current;
+	t_redirection *redir;
+	int i;
+
+	current = cmd->cmd;
+	while (current != NULL)
+	{
+		printf("Command:\n");
+		i = 0;
+		if (current->args != NULL)
+		{
+			while (current->args[i] != NULL)
+			{
+				printf("  Arg[%d]: %s\n", i, current->args[i]);
+				i++;
+			}
+		}
+		redir = current->redirections;
+		while (redir != NULL)
+		{
+			printf("  Redirection: ");
+			if (redir->type == INFILE)
+				printf("< %s\n", redir->file);
+			else if (redir->type == OUTFILE)
+				printf("> %s\n", redir->file);
+			else if (redir->type == APPEND)
+				printf(">> %s\n", redir->file);
+			else if (redir->type == HEREDOC)
+				printf("<< %s\n", redir->file);
+			redir = redir->next;
+		}
+		if (current->pipe != NULL)
+			printf("  | PIPE |\n");
+		current = current->pipe;
 	}
 }
