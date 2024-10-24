@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:09:29 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 15:28:25 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:11:53 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,31 @@ void	env_free(t_env *env)
 		env = env->next;
 		env_del_one(tmp);
 	}
+}
+
+static void	bui_err_env(char *arg)
+{
+	ft_putstr_fd("env: '", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': No such file or directory\n", 2);
+}
+
+int	bui_env(t_ctx *ctx, t_simple_cmd *cmd)
+{
+	t_env	*tmp;
+	int		i;
+
+	if (cmd->args && cmd->args[1])
+	{
+		bui_err_env(cmd->args[1]);
+		return (127);
+	}
+	tmp = ctx->envp;
+	while (tmp)
+	{
+		if (tmp->value)
+			printf("%s=%s\n", tmp->id, tmp->value);
+		tmp = tmp->next;
+	}
+	return (EXIT_SUCCESS);
 }

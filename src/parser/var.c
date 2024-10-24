@@ -6,11 +6,23 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 11:10:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 12:20:16 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:17:31 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//trouve la valeur de $var
+char	*get_env_value(t_env *env, const char *var_name)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->id, var_name) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
 
 size_t	calculate_expanded_length(const char *str, t_env *env, int exit_status)
 {
@@ -33,10 +45,26 @@ size_t	calculate_expanded_length(const char *str, t_env *env, int exit_status)
 				i++;
 				continue ;
 			}
-			j = 0
-			while (str[i] && (ft_isalnum(str[i])))
+			j = 0;
+			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_') && j < 255)
+				var_name[j++] = str[i++];
+			var_name[j] = '\0';
+			if (j > 0)
+			{
+				var_value = get_env_value(env, var_name);
+				if (var_value)
+					len += ft_strlen(var_value);
+			}
+			else
+				len++;
+		}
+		else
+		{
+			len++;
+			i++;
 		}
 	}
+	return (len);
 }
 
 //fonction qui expand et stock dans une chaine
