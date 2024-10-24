@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:09:29 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 14:11:53 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:09:50 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static void	bui_err_env(char *arg)
 int	bui_env(t_ctx *ctx, t_simple_cmd *cmd)
 {
 	t_env	*tmp;
-	int		i;
 
 	if (cmd->args && cmd->args[1])
 	{

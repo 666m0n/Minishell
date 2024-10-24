@@ -6,16 +6,16 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 15:05:55 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:55:58 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# define QUOTE_ERROR "syntax error : missing quote\n"
+# include "types.h"
 
-typedef struct s_ctx	t_ctx;
+# define QUOTE_ERROR "syntax error : missing quote\n"
 
 typedef enum e_token
 {
@@ -102,7 +102,11 @@ void			free_redirection(t_redirection *redir);
 void			add_redirection(t_simple_cmd *cmd, t_redirection *new_redir);
 int				is_redirection(t_token type);
 int				handle_redirection(t_simple_cmd *cmd, t_pars_node *token);
-
-
+char			*get_env_value(t_env *env, const char *var_name);
+size_t			calculate_expanded_length(const char *str,
+					t_env *env, int exit_status);
+char			*expand_variables(const char *str, t_env *env, int exit_status);
+int				expand_token_variables(t_pars_node *token, t_ctx *ctx);
+int				expand_all_variables(t_pars_node *tokens, t_ctx *ctx);
 
 #endif

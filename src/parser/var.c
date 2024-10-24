@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 11:10:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 14:17:31 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:08:37 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*get_env_value(t_env *env, const char *var_name)
 {
 	while (env)
 	{
-		if (ft_strcmp(env->id, var_name) == 0)
+		if (ft_strncmp(env->id, var_name, ft_strlen(var_name) + 1) == 0)
 			return (env->value);
 		env = env->next;
 	}
@@ -131,7 +131,7 @@ int	expand_token_variables(t_pars_node *token, t_ctx *ctx)
 
 	if (token->type == S_QUOTE)
 		return (0);
-	expanded == expand_variables(token->content, ctx->envp, ctx->exit_code);
+	expanded = expand_variables(token->content, ctx->envp, ctx->exit_code);
 	if (!expanded)
 		return (EXIT_FAILURE);
 	free(token->content);
@@ -151,4 +151,5 @@ int	expand_all_variables(t_pars_node *tokens, t_ctx *ctx)
 			return (1);
 		current = current->next;
 	}
+	return (0);
 }

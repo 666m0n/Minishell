@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/10/23 14:52:03 by sviallon         ###   ########.fr        #
+#    Updated: 2024/10/24 14:38:41 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,10 +41,10 @@ UTILS_DIR	= utils/
 UTLS		= utils
 
 PARSER_DIR	= parser/
-PRS			= cmd parser redir
+PRS			= cmd parser redir var
 
 BUILTINS	= builtins/
-BLTN		= env
+BLTN		= env builtins
 
 MAIN_DIR	= main/
 MAIN		= main test

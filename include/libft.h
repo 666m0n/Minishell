@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:11:41 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/07 13:21:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:14:30 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-// libft 1.0
+// libft 1.1
 int		ft_atoi(const char *nptr);
 void	ft_bzero(void *src, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -81,6 +81,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	**ft_split(char const *s, char c);
+int		ft_strcmp(const char *s1, const char *s2);
 
 // ft_printf
 int		ft_hexalen(unsigned long n);
