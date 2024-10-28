@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 10:06:44 by sviallon          #+#    #+#              #
-#    Updated: 2024/10/24 15:13:59 by sviallon         ###   ########.fr        #
+#    Updated: 2024/10/28 16:05:26 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,10 +80,10 @@ all:		$(NAME)
 
 $(NAME):	$(OBJS)
 			@$(AR) $(NAME) $(OBJS)
-			@echo "$(GREEN)Libft compiled!$(DEF_COLOR)"
+			@echo -e "$(GREEN)Libft compiled!$(DEF_COLOR)"
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c | $(OBJSF)
-			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
+			@echo -e "$(YELLOW)Compiling: $< $(DEF_COLOR)"
 			@$(CC) $(CFLAGS) -MMD -MP -I $(INCLUDES) -c $< -o $@
 
 $(OBJSF):
@@ -100,14 +100,14 @@ $(OBJSF):
 clean:
 			@$(RM) -rf $(OBJS_DIR)
 			@$(RM) -rf $(OBJSF)
-			@echo "$(BLUE)libft objects files cleaned!$(DEF_COLOR)"
+			@echo -e "$(BLUE)libft objects files cleaned!$(DEF_COLOR)"
 
 fclean:		clean
 			@$(RM) -f $(NAME)
-			@echo "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
+			@echo -e "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
 
 re:			fclean all
-			@echo "$(GREEN)Cleaned and rebuilt everything for libft!$(DEF_COLOR)"
+			@echo -e "$(GREEN)Cleaned and rebuilt everything for libft!$(DEF_COLOR)"
 
 -include $(DEP)
 
