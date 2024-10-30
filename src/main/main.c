@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 14:43:46 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:44:53 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ t_return	handle_loop(t_ctx *ctx)
 				print_tokens(tokens);
 				cmd = parser(tokens);
 				if (cmd && cmd->cmd && cmd->cmd->args)
-                {
-                    if (cmd->cmd->args[0] && ft_strcmp(cmd->cmd->args[0], "env") == 0)
-                    {
-                        ctx->exit_code = bui_env(ctx, cmd->cmd);
-                    }
+				{
+					if (cmd->cmd->args[0] && ft_strcmp(cmd->cmd->args[0], "env") == 0)
+					{
+						ctx->exit_code = bui_env(ctx, cmd->cmd);
+					}
 					print_command(cmd);
 					free_command(cmd);
 				}
