@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/22 22:46:40 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:35:15 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,34 +38,28 @@ char	*ft_strndup(const char *s, size_t n)
 	return (result);
 }
 
-int	quote_len(char *str, char quote)
-{
-	int	i;
-
-	i = 1;
-	while (str[i] && str[i] != quote)
-		i++;
-	return (i);
-}
-
-// calcule la longueur de chaque mot, et obtient directement la longueur
-//des trucs quoted
 int	get_str_len(char *str)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		in_quotes;
+	char	quote_type;
 
-	i = 1;
-	len = ft_strlen(str);
-	while (i < len)
+	i = 0;
+	in_quotes = 0;
+	quote_type = 0;
+	while (str[i])
 	{
-		if (str[i] == '\'')
-			i += quote_len(&(str[i]), '\'');
-		else if (str[i] == '\"')
-			i += quote_len(&(str[i]), '\"');
-		else if (str[i] == '|' || str[i] == '<' || str[i] == '>'
-			|| str[i] == ' ' || str[i] == '\t' || str[i] == '\''
-			|| str[i] == '\"')
+		if (!in_quotes && (str[i] == '\'' || str[i] == '\"'))
+		{
+			in_quotes = 1;
+			quote_type = str[i];
+		}
+		else if (in_quotes && str[i] == quote_type)
+		{
+			in_quotes = 0;
+			quote_type = 0;
+		}
+		else if (!in_quotes && (str[i] == ' ' || str[i] == '\t'))
 			break ;
 		i++;
 	}
@@ -105,7 +99,7 @@ t_token	lex_get_type(char *str)
 	}
 	else if (str[0] == '|')
 		return (PIPE);
-	else if (str[0] == ' ')
+	else if (str[0] == ' ' || str[0] == '\t')
 		return (ESPACE);
 	else if (str[0] == '\"')
 		return (D_QUOTE);

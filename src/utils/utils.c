@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 15:24:15 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:48:12 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,27 @@ int	check_line(char *line)
 	if (line[0] == '\0')
 		return (TRUE);
 	return (FALSE);
+}
+
+char	*ft_chartostr(char c)
+{
+	char	*str;
+
+	str = malloc(2);
+	if (!str)
+		return (NULL);
+	str[0] = c;
+	str[1] = '\0';
+	return (str);
+}
+
+// Join avec free du premier argument
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*result;
+
+	result = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 11:23:09 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:45:13 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_pars_node	*lexer(char *line, t_ctx *ctx)
 				i++;
 		}
 		if (process_quotes(tokens, ctx) != 0)
-			return (free_tokens(tokens), NULL);
+			return (free_token(tokens), NULL);
 	}
 	return (tokens);
 }

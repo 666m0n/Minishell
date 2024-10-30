@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/28 18:11:14 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:04:29 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void		env_del_one(t_env *env);
 void		env_free(t_env *env);
 t_return	handle_loop(t_ctx *ctx);
 void		free_all(t_ctx *ctx);
+char		*ft_chartostr(char c);
+char		*ft_strjoin_free(char *s1, char *s2);
 
 //builtins
 int			execute_builtin(t_ctx *ctx, t_simple_cmd *cmd);

@@ -6,73 +6,66 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:19:34 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 11:49:22 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:32:49 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Retourne la longueur du contenu sans les quotes
-static size_t	get_unquoted_len(char *str)
+// Vérifie si un caractère est dans une quote simple
+static int	is_in_squote(const char *str, int pos)
 {
-	size_t	len;
-	int		i;
-	char	quote_type;
+	int	i;
+	int	in_quote;
 
-	len = 0;
+	i = 0;
+	in_quote = 0;
+	while (i < pos)
+	{
+		if (str[i] == '\'')
+			in_quote = !in_quote;
+		i++;
+	}
+	return (in_quote);
+}
+
+// Expand uniquement les variables hors quotes simples
+char	*expand_token(char *str, t_ctx *ctx)
+{
+	int		i;
+	int		in_squote;
+	char	*expanded;
+	char	*tmp;
+
+	if (!ft_strchr(str, '$'))
+		return (ft_strdup(str));
+	expanded = ft_strdup("");
+	if (!expanded)
+		return (NULL);
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		in_squote = is_in_squote(str, i);
+		if (str[i] == '$' && !in_squote)
 		{
-			quote_type = str[i++];
-			while (str[i] && str[i] != quote_type)
+			tmp = expand_variables(&str[i], ctx->envp, ctx->exit_code);
+			if (!tmp)
 			{
-				len++;
-				i++;
+				free(expanded);
+				return (NULL);
 			}
-			i++;
+			expanded = ft_strjoin_free(expanded, tmp);
+			while (str[i] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))
+				i++;
 		}
 		else
 		{
-			len++;
-			i++;
+			tmp = ft_chartostr(str[i]);
+			expanded = ft_strjoin_free(expanded, tmp);
 		}
+		i++;
 	}
-	return (len);
-}
-
-// Retire les quotes d'une chaine
-char	*remove_quotes(char *str)
-{
-	char	*result;
-	size_t	new_len;
-
-	if (!str)
-		return (NULL);
-
-	new_len = get_unquoted_len(str);
-	result = malloc(sizeof(char) * (new_len + 1));
-	if (!result)
-		return (NULL);
-
-	copy_unquoted_content(result, str);
-	return (result);
-}
-
-// Expand les variables d'env dans une chaine entre double quotes
-char	*expand_within_dquotes(char *str, t_ctx *ctx)
-{
-	char	*expanded;
-	char	*result;
-
-	expanded = expand_variables(str, ctx->envp, ctx->exit_code);
-	if (!expanded)
-		return (NULL);
-	result = remove_quotes(expanded);
-	free(expanded);
-
-	return (result);
+	return (expanded);
 }
 
 int	process_token_content(t_pars_node *token, t_ctx *ctx)
@@ -81,25 +74,11 @@ int	process_token_content(t_pars_node *token, t_ctx *ctx)
 
 	if (!token || !token->content)
 		return (0);
-
-	if (token->type == S_QUOTE)
-	{
-		processed = remove_quotes(token->content);
-		if (!processed)
-			return (1);
-		free(token->content);
-		token->content = processed;
-		token->type = STRING;
-	}
-	else if (token->type == D_QUOTE)
-	{
-		processed = expand_within_dquotes(token->content, ctx);
-		if (!processed)
-			return (1);
-		free(token->content);
-		token->content = processed;
-		token->type = STRING;
-	}
+	processed = expand_token(token->content, ctx);
+	if (!processed)
+		return (EXIT_FAILURE);
+	free(token->content);
+	token->content = processed;
 	return (0);
 }
 

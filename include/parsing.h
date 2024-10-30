@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 11:53:55 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:39:48 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,12 @@ void			free_one_token(t_pars_node	*token);
 void			free_token(t_pars_node *token);
 int				handle_quotes(char *s);
 int				close_quote_len(char *s, char c);
-static size_t	get_unquoted_len(char *str);
-char			*remove_quotes(char *str);
-char			*expand_within_dquotes(char *str, t_ctx *ctx);
+int				process_token_content(t_pars_node *token, t_ctx *ctx);
+int				process_quotes(t_pars_node *tokens, t_ctx *ctx);
+char			*process_token(char *str);
+void			copy_token_content(char *dest, char *src);
+static int		is_in_squote(const char *str, int pos);
+char			*expand_token(char *str, t_ctx *ctx);
 int				process_token_content(t_pars_node *token, t_ctx *ctx);
 int				process_quotes(t_pars_node *tokens, t_ctx *ctx);
 
