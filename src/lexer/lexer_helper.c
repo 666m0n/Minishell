@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 14:35:15 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:06:03 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	get_str_len(char *str)
 		}
 		else if (in_quotes && str[i] == quote_type)
 		{
-			in_quotes = 0;
-			quote_type = 0;
+			i++;
+			break ;
 		}
 		else if (!in_quotes && (str[i] == ' ' || str[i] == '\t'))
 			break ;

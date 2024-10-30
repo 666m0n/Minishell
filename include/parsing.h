@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 15:39:48 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:42:06 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int				process_token_content(t_pars_node *token, t_ctx *ctx);
 int				process_quotes(t_pars_node *tokens, t_ctx *ctx);
 char			*process_token(char *str);
 void			copy_token_content(char *dest, char *src);
-static int		is_in_squote(const char *str, int pos);
+int				is_in_squote(const char *str, int pos);
 char			*expand_token(char *str, t_ctx *ctx);
 int				process_token_content(t_pars_node *token, t_ctx *ctx);
 int				process_quotes(t_pars_node *tokens, t_ctx *ctx);

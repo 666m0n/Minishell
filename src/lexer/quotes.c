@@ -6,14 +6,14 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:19:34 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 15:32:49 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:38:34 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Vérifie si un caractère est dans une quote simple
-static int	is_in_squote(const char *str, int pos)
+int	is_in_squote(const char *str, int pos)
 {
 	int	i;
 	int	in_quote;
@@ -30,7 +30,7 @@ static int	is_in_squote(const char *str, int pos)
 }
 
 // Expand uniquement les variables hors quotes simples
-char	*expand_token(char *str, t_ctx *ctx)
+char	*expand_token(char *str, t_ctx *ctx, t_token type)
 {
 	int		i;
 	int		in_squote;
@@ -60,6 +60,11 @@ char	*expand_token(char *str, t_ctx *ctx)
 		}
 		else
 		{
+			if (type == D_QUOTE && (str[i] == '"'))
+			{
+				i++;
+				continue ;
+			}
 			tmp = ft_chartostr(str[i]);
 			expanded = ft_strjoin_free(expanded, tmp);
 		}
@@ -68,13 +73,13 @@ char	*expand_token(char *str, t_ctx *ctx)
 	return (expanded);
 }
 
-int	process_token_content(t_pars_node *token, t_ctx *ctx)
+int	process_token_content(t_pars_node *token, t_ctx *ctx, t_token type)
 {
 	char	*processed;
 
 	if (!token || !token->content)
 		return (0);
-	processed = expand_token(token->content, ctx);
+	processed = expand_token(token->content, ctx, type);
 	if (!processed)
 		return (EXIT_FAILURE);
 	free(token->content);
@@ -82,14 +87,14 @@ int	process_token_content(t_pars_node *token, t_ctx *ctx)
 	return (0);
 }
 
-int	process_quotes(t_pars_node *tokens, t_ctx *ctx)
+int	process_quotes(t_pars_node *tokens, t_ctx *ctx, t_token type)
 {
 	t_pars_node	*current;
 
 	current = tokens;
 	while (current)
 	{
-		if (process_token_content(current, ctx) != 0)
+		if (process_token_content(current, ctx, type) != 0)
 			return (EXIT_FAILURE);
 		current = current->next;
 	}
