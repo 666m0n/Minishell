@@ -6,13 +6,43 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:19:34 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 11:46:34 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:49:22 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Retire les quotes d'une chaine 
+// Retourne la longueur du contenu sans les quotes
+static size_t	get_unquoted_len(char *str)
+{
+	size_t	len;
+	int		i;
+	char	quote_type;
+
+	len = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			quote_type = str[i++];
+			while (str[i] && str[i] != quote_type)
+			{
+				len++;
+				i++;
+			}
+			i++;
+		}
+		else
+		{
+			len++;
+			i++;
+		}
+	}
+	return (len);
+}
+
+// Retire les quotes d'une chaine
 char	*remove_quotes(char *str)
 {
 	char	*result;
