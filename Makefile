@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
+#    By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/10/30 11:50:09 by sviallon         ###   ########.fr        #
+#    Updated: 2024/10/30 16:28:12 by emmmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ PARSER_DIR	= parser/
 PRS			= cmd parser redir var
 
 BUILTINS	= builtins/
-BLTN		= env builtins
+BLTN		= env execute path_utils
 
 MAIN_DIR	= main/
 MAIN		= main test
