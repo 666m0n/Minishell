@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:39:53 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 18:27:13 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:30:44 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,32 +25,50 @@ char	*search_in_directory(char **directories, const char *cmd)
 		tmp = ft_strjoin(directories[i], "/");
 		full_path = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (access(full_path, F_OK) == 0)
-			return (full_path);
+		if (access(full_path, F_OK) == SYSCALL_SUCCESS)
+			return (full_path); // ATTENTION -> FREE à faire dans une fonction appelante
 		free(full_path);
 		i++;
 	}
 	return (NULL);
 }
 
-char	*find_command_path(const char *cmd)
+static t_bool	is_path(const char *cmd_name)
 {
-	char	*path_env;
+	if (!cmd_name)
+		return (FALSE);
+	if (cmd_name[0] == '/')
+		return (TRUE);
+	if (cmd_name[0] == '.' && cmd_name[1] == '/')
+		return (TRUE);
+	if (cmd_name[0] == '.' && cmd_name[1] == '.' && cmd_name[2] == '/')
+		return (TRUE);
+	return (FALSE);
+}
+
+char	*find_command_path(const char *cmd_name)
+{
+	char	*path;
 	char	**directories;
 	char	*full_path;
 
-
-	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
-		return (ft_strdup(cmd));
-	path_env = getenv("PATH");
-	if (!path_env)
+	if (cmd_name == NULL)
 		return (NULL);
-	directories = ft_split(path_env, ':');
+	if (is_path(cmd_name)  == TRUE)
+	{
+		if (access(cmd_name, F_OK) == SYSCALL_SUCCESS)
+            return (ft_strdup(cmd_name)); // ATTENTION -> FREE à faire dans une fonction appelante
+        return (NULL);
+    }
+	path = getenv("PATH");
+	if (path == NULL)
+		path = DEFAULT_PATH;
+	directories = ft_split(path, ':');
 	if (directories == NULL)
 		return (NULL);
-	full_path = search_in_directory(directories, cmd);
+	full_path = search_in_directory(directories, cmd_name);
 	free_array(directories);
-	return (full_path);
+	return (full_path); // ATTENTION -> FREE à faire dans une fonction appelante
 }
 
 t_bool	is_dir(const char *path)
@@ -64,14 +82,28 @@ t_bool	is_dir(const char *path)
 	return (TRUE);
 }
 
-int	check_command(t_command *cmd, char **env)
+int	check_command(t_command *cmd)
 {
-	if (is_dir(cmd->cmd->args[0]))
-		return (IS_DIR);
-	cmd->cmd->path = find_command_path(cmd->cmd->args[0]);
-	if (!cmd->cmd->path)
+	char *cmd_name;
+	char *path;
+
+	cmd_name = get_command_name(cmd);
+	if (cmd_name == NULL)
 		return (CMD_NOT_FOUND);
-	if (access(cmd->cmd->path, X_OK) == -1)
+	if (is_dir(cmd_name) == TRUE)
+		return (IS_DIR);
+	path = find_command_path(cmd_name);
+	if (path == NULL)
+		return (CMD_NOT_FOUND);
+	if (access(path, X_OK) == SYSCALL_ERROR)
+	{
+		free(path);
 		return (PERMISSION_DENIED);
+	}
+	if (set_command_path(cmd, path) != SUCCESS)
+	{
+		free(path);
+		return (ERROR);
+	}
 	return (SUCCESS);
 }

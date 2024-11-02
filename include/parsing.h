@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 16:18:48 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/02 18:19:28 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,107 +15,61 @@
 
 # include "types.h"
 
+/* Messages d'erreur */
 # define QUOTE_ERROR "syntax error : missing quote\n"
 
-typedef enum e_token
-{
-	CMD,
-	STRING,
-	ESPACE,
-	VAR,
-	APPEND,
-	INFILE,
-	OUTFILE,
-	HEREDOC,
-	REDIR_IN, // mettre le nom de ficher dedans directemet (voir avec Manu)
-	REDIR_OUT,
-	D_QUOTE,
-	S_QUOTE,
-	PIPE
-}	t_token;
+/* Fonctions du lexer */
+t_pars_node     *lexer(char *line, t_ctx *ctx);
+t_pars_node     *lexer_create(char *str, t_ctx *ctx);
+t_pars_node     *lex_last_tok(t_pars_node *token);
+t_pars_node     *lexer_new_token(char *content, int n, t_token type, t_ctx *ctx);
+void            lexer_init_node(t_pars_node *new_node, t_token type, char *content, int n);
 
-// implementer le prev utile pour la gestion d'erreur,
-// pour l'expand dans le heredoc
-typedef struct s_pars_node
-{
-	t_token				type;
-	char				*content;
-	struct s_pars_node	*next;
-	struct s_ctx		*ctx;
-}	t_pars_node;
+/* Fonctions utilitaires du lexer */
+int             quote_len(char *str, char quote);
+int             get_str_len(char *str);
+int             lex_get_len(char *str, t_token type);
+t_token         lex_get_type(char *str);
+char            *ft_strndup(const char *s, size_t n);
+int             tok_add_back(t_pars_node **head, t_pars_node *new);
 
-typedef struct s_pars_list
-{
-	t_pars_node	*start;
-	t_pars_node	*end;
-	int			length;
-}	t_pars_list;
+/* Gestion des tokens */
+void            free_one_token(t_pars_node *token);
+void            free_token(t_pars_node *token);
 
-typedef struct s_redirection
-{
-	t_token					type;
-	char					*file;
-	struct s_redirection	*next;
-}	t_redirection;
+/* Gestion des quotes */
+int             handle_quotes(char *s);
+int             close_quote_len(char *s, char c);
 
-typedef struct s_simple_cmd
-{
-	char				**args;
-	char				*path;
-	t_redirection		*redirections;
-	struct s_simple_cmd	*pipe;
-}	t_simple_cmd;
+/* Traitement des tokens */
+int             process_token_content(t_pars_node *token, t_ctx *ctx);
+int             process_quotes(t_pars_node *tokens, t_ctx *ctx);
+char            *process_token(char *str);
+void            copy_token_content(char *dest, char *src);
+char            *expand_token(char *str, t_ctx *ctx);
 
-typedef struct s_command
-{
-	t_simple_cmd	*cmd; // premiere cmd
-	int				exit_status; // pour gerer $?
-}	t_command;
+/* Fonctions du parser */
+t_command       *parser(t_pars_node *tokens);
+t_simple_cmd    *new_simple_cmd(void);
+int             parser_handler(t_pars_node **token);
+int             handle_argument(t_simple_cmd *cmd, t_pars_node *token);
 
-t_pars_node		*lexer_create(char *str, t_ctx *ctx);
-t_pars_node		*lex_last_tok(t_pars_node *token);
-t_pars_node		*lexer_new_token(char *content, int n, t_token type,
-					t_ctx *ctx);
-void			lexer_init_node(t_pars_node *new_node, t_token type,
-					char *content, int n);
-t_pars_node		*lexer(char *line, t_ctx *ctx);
-int				quote_len(char *str, char quote);
-int				get_str_len(char *str);
-int				lex_get_len(char *str, t_token type);
-t_token			lex_get_type(char *str);
-char			*ft_strndup(const char *s, size_t n);
-int				tok_add_back(t_pars_node **head, t_pars_node *new);
-void			free_one_token(t_pars_node	*token);
-void			free_token(t_pars_node *token);
-int				handle_quotes(char *s);
-int				close_quote_len(char *s, char c);
-int				process_token_content(t_pars_node *token, t_ctx *ctx);
-int				process_quotes(t_pars_node *tokens, t_ctx *ctx);
-char			*process_token(char *str);
-void			copy_token_content(char *dest, char *src);
-static int		is_in_squote(const char *str, int pos);
-char			*expand_token(char *str, t_ctx *ctx);
-int				process_token_content(t_pars_node *token, t_ctx *ctx);
-int				process_quotes(t_pars_node *tokens, t_ctx *ctx);
+/* Gestion des redirections */
+t_redirection   *new_redirection(t_token type, char *file);
+void            add_redirection(t_simple_cmd *cmd, t_redirection *new_redir);
+int             is_redirection(t_token type);
+int             handle_redirection(t_simple_cmd *cmd, t_pars_node *token);
 
-//parser
+/* Gestion de la mémoire */
+void            free_simple_cmd(t_simple_cmd *cmd);
+void            free_command(t_command *cmd);
+void            free_redirection(t_redirection *redir);
 
-t_simple_cmd	*new_simple_cmd(void);
-void			free_simple_cmd(t_simple_cmd *cmd);
-void			free_command(t_command *cmd);
-int				parser_handler(t_pars_node **token);
-int				handle_argument(t_simple_cmd *cmd, t_pars_node *token);
-t_command		*parser(t_pars_node *tokens);
-t_redirection	*new_redirection(t_token type, char *file);
-void			free_redirection(t_redirection *redir);
-void			add_redirection(t_simple_cmd *cmd, t_redirection *new_redir);
-int				is_redirection(t_token type);
-int				handle_redirection(t_simple_cmd *cmd, t_pars_node *token);
-char			*get_env_value(t_env *env, const char *var_name);
-size_t			calculate_expanded_length(const char *str,
-					t_env *env, int exit_status);
-char			*expand_variables(const char *str, t_env *env, int exit_status);
-int				expand_token_variables(t_pars_node *token, t_ctx *ctx);
-int				expand_all_variables(t_pars_node *tokens, t_ctx *ctx);
+/* Gestion des variables d'environnement */
+char            *get_env_value(t_env *env, const char *var_name);
+size_t          calculate_expanded_length(const char *str, t_env *env, int exit_status);
+char            *expand_variables(const char *str, t_env *env, int exit_status);
+int             expand_token_variables(t_pars_node *token, t_ctx *ctx);
+int             expand_all_variables(t_pars_node *tokens, t_ctx *ctx);
 
 #endif
