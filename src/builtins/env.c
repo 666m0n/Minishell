@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:09:29 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 15:09:50 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:38:57 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "minishell.h"
+#include "../../include/minishell.h"
 
 // pour stocker les var d'env dans une liste chainee
 t_env	*create_env_list(char **envp)

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:03:33 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/02 17:24:29 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/03 18:56:59 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,10 @@ int	builtin_pwd(t_command *cmd, t_ctx *ctx)
 		return (ERROR);
 	args = cmd->cmd->args;
 	if (args[1] != NULL)
-	{
-		ft_printf("pwd: too many arguments\n");
-		return (ERROR);
-	}
+		 return (handle_builtin_error("pwd", NULL, "too many arguments"));
 	current_path = getcwd(NULL, 0);
 	if (current_path == NULL)
-	{
-		ft_printf("pwd: %s\n", strerror(errno));
-		return (ERROR);
-	}
+		return (handle_builtin_error("pwd", NULL, strerror(errno)));
 	ft_printf("%s\n", current_path);
 	free(current_path);
 	return (SUCCESS);

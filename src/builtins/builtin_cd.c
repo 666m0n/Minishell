@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:28:37 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/02 12:50:36 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/03 19:01:01 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,9 @@ static int handle_no_args(t_ctx *ctx)
 
 	home_path = get_home_directory(ctx);
 	if (home_path == NULL)
-	{
-		ft_printf("cd: HOME not set\n");
-		return (ERROR);
-	}
+		return (handle_builtin_error("cd", NULL, "HOME not set"));
 	if (chdir(home_path) == SYSCALL_ERROR)
-	{
-		ft_printf("cd: %s\n", strerror(errno));
-		return (ERROR);
-	}
+		return (handle_builtin_error("cd", NULL, strerror(errno)));
 	return (SUCCESS);
 }
 
@@ -61,14 +55,13 @@ static int change_directory(const char *path)
 	if (chdir(path) == SYSCALL_ERROR)
 	{
 		if (access(path, F_OK) == SYSCALL_ERROR)
-			ft_printf("cd: %s: No such file or directory\n", path);
+			return (handle_builtin_error("cd", path, "No such file or directory"));
 		else if (access(path, R_OK) == SYSCALL_ERROR)
-			ft_printf("cd: %s: Permission denied\n", path);
+			return (handle_builtin_error("cd", path, "Permission denied"));
 		else if (is_dir(path) == FALSE)
-			ft_printf("cd: %s: Not a directory\n", path);
+			return (handle_builtin_error("cd", path, "Not a directory"));
 		else
-			ft_printf("cd: %s\n", strerror(errno));
-		return (ERROR);
+			return (handle_builtin_error("cd", NULL, strerror(errno)));
 	}
 	return (SUCCESS);
 }
@@ -94,10 +87,7 @@ int builtin_cd(t_command *cmd, t_ctx *ctx)
 	if (args[1] == NULL)
 		return (handle_no_args(ctx));
 	if (args[2] != NULL)
-	{
-		ft_printf("cd: too many arguments\n");
-		return (ERROR);
-	}
+		return (handle_builtin_error("cd", NULL, "too many arguments"));
 	target_path = args[1];
 	status = change_directory(target_path);
 	return (status);

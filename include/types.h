@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/02 18:14:17 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/03 11:11:40 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ typedef enum e_return
 /* Types pour le lexer/parser */
 typedef enum e_token
 {
-	CMD,     // Mot simple (commande ou argument)
-	STRING,   // Chaîne de caractères
-	ESPACE,    // Espace ou tabulation
-	VAR,      // Variable ($...)
-	APPEND,   // Redirection en mode append (>>)
-	HEREDOC,  // Here document (<<)
-	REDIR_IN, // Redirection entrée (<)
-	REDIR_OUT,// Redirection sortie (>)
-	D_QUOTE,  // Double quote (")
-	S_QUOTE,  // Single quote (')
-	PIPE,     // Pipe (|)
+	CMD,			// Mot simple (commande ou argument)
+	STRING,			// Chaîne de caractères
+	ESPACE,			// Espace ou tabulation
+	VAR,			// Variable ($...)
+	APPEND,			// Redirection en mode append (>>)
+	HEREDOC,		// Here document (<<)
+	REDIR_IN,		// Redirection entrée (<)
+	REDIR_OUT,		// Redirection sortie (>)
+	D_QUOTE,		// Double quote (")
+	S_QUOTE,		// Single quote (')
+	PIPE,			// Pipe (|)
 	INFILE,
 	OUTFILE
 }	t_token;
@@ -51,9 +51,9 @@ typedef enum e_token
 /* Structures pour la gestion de l'environnement */
 typedef struct s_env
 {
-	char			*id;    // Nom de la variable
-	char			*value; // Valeur de la variable
-	char			*raw;   // Chaîne brute "id=value"
+	char			*id;		// Nom de la variable
+	char			*value;		// Valeur de la variable
+	char			*raw;		// Chaîne brute "id=value"
 	struct s_env	*next;
 }	t_env;
 
