@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 14:48:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:53:06 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,18 @@ char	*ft_chartostr(char c)
 	return (str);
 }
 
-// Join avec free du premier argument
-char	*ft_strjoin_free(char *s1, char *s2)
+/*
+** Join avec free du premier argument uniquement
+** @param s1: première chaîne (sera libérée)
+** @param s2: deuxième chaîne (ne sera pas libérée car const)
+** @return: nouvelle chaîne allouée contenant la concaténation
+*/
+char	*ft_strjoin_free(char *s1, const char *s2)
 {
 	char	*result;
 
 	result = ft_strjoin(s1, s2);
 	free(s1);
-	free(s2);
+	/* free(s2); */
 	return (result);
 }

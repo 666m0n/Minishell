@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buitin_echo.c                                      :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 10:49:11 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/02 12:26:26 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:02:56 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-/*
-** echo avec option -n
-** Retourne 0 (SUCCESS) en cas de succès, 1 (ERROR) sinon
-*/
 
 /*
 ** Gère le cas où echo est appelé sans argument
@@ -24,45 +19,46 @@
 */
 static int	handle_no_args(void)
 {
-	ft_printf("\n");
+	write(STDOUT_FILENO, "\n", 1);
 	return (SUCCESS);
 }
 
 /*
-** Vérifie si l'option -n est présente dans la commande
-** @param args: tableau d'arguments de la commande
-** @param i: pointeur vers l'index de traitement des arguments
-** @return: TRUE si l'option -n est présente, FALSE sinon
-** Si l'option est présente, incrémente i pour sauter l'argument "-n"
+** Vérifie si un argument est l'option -n
+** @param str: chaîne à vérifier
+** @return: TRUE si c'est une option -n valide, FALSE sinon
 */
-static t_bool	check_n_option(char **args, int *i)
+static t_bool	is_n_option(const char *str)
 {
-	if (args[1] == NULL)
+	int	i;
+
+	if (!str || str[0] != '-' || str[1] != 'n')
 		return (FALSE);
-	if (ft_strcmp(args[1], "-n") == 0)
+	i = 2;
+	while (str[i])
 	{
-		(*i)++;
-		return (TRUE);
+		if (str[i] != 'n')
+			return (FALSE);
+		i++;
 	}
-	return (FALSE);
+	return (TRUE);
 }
 
 /*
 ** Affiche les arguments de la commande echo
 ** @param args: tableau d'arguments à afficher
-** @param start_index: index à partir duquel commencer l'affichage
-** Ajoute un espace entre chaque argument, mais pas après le dernier
+** @param start: index de début d'affichage
 */
-static void	print_args(char **args, int start_index)
+static void	print_args(char **args, int start)
 {
 	int	i;
 
-	i = start_index;
-	while (args[i] != NULL)
+	i = start;
+	while (args[i])
 	{
-		ft_printf("%s", args[i]);
-		if (args[i + 1] != NULL)
-			ft_printf(" ");
+		write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
+		if (args[i + 1])
+			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
 }
@@ -72,26 +68,28 @@ static void	print_args(char **args, int start_index)
 ** @param cmd: structure contenant la commande et ses arguments
 ** @param ctx: contexte d'exécution (non utilisé)
 ** @return: SUCCESS en cas de succès, ERROR en cas d'erreur
-** Gère l'option -n qui supprime le retour à la ligne final
-** Affiche tous les arguments séparés par des espaces
-** Ajoute un retour à la ligne final sauf si l'option -n est présente
 */
 int	builtin_echo(t_command *cmd, t_ctx *ctx)
 {
 	char	**args;
-	int		i;
 	t_bool	n_option;
+	int		start;
 
 	(void)ctx;
 	if (!cmd || !cmd->cmd || !cmd->cmd->args)
 		return (ERROR);
 	args = cmd->cmd->args;
-	if (args[1] == NULL)
+	if (!args[1])
 		return (handle_no_args());
-	i = 1;
-	n_option = check_n_option(args, &i);
-	print_args(args, i);
-	if (n_option == FALSE)
-		ft_printf("\n");
+	start = 1;
+	n_option = FALSE;
+	while (args[start] && is_n_option(args[start]))
+	{
+		n_option = TRUE;
+		start++;
+	}
+	print_args(args, start);
+	if (!n_option)
+		write(STDOUT_FILENO, "\n", 1);
 	return (SUCCESS);
 }

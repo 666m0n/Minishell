@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:03:33 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/03 18:56:59 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:07:32 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 int	builtin_pwd(t_command *cmd, t_ctx *ctx)
 {
 	char	*current_path;
-	char	*args;
+	char	**args;
 
 	(void)ctx;
 	if (cmd == NULL || cmd->cmd == NULL || cmd->cmd->args == NULL)

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 11:05:03 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/03 11:10:27 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:15:25 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_env	*create_env_var(const char *name, const char *value)
 	{
 		new_var->value = ft_strdup(value);
 		new_var->raw = ft_strjoin(name, "=");
-		new_var->raw = ft_strjoin_free(new_var->raw, value);
+	new_var->raw = ft_strjoin_free(new_var->raw, value); // ATTENTION J'AI MODIFIE FT_STR_JOIN_FREE POUR QU'il PRENNE UNE CONSTANTE EN 2EME PARAMETRE
 	}
 	else
 	{

@@ -6,11 +6,11 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 19:26:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/01 15:51:45 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:19:51 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../include/minishell.h"
 
 const	char *get_command_name(t_command *cmd)
 {

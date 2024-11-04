@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:28:37 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/03 19:01:01 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:00:08 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** @param ctx: contexte contenant l'environnement
 ** @return: chemin du répertoire personnel ou NULL en cas d'erreur
 */
-static char *get_home_directory(t_ctx *ctx)
+static char *get_home_directory(void)
 {
 	char	*home_path;
 
@@ -37,7 +37,8 @@ static int handle_no_args(t_ctx *ctx)
 {
 	char	*home_path;
 
-	home_path = get_home_directory(ctx);
+	(void)ctx;
+	home_path = get_home_directory();
 	if (home_path == NULL)
 		return (handle_builtin_error("cd", NULL, "HOME not set"));
 	if (chdir(home_path) == SYSCALL_ERROR)

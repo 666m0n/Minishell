@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 10:49:11 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/02 11:11:58 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 11:44:37 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,12 @@ int	builtin_pwd(t_command *cmd, t_ctx *ctx)
 	char	*current_path;
 
 	(void)cmd;
+	(void)ctx;
 	current_path = getcwd(NULL, 0);
 	if (!current_path)
 		return (handle_system_error("pwd"));
-	ft_printf(STDOUT_FILENO, "%s\n", current_path);
+	ft_putstr_fd(current_path, STDOUT_FILENO);
+	write(STDOUT_FILENO, "\n", 1);
 	free(current_path);
 	return (SUCCESS);
 }
@@ -82,7 +84,12 @@ int	builtin_env(t_command *cmd, t_ctx *ctx)
 	while (current)
 	{
 		if (current->value)
-			ft_printf(STDOUT_FILENO, "%s=%s\n", current->id, current->value);
+		{
+			ft_putstr_fd(current->id, STDOUT_FILENO);
+			write(STDOUT_FILENO, "=", 1);
+			ft_putstr_fd(current->value, STDOUT_FILENO);
+			write(STDOUT_FILENO, "\n", 1);
+		}
 		current = current->next;
 	}
 	return (SUCCESS);
@@ -116,4 +123,3 @@ int	builtin_exit(t_command *cmd, t_ctx *ctx)
 	free_all(ctx);
 	exit(exit_code % 256);
 }
-Last edited just now

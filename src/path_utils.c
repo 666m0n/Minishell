@@ -6,11 +6,11 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:39:53 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/11/01 16:30:44 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:32:01 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../include/minishell.h"
 #include <dirent.h>
 
 char	*search_in_directory(char **directories, const char *cmd)
@@ -67,7 +67,7 @@ char	*find_command_path(const char *cmd_name)
 	if (directories == NULL)
 		return (NULL);
 	full_path = search_in_directory(directories, cmd_name);
-	free_array(directories);
+	ft_free_array(directories);
 	return (full_path); // ATTENTION -> FREE à faire dans une fonction appelante
 }
 
@@ -84,8 +84,8 @@ t_bool	is_dir(const char *path)
 
 int	check_command(t_command *cmd)
 {
-	char *cmd_name;
-	char *path;
+	const char	*cmd_name;
+	char 		*path;
 
 	cmd_name = get_command_name(cmd);
 	if (cmd_name == NULL)

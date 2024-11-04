@@ -6,24 +6,31 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/02 10:43:40 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:36:30 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../include/minishell.h"
 
 /*
 ** Format standard des erreurs: "minishell: [cmd]: [arg]: [msg]"
 ** Les arguments cmd et arg sont optionnels
 */
-static int print_error(const char *cmd_name, const char *arg, const char *msg)
+static int	print_error(const char *cmd_name, const char *arg, const char *msg)
 {
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	if (cmd_name)
+	{
+		ft_putstr_fd((char *)cmd_name, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+	}
 	if (arg)
-		ft_printf(2, "minishell: %s: %s: %s\n", cmd_name, arg, msg);
-	else if (cmd_name)
-		ft_printf(2, "minishell: %s: %s\n", cmd_name, msg);
-	else
-		ft_printf(2, "minishell: %s\n", msg);
+	{
+		ft_putstr_fd((char *)arg, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+	}
+	ft_putstr_fd((char *)msg, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	return (ERROR);
 }
 
@@ -37,7 +44,7 @@ int handle_command_error(t_command *cmd, int error_code)
 
 	cmd_name = get_command_name(cmd);
 	if (cmd_name == NULL)
-		return (print_error_msg(NULL, "command not found"));
+		return (print_error(NULL, NULL, "command not found"));
 	if (error_code == CMD_NOT_FOUND)
 	{
 		print_error(NULL, NULL, "command not found");
@@ -70,12 +77,16 @@ int handle_builtin_error(const char *builtin, const char *arg, const char *msg)
 ** Gère les erreurs de syntaxe
 ** Exemple: quotes non fermées, pipes mal placés, etc.
 */
-int handle_syntax_error(const char *token)
+int	handle_syntax_error(const char *token)
 {
 	if (token)
-		ft_printf(2, "minishell: syntax error near unexpected token `%s'\n", token);
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
+		ft_putstr_fd((char *)token, STDERR_FILENO);
+		ft_putstr_fd("'\n", STDERR_FILENO);
+	}
 	else
-		ft_printf(2, "minishell: syntax error\n");
+		ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 	return (SYNTAX_ERROR);
 }
 

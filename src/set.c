@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_2.c                                          :+:      :+:    :+:   */
+/*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 18:21:31 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/04 11:44:14 by emmanuel         ###   ########.fr       */
+/*   Created: 2024/10/31 19:47:22 by emmanuel          #+#    #+#             */
+/*   Updated: 2024/11/04 10:19:59 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../include/minishell.h"
 
-void ft_putstr_fd(char *s, int fd)
+void	set_exit_status(t_command *cmd, int status)
 {
-	if (!s)
-		return ;
-	write(fd, s, ft_strlen(s));
+	if (cmd)
+		cmd->exit_status = status;
 }
 
-int	ft_str_isdigit(const char *str)
+int set_command_path(t_command *cmd, char *path)
 {
-	if (!str)
-		return (0);
-	while (*str)
-	{
-		if (!ft_isdigit(*str))
-			return (0);
-		str++;
-	}
-	return (1);
+    if (!cmd || !cmd->cmd)
+        return (ERROR);
+    cmd->cmd->path = path;
+    return (SUCCESS);
 }
-

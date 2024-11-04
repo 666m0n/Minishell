@@ -6,13 +6,13 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 10:46:59 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/11/02 17:34:46 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:29:29 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../include/minishell.h"
 
-t_bool	is_builtin(char *cmd_name)
+t_bool	is_builtin(const char *cmd_name)
 {
 	static const char	*builtins[] = \
 		{"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
@@ -46,7 +46,7 @@ int execute_builtin(t_command *cmd, t_ctx *ctx)
 	return (ERROR);
 }
 
-int	execute_external_command(t_command *cmd, char **env)
+int	execute_external_command(t_command *cmd, t_ctx *ctx)
 {
 	pid_t	pid;
 	int		status;
@@ -62,7 +62,7 @@ int	execute_external_command(t_command *cmd, char **env)
 		return (ERROR);
     }
 	else if (pid == SYSCALL_SUCCESS)
-        exec_in_child(cmd, env);
+        exec_in_child(cmd, ctx);
 	else
 		status = wait_child(pid);
 	path = get_command_path(cmd);
