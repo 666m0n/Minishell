@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:19:34 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/05 15:11:09 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:48:29 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,32 @@ int	is_in_squote(const char *str, int pos)
 	}
 	return (in_quote);
 }
+
+int	is_in_dquote(const char *str, int pos)
+{
+	int	i;
+	int	in_quote;
+
+	i = 0;
+	in_quote = 0;
+	while (i < pos)
+	{
+		if (str[i] == '"' && !is_in_squote(str, i))
+			in_quote = !in_quote;
+		i++;
+	}
+	return (in_quote);
+}
+
+int	is_char_escaped(const char *str, int pos)
+{
+	if (is_in_squote(str, pos))
+		return (1);
+	if (is_in_dquote(str, pos) && str[pos] != '"' && str[pos] != '$')
+		return (1);
+	return (0);
+}
+
 
 // Helper pour identifier les caractères valides dans un nom de variable
 int	is_valid_var_char(char c, int is_first_char)
@@ -55,12 +81,12 @@ int	get_var_len(const char *str)
 	return (i);
 }
 
-char *handle_var_expansion(const char *str, t_ctx *ctx, int *i)
+char	*handle_var_expansion(const char *str, t_ctx *ctx, int *i)
 {
-    char    *var_name;
-    char    *value;
-    char    *result;
-    int     var_len;
+	char	*var_name;
+	char	*value;
+	char	*result;
+	int		var_len;
 
 	(*i)++; // Skip $
 	if (!str[*i] || str[*i] == ' ' || str[*i] == '\t')
@@ -130,45 +156,51 @@ char *handle_var_expansion(const char *str, t_ctx *ctx, int *i)
 	return (ft_strdup(""));
 }
 
-char	*expand_token(char *str, t_ctx *ctx, t_token type)
+char *expand_token(char *str, t_ctx *ctx, t_token type)
 {
-	char	*result;
-	char	*tmp;
-	int		i;
-	int		in_dquote;
+    char    *result;
+    char    *tmp;
+    int     i;
+    int     in_dquote;
 
-	if (!str)
-		return (NULL);
-	if (type == S_QUOTE && str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
-	{
-		size_t len = ft_strlen(str);
-		if (len >= 2)
-			return (ft_strndup(str + 1, len - 2));
-	}
-	result = ft_strdup("");
-	if (!result)
-		return (NULL);
-	i = 0;
-	in_dquote = 0;
-	while (str[i])
-	{
-		if (str[i] == '"' && !is_in_squote(str, i))
-			in_dquote = !in_dquote;
-		else if (str[i] == '$' && !is_in_squote(str, i))
-		{
-			tmp = handle_var_expansion(str, ctx, &i);
-			result = ft_strjoin_free(result, tmp);
-		}
-		else if ((str[i] != '\'' && str[i] != '"')
-			|| (str[i] == '\'' && (type == S_QUOTE || in_dquote))
-			|| (str[i] == '"' && type == D_QUOTE))
-		{
-			tmp = ft_chartostr(str[i]);
-			result = ft_strjoin_free(result, tmp);
-		}
-		i++;
-	}
-	return (result);
+    if (!str)
+        return (NULL);
+
+    // Si c'est une S_QUOTE seule, on retire juste les quotes
+    if (type == S_QUOTE && str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
+    {
+        size_t len = ft_strlen(str);
+        if (len >= 2)
+            return (ft_strndup(str + 1, len - 2));
+    }
+
+    result = ft_strdup("");
+    if (!result)
+        return (NULL);
+
+    i = 0;
+    in_dquote = 0;
+    while (str[i])
+    {
+        if (str[i] == '"' && !is_in_squote(str, i))
+            in_dquote = !in_dquote;
+        else if (str[i] == '$' && !is_in_squote(str, i))
+        {
+            tmp = handle_var_expansion(str, ctx, &i);
+            result = ft_strjoin_free(result, tmp);
+        }
+        else if (str[i] != '\'' || type == S_QUOTE)
+        {
+            if (str[i] != '"' || type == D_QUOTE || is_in_squote(str, i))
+            {
+                tmp = ft_chartostr(str[i]);
+                result = ft_strjoin_free(result, tmp);
+            }
+        }
+        i++;
+    }
+
+    return (result);
 }
 
 /* // Expand uniquement les variables hors quotes simples

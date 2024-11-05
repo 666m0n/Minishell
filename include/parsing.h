@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/05 14:16:05 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:41:21 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@ int				process_quotes(t_pars_node *tokens, t_ctx *ctx);
 int				is_valid_var_char(char c, int is_first_char);
 int				get_var_len(const char *str);
 char			*handle_var_expansion(const char *str, t_ctx *ctx, int *i);
+int				is_in_dquote(const char *str, int pos);
+int				is_char_escaped(const char *str, int pos);
+
 
 //parser
 
