@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:19:34 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 17:19:22 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:11:09 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,57 +29,175 @@ int	is_in_squote(const char *str, int pos)
 	return (in_quote);
 }
 
-// Expand uniquement les variables hors quotes simples
+// Helper pour identifier les caractères valides dans un nom de variable
+int	is_valid_var_char(char c, int is_first_char)
+{
+	if (is_first_char)
+	{
+		if (ft_isalpha(c) || c == '_')
+			return (1);
+		return (0);
+	}
+	if (ft_isalnum(c) || c == '_')
+		return (1);
+	return (0);
+}
+
+int	get_var_len(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '?' || ft_isdigit(str[0]))
+		return (1);
+	while (str[i] && is_valid_var_char(str[i], i == 0))
+		i++;
+	return (i);
+}
+
+char *handle_var_expansion(const char *str, t_ctx *ctx, int *i)
+{
+    char    *var_name;
+    char    *value;
+    char    *result;
+    int     var_len;
+
+	(*i)++; // Skip $
+	if (!str[*i] || str[*i] == ' ' || str[*i] == '\t')
+	{
+		(*i)--; // Reculer pour que le $ soit traité comme un caractère normal
+		return (ft_strdup("$"));
+	}
+	if (str[*i] == '$')
+	{
+		(*i)++;
+		return (ft_strdup("$$"));
+	}
+	if (str[*i] == '?')
+	{
+		(*i)++;
+		return (ft_itoa(ctx->exit_code));
+	}
+	if (ft_isdigit(str[*i]))
+	{
+		result = ft_strdup("");
+		if (str[*i] == '0')
+		{
+			result = ft_strjoin_free(result, ft_strdup("minishell"));
+			(*i)++; // Skip le 0
+			while (str[*i] && str[*i] != ' ' && str[*i] != '\''
+				&& str[*i] != '"' && str[*i] != '$')
+			{
+				char *tmp = ft_chartostr(str[(*i)++]);
+				result = ft_strjoin_free(result, tmp);
+			}
+			(*i)--;
+			return (result);
+		}
+		(*i)++; // Skip le premier chiffre
+		while (str[*i] && ft_isdigit(str[*i]))
+		{
+			char *tmp = ft_chartostr(str[(*i)++]);
+			result = ft_strjoin_free(result, tmp);
+		}
+		(*i)--;
+		return (result);
+	}
+	var_len = get_var_len(str + *i);
+	if (var_len == 0)
+	{
+		if (str[*i])
+		{
+			result = ft_chartostr('$');
+			result = ft_strjoin_free(result, ft_chartostr(str[*i]));
+			return (result);
+		}
+		return (ft_strdup("$"));
+	}
+	var_name = ft_substr(str, *i, var_len);
+	if (!is_valid_var_char(var_name[0], 1))
+	{
+		free(var_name);
+		result = ft_chartostr('$');
+		result = ft_strjoin_free(result, ft_chartostr(str[*i]));
+		return (result);
+	}
+	value = get_env_value(ctx->envp, var_name);
+	free(var_name);
+	*i += var_len - 1;
+	if (value)
+		return (ft_strdup(value));
+	return (ft_strdup(""));
+}
+
 char	*expand_token(char *str, t_ctx *ctx, t_token type)
 {
-	int		i;
-	int		in_squote;
-	char	*expanded;
+	char	*result;
 	char	*tmp;
+	int		i;
+	int		in_dquote;
 
-	if (!ft_strchr(str, '$'))
-		return (ft_strdup(str));
-	expanded = ft_strdup("");
-	if (!expanded)
+	if (!str)
+		return (NULL);
+	if (type == S_QUOTE && str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
+	{
+		size_t len = ft_strlen(str);
+		if (len >= 2)
+			return (ft_strndup(str + 1, len - 2));
+	}
+	result = ft_strdup("");
+	if (!result)
 		return (NULL);
 	i = 0;
+	in_dquote = 0;
 	while (str[i])
 	{
-		in_squote = is_in_squote(str, i);
-		if (str[i] == '$' && !in_squote)
+		if (str[i] == '"' && !is_in_squote(str, i))
+			in_dquote = !in_dquote;
+		else if (str[i] == '$' && !is_in_squote(str, i))
 		{
-			tmp = expand_variables(&str[i], ctx->envp, ctx->exit_code);
-			if (!tmp)
-			{
-				free(expanded);
-				return (NULL);
-			}
-			expanded = ft_strjoin_free(expanded, tmp);
-			while (str[i] && (ft_isalnum(str[i + 1]) || str[i + 1] == '_'))
-				i++;
+			tmp = handle_var_expansion(str, ctx, &i);
+			result = ft_strjoin_free(result, tmp);
 		}
-		else
+		else if ((str[i] != '\'' && str[i] != '"')
+			|| (str[i] == '\'' && (type == S_QUOTE || in_dquote))
+			|| (str[i] == '"' && type == D_QUOTE))
 		{
-			if (type == D_QUOTE && (str[i] == '"'))
-			{
-				i++;
-				continue ;
-			}
 			tmp = ft_chartostr(str[i]);
-			expanded = ft_strjoin_free(expanded, tmp);
+			result = ft_strjoin_free(result, tmp);
 		}
 		i++;
 	}
-	return (expanded);
+	return (result);
 }
 
-int	process_token_content(t_pars_node *token, t_ctx *ctx, t_token type)
+/* // Expand uniquement les variables hors quotes simples
+char	*expand_token(char *str, t_ctx *ctx, t_token type)
+{
+	char	*unquoted;
+	char	*expanded;
+
+	unquoted = strip_quotes(str);
+	if (!unquoted)
+		return (NULL);
+	if (type == S_QUOTE)
+		return (unquoted);
+	if (ft_strchr(unquoted, '$'))
+	{
+		expanded = expand_variables(unquoted, ctx->envp, ctx->exit_code);
+		free(unquoted);
+		return (expanded);
+	}
+	return (unquoted);
+} */
+
+int	process_token_content(t_pars_node *token, t_ctx *ctx)
 {
 	char	*processed;
 
 	if (!token || !token->content)
 		return (0);
-	processed = expand_token(token->content, ctx, type);
+	processed = expand_token(token->content, ctx, token->type);
 	if (!processed)
 		return (EXIT_FAILURE);
 	free(token->content);
@@ -87,14 +205,14 @@ int	process_token_content(t_pars_node *token, t_ctx *ctx, t_token type)
 	return (0);
 }
 
-int	process_quotes(t_pars_node *tokens, t_ctx *ctx, t_token type)
+int	process_quotes(t_pars_node *tokens, t_ctx *ctx)
 {
 	t_pars_node	*current;
 
 	current = tokens;
 	while (current)
 	{
-		if (process_token_content(current, ctx, type) != 0)
+		if (process_token_content(current, ctx) != 0)
 			return (EXIT_FAILURE);
 		current = current->next;
 	}

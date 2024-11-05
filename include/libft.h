@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:11:41 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 15:14:30 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/05 11:26:14 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	**ft_split(char const *s, char c);
 int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strncpy(char *dest, const char *src, size_t n);
 
 // ft_printf
 int		ft_hexalen(unsigned long n);
