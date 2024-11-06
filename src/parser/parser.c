@@ -6,13 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 16:52:24 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:13:21 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_argument(t_simple_cmd *cmd, t_pars_node *token)
+int	handle_argument(t_simple_cmd *cmd, t_token *tokens)
 {
 	char	**new_args;
 	int		i;
@@ -37,7 +37,7 @@ int	handle_argument(t_simple_cmd *cmd, t_pars_node *token)
 			return (EXIT_FAILURE);
 		}
 	}
-	new_args[i] = ft_strdup(token->content);
+	new_args[i] = ft_strdup(tokens->content);
 	if (!new_args[i])
 	{
 		while (--i >= 0)
@@ -57,17 +57,19 @@ int	handle_argument(t_simple_cmd *cmd, t_pars_node *token)
 	return (0);
 }
 
-t_command	*parser(t_pars_node *tokens)
+t_command	*parser(t_token *tokens)
 {
 	t_command		*cmd;
 	t_simple_cmd	*current_cmd;
 
+	if (!tokens)
+		return (NULL);
 	cmd = malloc(sizeof(t_command));
 	if (cmd == NULL)
 		return (NULL);
 	cmd->exit_status = 0;
 	cmd->cmd = new_simple_cmd();
-	if (cmd->cmd == NULL)
+	if (!cmd->cmd)
 	{
 		free(cmd);
 		return (NULL);
@@ -75,7 +77,7 @@ t_command	*parser(t_pars_node *tokens)
 	current_cmd = cmd->cmd;
 	while (tokens != NULL)
 	{
-		if (tokens->type == PIPE)
+		if (tokens->type == T_PIPE)
 		{
 			current_cmd->pipe = new_simple_cmd();
 			if (current_cmd->pipe == NULL)
@@ -89,12 +91,15 @@ t_command	*parser(t_pars_node *tokens)
 				return (free_command(cmd), NULL);
 			tokens = tokens->next->next;
 		}
-		else
+		else if (tokens->type == T_STRING || tokens->type == T_SQUOTE
+			|| tokens->type == T_DQUOTE)
 		{
-			if (handle_argument(current_cmd, tokens) != 0)
-				return (free_command(cmd), NULL);
+			if (handle_string_token(current_cmd, tokens))
+				return (NULL);
 			tokens = tokens->next;
 		}
+		else
+			tokens = tokens->next;
 	}
 	return (cmd);
 }

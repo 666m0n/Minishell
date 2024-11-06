@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:58:12 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 10:19:05 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:10:45 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,58 +21,55 @@ int	syntax_error(const char *token)
 }
 
 // Vérifie qu'une redirection est correctement formée (suivie d'un fichier)
-static int	check_redirection(t_pars_node *token)
+static int	check_redirection(t_token *token)
 {
 	if (!token->next)
 		return (syntax_error("newline"));
-	if (token->next->type != STRING)
+	if (token->next->type != T_STRING)
 		return (syntax_error(token->next->content));
 	return (0);
 }
 
 // Vérifie qu'un pipe est correctement formé
-static int	check_pipe(t_pars_node *token)
+static int	check_pipe(t_token *token)
 {
 	if (!token->next)
 		return (syntax_error("|"));
-	if (token->next->type == PIPE)
+	if (token->next->type == T_PIPE)
 		return (syntax_error("|"));
 	return (0);
 }
 
-int	validate_syntax(t_pars_node *tokens)
+int	validate_syntax(t_token *tokens)
 {
-	t_pars_node	*current;
 	int			cmd_found;
 
 	if (!tokens)
 		return (0);
-	if (tokens->type == PIPE)
+	if (tokens->type == T_PIPE)
 		return (syntax_error("|"));
-
-	current = tokens;
 	cmd_found = 0;
-
-	while (current)
+	while (tokens)
 	{
-		if (is_redirection(current->type))
+		if (is_redirection(tokens->type))
 		{
-			if (check_redirection(current) != 0)
+			if (check_redirection(tokens) != 0)
 				return (1);
-			current = current->next;
+			tokens = tokens->next;
 		}
-		else if (current->type == PIPE)
+		else if (tokens->type == T_PIPE)
 		{
 			if (!cmd_found)
 				return (syntax_error("|"));
-			if (check_pipe(current) != 0)
+			if (check_pipe(tokens) != 0)
 				return (1);
 			cmd_found = 0;
 		}
-		else if (current->type == STRING)
+		else if (tokens->type == T_STRING)
+
 			cmd_found = 1;
 
-		current = current->next;
+		tokens = tokens->next;
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/28 18:44:53 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:20:36 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_return	handle_loop(t_ctx *ctx)
 {
 	char		*line;
-	t_pars_node	*tokens;
+	t_token		*tokens;
 	t_command	*cmd;
 
 	line = NULL;

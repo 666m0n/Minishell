@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/05 16:41:21 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/06 13:50:34 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,38 @@
 
 # define QUOTE_ERROR "syntax error : missing quote\n"
 
-typedef enum e_token
+typedef enum e_token_type
 {
-	CMD,
-	STRING,
-	ESPACE,
-	VAR,
-	APPEND,
-	INFILE,
-	OUTFILE,
-	HEREDOC,
-	REDIR_IN, // mettre le nom de ficher dedans directemet (voir avec Manu)
-	REDIR_OUT,
-	D_QUOTE,
-	S_QUOTE,
-	PIPE
+	T_STRING,
+	T_PIPE,
+	T_INPUT,
+	T_OUTPUT,
+	T_APPEND,
+	T_HEREDOC,
+	T_SQUOTE,
+	T_DQUOTE,
+	T_EOF
+}	t_token_type;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	char			*content;
+	int				expandable;
+	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
-// implementer le prev utile pour la gestion d'erreur,
-// pour l'expand dans le heredoc
-typedef struct s_pars_node
+typedef struct s_lexer
 {
-	t_token				type;
-	char				*content;
-	struct s_pars_node	*next;
-	struct s_ctx		*ctx;
-}	t_pars_node;
-
-typedef struct s_pars_list
-{
-	t_pars_node	*start;
-	t_pars_node	*end;
-	int			length;
-}	t_pars_list;
+	char		*input;
+	size_t		pos;
+	size_t		len;
+	t_token		*head;
+	t_token		*current;
+	int			last_exit;
+	t_env		*env;
+}	t_lexer;
 
 typedef struct s_redirection
 {
@@ -71,28 +70,8 @@ typedef struct s_command
 	int				exit_status; // pour gerer $?
 }	t_command;
 
-t_pars_node		*lexer_create(char *str, t_ctx *ctx);
-t_pars_node		*lex_last_tok(t_pars_node *token);
-t_pars_node		*lexer_new_token(char *content, int n, t_token type,
-					t_ctx *ctx);
-t_pars_node		*lexer(char *line, t_ctx *ctx);
-int				get_str_len(char *str);
-int				lex_get_len(char *str, t_token type);
-t_token			lex_get_type(char *str);
-char			*ft_strndup(const char *s, size_t n);
-int				tok_add_back(t_pars_node **head, t_pars_node *new);
-void			free_one_token(t_pars_node	*token);
-void			free_token(t_pars_node *token);
 int				handle_quotes(char *s);
-int				is_in_squote(const char *str, int pos);
-char			*expand_token(char *str, t_ctx *ctx, t_token type);
-int				process_token_content(t_pars_node *token, t_ctx *ctx);
-int				process_quotes(t_pars_node *tokens, t_ctx *ctx);
-int				is_valid_var_char(char c, int is_first_char);
-int				get_var_len(const char *str);
-char			*handle_var_expansion(const char *str, t_ctx *ctx, int *i);
-int				is_in_dquote(const char *str, int pos);
-int				is_char_escaped(const char *str, int pos);
+
 
 
 //parser
