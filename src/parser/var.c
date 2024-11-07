@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 11:10:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 16:20:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:05:46 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,11 @@ char	*expand_variables(const char *str, t_env *env, int exit_status)
 	return (result);
 }
 
-int	expand_token_variables(t_pars_node *token, t_ctx *ctx)
+int	expand_token_variables(t_token *token, t_ctx *ctx)
 {
 	char	*expanded;
 
-	if (token->type == S_QUOTE)
+	if (token->type == T_SQUOTE)
 		return (0);
 	expanded = expand_variables(token->content, ctx->envp, ctx->exit_code);
 	if (!expanded)
@@ -140,9 +140,9 @@ int	expand_token_variables(t_pars_node *token, t_ctx *ctx)
 }
 
 //parcourt tous les tokens et expand les bonnes variables
-int	expand_all_variables(t_pars_node *tokens, t_ctx *ctx)
+int	expand_all_variables(t_token *tokens, t_ctx *ctx)
 {
-	t_pars_node	*current;
+	t_token	*current;
 
 	current = tokens;
 	while (current)

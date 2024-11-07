@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/06 11:34:33 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:41:46 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	handle_quotes(char *s)
 	return (0);
 }
 
-int	add_str_len(char *s, t_token_type type, char *ref)
+int	add_str_len(char *s, t_token_type type)
 {
 	int	len;
 
@@ -62,7 +62,7 @@ t_token	*lexer(char *input, t_env *env, int last_exit)
 	size_t	i;
 
 	init_lexer(&lexer, input, env, last_exit);
-	if (handle_quote(input))
+	if (handle_quotes(input))
 		return (NULL);
 	i = 0;
 	while (i < lexer.len)
@@ -74,7 +74,7 @@ t_token	*lexer(char *input, t_env *env, int last_exit)
 			return (NULL);
 		}
 		add_token(&lexer, tmp);
-		i += add_str_len(tmp->content, tmp->type, &input[i]);
+		i += add_str_len(tmp->content, tmp->type);
 	}
 	return (lexer.head);
 }

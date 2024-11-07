@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:58:12 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/06 15:10:45 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:22:58 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	syntax_error(const char *token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	ft_putstr_fd(token, 2);
+	ft_putstr_fd((char *)token, 2);
 	ft_putstr_fd("'\n", 2);
 	return (1);
 }

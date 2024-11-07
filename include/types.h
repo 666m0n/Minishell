@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 15:04:21 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 10:47:17 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_ctx
 	unsigned char			exit_code;	// code de sortie de la derniere commande
 	struct s_pars_node		*lexer_output;
 	t_env			*envp;
-
 }	t_ctx;
 
 #endif

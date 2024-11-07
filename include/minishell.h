@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/06 15:17:58 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:37:47 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char		*ft_chartostr(char c);
 char		*ft_strjoin_free(char *s1, char *s2);
 int			validate_syntax(t_token *tokens);
 int			syntax_error(const char *token);
+void		exit_error(const char *s);
 
 //builtins
 int			execute_builtin(t_ctx *ctx, t_simple_cmd *cmd);

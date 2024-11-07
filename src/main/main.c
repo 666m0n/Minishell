@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/06 15:20:36 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:44:47 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_return	handle_loop(t_ctx *ctx)
 		if (line[0] != '\0' && check_line(line) == 0)
 		{
 			add_history(line);
-			tokens = lexer(line, ctx);
+			tokens = lexer(line, ctx->envp, ctx->exit_code);
 			if (tokens)
 			{
 				print_tokens(tokens);

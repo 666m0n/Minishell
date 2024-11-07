@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 14:48:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:35:19 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,10 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	free(s1);
 	free(s2);
 	return (result);
+}
+
+void	exit_error(const char *s)
+{
+	perror(s);
+	exit(EXIT_FAILURE);
 }

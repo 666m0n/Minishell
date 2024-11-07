@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 22:52:49 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/23 15:22:23 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:04:01 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 
 //test lexer
-void	print_tokens(t_pars_node *tokens)
+void	print_tokens(t_token *tokens)
 {
-	t_pars_node	*current = tokens;
+	t_token		*current = tokens;
 	int			i = 1;
 
 	printf("\n=== TOKENS ===\n");
@@ -27,19 +27,15 @@ void	print_tokens(t_pars_node *tokens)
 		printf("  Type: ");
 		switch(current->type)
 		{
-			case CMD:       printf("CMD\n"); break;
-			case STRING:    printf("STRING\n"); break;
-			case ESPACE:    printf("ESPACE\n"); break;
-			case VAR:       printf("VAR\n"); break;
-			case APPEND:    printf("APPEND\n"); break;
-			case INFILE:    printf("INFILE\n"); break;
-			case OUTFILE:   printf("OUTFILE\n"); break;
-			case HEREDOC:   printf("HEREDOC\n"); break;
-			case REDIR_IN:  printf("REDIR_IN\n"); break;
-			case REDIR_OUT: printf("REDIR_OUT\n"); break;
-			case D_QUOTE:   printf("D_QUOTE\n"); break;
-			case S_QUOTE:   printf("S_QUOTE\n"); break;
-			case PIPE:      printf("PIPE\n"); break;
+			case T_STRING:    printf("STRING\n"); break;
+			case T_APPEND:    printf("APPEND\n"); break;
+			case T_INPUT:    printf("INFILE\n"); break;
+			case T_OUTPUT:   printf("OUTFILE\n"); break;
+			case T_HEREDOC:   printf("HEREDOC\n"); break;
+			case T_DQUOTE:   printf("D_QUOTE\n"); break;
+			case T_SQUOTE:   printf("S_QUOTE\n"); break;
+			case T_PIPE:      printf("PIPE\n"); break;
+			case T_EOF:       printf("EOF\n"); break;
 			default:        printf("UNKNOWN\n"); break;
 		}
 		current = current->next;
@@ -71,13 +67,13 @@ void	print_command(t_command *cmd)
 		while (redir != NULL)
 		{
 			printf("  Redirection: ");
-			if (redir->type == INFILE)
+			if (redir->type == T_INPUT)
 				printf("< %s\n", redir->file);
-			else if (redir->type == OUTFILE)
+			else if (redir->type == T_OUTPUT)
 				printf("> %s\n", redir->file);
-			else if (redir->type == APPEND)
+			else if (redir->type == T_APPEND)
 				printf(">> %s\n", redir->file);
-			else if (redir->type == HEREDOC)
+			else if (redir->type == T_HEREDOC)
 				printf("<< %s\n", redir->file);
 			redir = redir->next;
 		}
