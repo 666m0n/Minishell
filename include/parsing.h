@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 11:42:58 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:19:13 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_token
 	t_token_type	type;
 	char			*content;
 	int				expandable;
+	int				space_after;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
@@ -103,5 +104,6 @@ size_t			calculate_expanded_length(const char *str,
 					t_env *env, int exit_status);
 char			*expand_variables(const char *str, t_env *env, int exit_status);
 int				handle_string_token(t_simple_cmd *cmd, t_token *token);
+int				expand_all_variables(t_token *tokens, t_ctx *ctx);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:19:34 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 11:39:01 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:45:12 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,20 @@ t_token	*create_token(const char *s, int len, t_token_type type)
 	}
 	node->next = NULL;
 	node->prev = NULL;
+	node->space_after = 0;
 	return (node);
 }
 
 void	add_token(t_lexer *lexer, t_token *new_node)
 {
+	char	*input;
+	size_t	pos;
+
 	if (!new_node)
 		return ;
+	pos = lexer->pos + ft_strlen(new_node->content);
+	input = lexer->input;
+	new_node->space_after = (input[pos] == ' ' || input[pos] == '\t');
 	if (!lexer->head)
 	{
 		lexer->head = new_node;

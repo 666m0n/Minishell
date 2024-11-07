@@ -6,59 +6,15 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 11:18:15 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:01:11 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_string_token(t_simple_cmd *cmd, t_token *token)
-{
-	char	**new_args;
-	int		i;
-	int		arg_count;
+int handle_string_token(t_simple_cmd *cmd, t_token *token)
+{}
 
-	arg_count = 0;
-	if (cmd->args)
-	{
-		while (cmd->args[arg_count])
-			arg_count++;
-	}
-	new_args = malloc(sizeof(char *) * (arg_count + 2));
-	if (!new_args)
-		return (1);
-	i = 0;
-	while (i < arg_count)
-	{
-        new_args[i] = ft_strdup(cmd->args[i]);
-		if (!new_args[i])
-		{
-			while (--i >= 0)
-				free(new_args[i]);
-			free(new_args);
-			return (1);
-		}
-		i++;
-	}
-	new_args[arg_count] = ft_strdup(token->content);
-	if (!new_args[arg_count])
-	{
-		while (--arg_count >= 0)
-			free(new_args[arg_count]);
-		free(new_args);
-		return (1);
-	}
-	new_args[arg_count + 1] = NULL;
-	if (cmd->args)
-	{
-		i = 0;
-		while (cmd->args[i])
-			free(cmd->args[i++]);
-		free(cmd->args);
-	}
-	cmd->args = new_args;
-	return (0);
-}
 
 int	handle_argument(t_simple_cmd *cmd, t_token *tokens)
 {
