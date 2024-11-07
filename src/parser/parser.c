@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 15:01:11 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:21:07 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int handle_string_token(t_simple_cmd *cmd, t_token *token)
 {}
-
 
 int	handle_argument(t_simple_cmd *cmd, t_token *tokens)
 {

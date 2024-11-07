@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/06 11:49:43 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:26:58 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ t_token_type	get_token_type(char *s)
 			return (T_APPEND);
 		return (T_OUTPUT);
 	}
-	else if (s[0] == '\'')
+/* 	else if (s[0] == '\'')
 		return (T_SQUOTE);
 	else if (s[0] == '\"')
-		return (T_DQUOTE);
+		return (T_DQUOTE); */
 	return (T_STRING);
 }
 
