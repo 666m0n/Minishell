@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 11:10:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 11:05:46 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 12:24:09 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ int	expand_token_variables(t_token *token, t_ctx *ctx)
 {
 	char	*expanded;
 
-	if (token->type == T_SQUOTE)
-		return (0);
+	if (!token->expandable || !ft_strchr(token->content, '$'))
+		return (SUCCESS);
 	expanded = expand_variables(token->content, ctx->envp, ctx->exit_code);
 	if (!expanded)
 		return (EXIT_FAILURE);

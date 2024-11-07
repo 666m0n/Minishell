@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 11:44:47 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 12:27:26 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_return	handle_loop(t_ctx *ctx)
 			if (tokens)
 			{
 				print_tokens(tokens);
+				if (expand_al)
 				cmd = parser(tokens);
 				if (cmd && cmd->cmd && cmd->cmd->args)
 				{
