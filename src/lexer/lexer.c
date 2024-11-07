@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 14:34:09 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:36:25 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ t_token	*lexer(char *input, t_env *env, int last_exit)
 		}
 		add_token(&lexer, tmp);
 		i += add_str_len(tmp->content, tmp->type);
+	}
+	if (!expand_variables(lexer.head, &lexer))
+	{
+		free_token(lexer.head)
+		return (NULL);
 	}
 	return (lexer.head);
 }
