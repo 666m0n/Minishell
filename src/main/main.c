@@ -6,49 +6,57 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 16:45:34 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/08 13:49:10 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_return	handle_loop(t_ctx *ctx)
+static int	execute_command(t_ctx *ctx, t_command *cmd)
 {
-	char		*line;
+	if (!cmd || !cmd->cmd || !cmd->cmd->args || !cmd->cmd->args[0])
+		return (0);
+	if (ft_strcmp(cmd->cmd->args[0], "env") == 0)
+		ctx->exit_code = bui_env(ctx, cmd->cmd);
+	print_command(cmd);
+	return (1);
+}
+
+static void	process_line(char *line, t_ctx *ctx)
+{
 	t_token		*tokens;
 	t_command	*cmd;
+
+	tokens = lexer(line, ctx->envp, ctx->exit_code);
+	if (tokens)
+	{
+		print_tokens(tokens);
+		cmd = parser(tokens);
+		if (cmd)
+		{
+			execute_command(ctx, cmd);
+			free_command(cmd);
+		}
+		free_token(tokens);
+	}
+}
+
+t_return	handle_loop(t_ctx *ctx)
+{
+	char	*line;
 
 	line = NULL;
 	while (1)
 	{
 		line = readline(PROMPT);
-		if (line == NULL)
+		if (!line)
 			break ;
-		if (line[0] != '\0' && check_line(line) == 0)
+		if (line[0] != '\0' && !check_line(line))
 		{
 			add_history(line);
-			tokens = lexer(line, ctx->envp, ctx->exit_code);
-			if (tokens)
-			{
-				print_tokens(tokens);
-				if (/*ICI ANCIENNE FONCTION DE L'EXPND*/(tokens, ctx) == 0)
-				{
-					cmd = parser(tokens);
-					if (cmd && cmd->cmd && cmd->cmd->args)
-					{
-						if (cmd->cmd->args[0] && ft_strcmp(cmd->cmd->args[0], "env") == 0)
-						{
-							ctx->exit_code = bui_env(ctx, cmd->cmd);
-						}
-						print_command(cmd);
-						free_command(cmd);
-					}
-				}
-				free_token(tokens);
-			}
+			process_line(line, ctx);
 		}
 		free(line);
-		line = NULL;
 	}
 	return (SUCCESS);
 }
