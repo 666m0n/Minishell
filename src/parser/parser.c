@@ -6,72 +6,55 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/08 13:44:06 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:12:30 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	count_args(t_token *token)
-
+int	handle_argument(t_simple_cmd *cmd, t_token *token)
 {
-	int	count;
-
-	count = 0;
-	while (token && token->type != T_PIPE)
-	{
-		if (token->type == T_STRING)
-			count++;
-		else if (is_redirection(token->type))
-			token = token->next;
-		token = token->next;
-	}
-	return (count);
-}
-
-static char	**create_args_array(t_token *token, int arg_count)
-{
-	char	**args;
+	char	**new_args;
 	int		i;
-
-	args = malloc(sizeof(char *) * (arg_count + 1));
-	if (!args)
-		return (NULL);
-	i = 0;
-	while (token && token->type != T_PIPE && i < arg_count)
-	{
-		if (token->type == T_STRING)
-		{
-			args[i] = ft_strdup(token->content);
-			if (!args[i])
-			{
-				while (--i >= 0)
-					free(args[i]);
-				free(args);
-				return (NULL);
-			}
-			i++;
-		}
-		else if (is_redirection(token->type))
-			token = token->next;
-		token = token->next;
-	}
-	args[i] = NULL;
-	return (args);
-}
-
-static int	process_command(t_simple_cmd *cmd, t_token *token)
-{
 	int		arg_count;
 
-	arg_count = count_args(token);
-	if (arg_count > 0)
+	if (!cmd->args)
 	{
-		cmd->args = create_args_array(token, arg_count);
+		cmd->args = malloc(sizeof(char *) * 2);
 		if (!cmd->args)
-			return (-1);
+			return (EXIT_FAILURE);
+		cmd->args[0] = ft_strdup(token->content);
+		if (!cmd->args[0])
+			return (free(cmd->args), EXIT_FAILURE);
+		cmd->args[1] = NULL;
+		return (EXIT_SUCCESS);
 	}
-	return (0);
+	arg_count = 0;
+	while (cmd->args[arg_count])
+		arg_count++;
+	new_args = malloc(sizeof(char *) * (arg_count + 2));
+	if (!new_args)
+		return (EXIT_FAILURE);
+	i = 0;
+	while (i < arg_count)
+	{
+		new_args[i] = cmd->args[i];
+		i++;
+	}
+	new_args[i] = ft_strdup(token->content);
+	if (!new_args[i])
+		return (free(new_args), EXIT_FAILURE);
+	new_args[i + 1] = NULL;
+	free(cmd->args);
+	cmd->args = new_args;
+	return (EXIT_SUCCESS);
+}
+
+static int	handle_string_token(t_simple_cmd *cmd, t_token *token)
+{
+	if (!token->content)
+		return (EXIT_FAILURE);
+	return (handle_argument(cmd, token));
 }
 
 t_command	*parser(t_token *tokens)
@@ -107,13 +90,16 @@ t_command	*parser(t_token *tokens)
 				return (free_command(cmd), NULL);
 			current_token = current_token->next->next;
 		}
-		else
+		else if (current_token->type == T_STRING
+			|| current_token->type == T_SQUOTE
+			|| current_token->type == T_DQUOTE)
 		{
-			if (process_command(current_cmd, current_token) != 0)
+			if (handle_string_token(current_cmd, current_token) != 0)
 				return (free_command(cmd), NULL);
-			while (current_token && current_token->type != T_PIPE)
-				current_token = current_token->next;
+			current_token = current_token->next;
 		}
+		else
+			current_token = current_token->next;
 	}
 	return (cmd);
 }

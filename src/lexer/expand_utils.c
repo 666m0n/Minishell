@@ -6,24 +6,15 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 17:35:30 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 18:38:07 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:18:41 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_token(t_token *tok)
+int	ft_isspace(char c)
 {
-	t_token	*tmp;
-
-	while (tok)
-	{
-		tmp = tok;
-		tok = tok->next;
-		if (tmp->content)
-			free(tmp->content);
-		free(tmp);
-	}
+	return (c == ' ' || c == '\t');
 }
 
 // Retourne la longueur du nom de la variable

@@ -6,11 +6,36 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:19:34 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 16:34:18 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:32:39 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	handle_token_content(t_token *token, const char *s, int len)
+{
+	char	*tmp;
+
+	token->content = ft_strndup(s, len);
+	if (!token->content)
+		exit_error("malloc failed");
+	if (token->type == T_SQUOTE)
+	{
+		tmp = ft_strndup(token->content + 1, ft_strlen(token->content) - 2);
+		if (!tmp)
+			exit_error("malloc failed");
+		free(token->content);
+		token->content = tmp;
+	}
+	else if (token->type == T_DQUOTE)
+	{
+		tmp = ft_strndup(token->content + 1, ft_strlen(token->content) - 2);
+		if (!tmp)
+			exit_error("malloc failed");
+		free(token->content);
+		token->content = tmp;
+	}
+}
 
 char	*ft_strndup(const char *s, size_t n)
 {
@@ -78,17 +103,14 @@ t_token	*create_token(const char *s, int len, t_token_type type)
 {
 	t_token	*node;
 
+	if (!s || len < 0)
+		return (NULL);
 	node = malloc(sizeof(t_token));
 	if (!node)
-		exit_error("malloc token structure failed");
+		exit_error("malloc failed");
 	node->type = type;
 	node->expandable = (type != T_SQUOTE);
-	node->content = copy_str(s, node->content, len, type);
-	if (!node->content)
-	{
-		free(node);
-		exit_error("strdup input token failed");
-	}
+	handle_token_content(node, s, len);
 	node->next = NULL;
 	node->prev = NULL;
 	node->space_after = 0;

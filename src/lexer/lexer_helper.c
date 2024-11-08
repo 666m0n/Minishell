@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 16:12:03 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:30:57 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	get_close_quote(char *s, char c)
 	return (i + 1);
 }
 
+
 int	get_token_str_len(char *s)
 {
 	int	i;
@@ -29,7 +30,27 @@ int	get_token_str_len(char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (ft_strrchr("|<>\'\" \t", s[i]))
+		if (s[i] == '\'')
+		{
+			i++;
+			while (s[i] && s[i] != '\'')
+				i++;
+			if (s[i])
+				i++;
+			continue ;
+		}
+		if (s[i] == '\"')
+		{
+			i++;
+			while (s[i] && s[i] != '\"')
+				i++;
+			if (s[i])
+				i++;
+			continue ;
+		}
+		if (s[i] == '|' || s[i] == '<' || s[i] == '>' ||
+				(!i && (s[i] == '\'' || s[i] == '\"')) ||
+			ft_isspace(s[i]))
 			break ;
 		i++;
 	}
@@ -53,23 +74,25 @@ int	get_token_len(char *s, t_token_type type)
 
 t_token_type	get_token_type(char *s)
 {
+	if (!s || !*s)
+		return (T_EOF);
 	if (s[0] == '|')
 		return (T_PIPE);
-	else if (s[0] == '<')
+	if (s[0] == '<')
 	{
 		if (s[1] == '<')
 			return (T_HEREDOC);
 		return (T_INPUT);
 	}
-	else if (s[0] == '>')
+	if (s[0] == '>')
 	{
 		if (s[1] == '>')
 			return (T_APPEND);
 		return (T_OUTPUT);
 	}
-	else if (s[0] == '\'')
+	if (s[0] == '\'')
 		return (T_SQUOTE);
-	else if (s[0] == '\"')
+	if (s[0] == '\"')
 		return (T_DQUOTE);
 	return (T_STRING);
 }

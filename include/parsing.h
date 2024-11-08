@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 18:35:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:19:56 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,12 @@ char			*copy_str(const char *src,
 t_token			*create_token(const char *s, int len, t_token_type type);
 void			add_token(t_lexer *lexer, t_token *new_node);
 char			*ft_strndup(const char *s, size_t n);
-int				expand_variables(t_token *tokens, t_lexer *lexer);
-char			*expand_string(char *str, t_lexer *lexer);
-size_t			expand_single_var(char *result, char *str,
-					size_t j, t_lexer *lexer);
-size_t			calculate_expanded_size(char *str, t_lexer *lexer);
-size_t			get_expanded_var_size(const char *str, t_lexer *lexer);
+int				expand_variables(t_token *tokens, t_env *env, int last_exit);
 size_t			get_var_name_len(const char *str);
 size_t			copy_var_value(char *result, size_t j,
 					char *value, size_t size);
-char			*get_var_value(const char *name, t_lexer *lexer);
+int				ft_isspace(char c);
+
 
 //parser
 
@@ -109,10 +105,6 @@ void			free_redirection(t_redirection *redir);
 void			add_redirection(t_simple_cmd *cmd, t_redirection *new_redir);
 int				is_redirection(t_token_type type);
 int				handle_redirection(t_simple_cmd *cmd, t_token *token);
-char			*get_env_value(t_env *env, const char *var_name);
-size_t			calculate_expanded_length(const char *str,
-					t_env *env, int exit_status);
-int				handle_string_token(t_simple_cmd *cmd, t_token *token);
-int				expand_all_variables(t_token *tokens, t_ctx *ctx);
+
 
 #endif
