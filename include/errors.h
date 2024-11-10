@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:58:45 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/01 18:17:11 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/10 11:37:45 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define PIPE_ERROR				4		// Erreur lors de la création d'un pipe
 # define MEMORY_ERROR			5		// Erreur d'allocation mémoire
 # define SYNTAX_ERROR			6		// Erreur de syntaxe dans la commande
+# define INTERRUPT				7		// Interruption (Ctrl-C/Ctrl-D)
 
 // Erreurs d'exécution (126-127)
 # define PERMISSION_DENIED		126		// Fichier existe mais pas les droits

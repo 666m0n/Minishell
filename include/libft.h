@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:11:41 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/30 16:17:58 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/10 12:53:58 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,9 @@ void	malloc_line(char **line, t_list *stash);
 t_list	*ft_lst_get_last(t_list *stash);
 int		found_newline(t_list *stash);
 t_list	*create_clean_node(t_list *last, int i);
+
+// ajout Manu
+char	*ft_strndup(const char *s, size_t n);
+int		ft_printf_fd(int fd, const char *str);
 
 #endif

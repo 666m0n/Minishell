@@ -6,7 +6,7 @@
 #    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 10:06:44 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/04 11:06:04 by emmanuel         ###   ########.fr        #
+#    Updated: 2024/11/10 11:55:29 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ GNL_DIR = gnl/
 GNL = get_next_line get_next_line_utils utils
 
 PRINTF_DIR = ft_printf/
-FTPRINTF = ft_print_hexa ft_print_msc ft_print_uns ft_printf
+FTPRINTF = ft_print_hexa ft_print_msc ft_print_uns ft_printf ft_printf_fd
 
 SRC_FILES+=$(addprefix $(FTIS_DIR),$(FTIS))
 SRC_FILES+=$(addprefix $(FTMEM_DIR),$(FTMEM))

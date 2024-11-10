@@ -6,27 +6,38 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:45:18 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/04 11:44:58 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/06 11:24:33 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-# include "types.h"
-# include "parsing.h"
-# include "errors.h"
 # include <errno.h>
 # include <unistd.h>
 #include <stddef.h>
+#include <fcntl.h>
+# include "libft.h"
+# include "types.h"
+# include "parsing.h"
+# include "errors.h"
+
 
 /* Constants */
 # define PROMPT "\001\033[1;33m\002minishell >$ \001\033[0m\002"
 # define DEFAULT_PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+/* Process status masks and shifts */
+
+/* Masque pour isoler les 8 bits de poids fort du statut */
+/* 0xff00 = 1111 1111 0000 0000 en binaire */
+# define EXIT_CODE_MASK   0xff00
+
+/* Nombre de bits à décaler pour obtenir le code de sortie */
+# define EXIT_CODE_SHIFT  8
 
 /* Type definitions */
 typedef int (*builtin_func)(t_command *, t_ctx *);
@@ -85,7 +96,7 @@ void			ft_free_array(char **array);
 char			*ft_chartostr(char c);
 char			*ft_strjoin_free(char *s1, const char *s2);
 
-/*A trier */
+/* A trier */
 int handle_builtin_error(const char *builtin, const char *arg, const char *msg);
 t_env	*find_min_var(t_env *env, char *min_id);
 int	extract_name_value(const char *arg, char **name, char **value);
@@ -98,6 +109,9 @@ void	ft_free_array(char **array);
 int handle_builtin_error(const char *builtin, const char *arg, const char *msg);
 int handle_system_error(const char *syscall);
 int	ft_str_isdigit(const char *str);
+pid_t   create_child_process(void);
+int     wait_child(pid_t pid);
+void    exec_in_child(t_command *cmd, t_ctx *ctx);
 
 
 
