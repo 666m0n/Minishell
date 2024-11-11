@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/08 15:19:56 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:47:47 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@
 # include "types.h"
 
 # define QUOTE_ERROR "syntax error : missing quote\n"
+# define IS_TOKEN "\"'|<>&"
+# define IS_REDIRECTION "<>"
 
 typedef enum e_token_type
 {
 	T_STRING,
+	T_SPACE,
 	T_PIPE,
 	T_INPUT,
 	T_OUTPUT,
@@ -27,28 +30,19 @@ typedef enum e_token_type
 	T_HEREDOC,
 	T_SQUOTE,
 	T_DQUOTE,
-	T_EOF
+	T_OPTIONS,
+	T_CMD,
+	T_AMPERSAND,
+	T_UNKNOWN
 }	t_token_type;
-
-typedef struct s_token
-{
-	t_token_type	type;
-	char			*content;
-	int				expandable;
-	int				space_after;
-	struct s_token	*next;
-	struct s_token	*prev;
-}	t_token;
 
 typedef struct s_lexer
 {
-	char		*input;
-	size_t		pos;
-	size_t		len;
-	t_token		*head;
-	t_token		*current;
-	int			last_exit;
-	t_env		*env;
+	t_token_type	type;
+	char			*content;
+	int				index;
+	struct s_lexer	*next;
+	struct s_lexer	*prev;
 }	t_lexer;
 
 typedef struct s_redirection
