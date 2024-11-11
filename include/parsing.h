@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/11 16:47:47 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:58:13 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,24 +66,12 @@ typedef struct s_command
 }	t_command;
 
 int				handle_quotes(char *s);
-int				get_close_quote(char *s, char c);
-int				get_token_str_len(char *s);
-int				get_token_len(char *s, t_token_type type);
-t_token_type	get_token_type(char *s);
-t_token			*tokenize(char *s);
-int				add_str_len(char *s, t_token_type type);
-void			init_lexer(t_lexer *lexer, char *input,
-					t_env *env, int last_exit);
-t_token			*lexer(char *input, t_env *env, int last_exit);
 void			free_token(t_token *tok);
 char			*copy_str(const char *src,
 					char *to_ret, int len, t_token_type type);
 t_token			*create_token(const char *s, int len, t_token_type type);
 void			add_token(t_lexer *lexer, t_token *new_node);
 char			*ft_strndup(const char *s, size_t n);
-int				expand_variables(t_token *tokens, t_env *env, int last_exit);
-size_t			get_var_name_len(const char *str);
-size_t			copy_var_value(char *result, size_t j,
 					char *value, size_t size);
 int				ft_isspace(char c);
 
