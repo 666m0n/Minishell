@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/07 17:56:16 by sviallon         ###   ########.fr        #
+#    Updated: 2024/11/12 11:50:17 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ C10 = \033[38;5;75m # Bleu brillant
 
 # Sources
 LEXER_DIR	= lexer/
-LXR			= lexer_helper lexer2 lexer expand expand_utils
+LXR			= lexer_handler lexer lexer_utils lexer_utils_2
 
 UTILS_DIR	= utils/
 UTLS		= utils
@@ -84,11 +84,11 @@ all	:	$(NAME)
 $(NAME)	:	$(OBJ)
 		@make -C $(LIBFT)
 		@$(CC) $(CFLAGS) $(OBJ) $(LIBCOMP) $(LDFLAGS) -o $(NAME)
-		@echo -e "$$MINISHELL_LOGO"
-		@echo -e "$(GREEN)Minishell compiled!$(DEF_COLOR)"
+		@echo "$$MINISHELL_LOGO"
+		@echo "$(GREEN)Minishell compiled!$(DEF_COLOR)"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJSF)
-		@echo -e "$(YELLOW)Compiling: $< $(DEF_COLOR)"
+		@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
 		@$(CC) $(CFLAGS) -MMD -MP -I $(INCLUDE) -c $< -o $@
 
 $(OBJSF) :
@@ -99,16 +99,16 @@ clean:
 		@$(RM) $(OBJ_DIR)
 		@$(RM) $(OBJSF)
 		@make clean -C $(LIBFT)
-		@echo -e "$(BLUE)Minishell object files cleaned!$(DEF_COLOR)"
+		@echo "$(BLUE)Minishell object files cleaned!$(DEF_COLOR)"
 
 fclean: clean
 		@$(RM) -f $(NAME)
 		@$(RM) -f $(LIBFT)/libft.a
-		@echo -e "$(CYAN)Minishell executable files cleaned!$(DEF_COLOR)"
-		@echo -e "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
+		@echo "$(CYAN)Minishell executable files cleaned!$(DEF_COLOR)"
+		@echo "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
 
 re: fclean all
-		@echo -e "$(GREEN)Cleaned and rebuilt everything for Minishell !$(DEF_COLOR)"
+		@echo "$(GREEN)Cleaned and rebuilt everything for Minishell !$(DEF_COLOR)"
 
 -include $(DEP)
 

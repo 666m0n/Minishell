@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/11 16:58:13 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/12 11:46:25 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 # define IS_TOKEN "\"'|<>&"
 # define IS_REDIRECTION "<>"
 
-typedef enum e_token_type
+typedef enum e_token
 {
 	T_STRING,
 	T_SPACE,
 	T_PIPE,
-	T_INPUT,
-	T_OUTPUT,
+	T_REDIRIN,
+	T_REDIROUT,
 	T_APPEND,
 	T_HEREDOC,
 	T_SQUOTE,
@@ -34,11 +34,11 @@ typedef enum e_token_type
 	T_CMD,
 	T_AMPERSAND,
 	T_UNKNOWN
-}	t_token_type;
+}	t_token;
 
 typedef struct s_lexer
 {
-	t_token_type	type;
+	t_token			type;
 	char			*content;
 	int				index;
 	struct s_lexer	*next;
@@ -47,7 +47,7 @@ typedef struct s_lexer
 
 typedef struct s_redirection
 {
-	t_token_type			type;
+	t_token					type;
 	char					*file;
 	struct s_redirection	*next;
 }	t_redirection;
@@ -65,15 +65,8 @@ typedef struct s_command
 	int				exit_status; // pour gerer $?
 }	t_command;
 
-int				handle_quotes(char *s);
-void			free_token(t_token *tok);
-char			*copy_str(const char *src,
-					char *to_ret, int len, t_token_type type);
-t_token			*create_token(const char *s, int len, t_token_type type);
-void			add_token(t_lexer *lexer, t_token *new_node);
-char			*ft_strndup(const char *s, size_t n);
-					char *value, size_t size);
-int				ft_isspace(char c);
+//lexer
+
 
 
 //parser

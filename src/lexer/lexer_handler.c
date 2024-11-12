@@ -6,11 +6,34 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/11 16:46:52 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/12 11:22:06 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	handle_greater(t_lexer **token, char **str, char *new)
+{
+	if (*(*str + 1) == '>')
+	{
+		free(new);
+		new = ft_strdup(">>");
+		if (!new)
+			return ;
+		create_token(T_APPEND, new, token);
+		(*str) += 2;
+	}
+	else
+	{
+		free(new);
+		new = ft_strdup(">");
+		if (!new)
+			return ;
+		create_token(T_REDIROUT, new, token);
+		(*str)++;
+	}
+	free(new);
+}
 
 void	redir_handler(t_lexer **token, char **str)
 {

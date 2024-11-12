@@ -6,13 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/11 16:16:51 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/12 11:07:30 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_quotes(char *s)
+int	check_quotes(char *s)
 {
 	int	i;
 	int	d_quote;
@@ -108,7 +108,7 @@ t_lexer	*lexer(char *input)
 	tokens = NULL;
 	while (*input && ft_isspace(*input))
 		input++;
-	if (!handle_quotes(input))
+	if (!check_quotes(input))
 	{
 		while (*input)
 		{
