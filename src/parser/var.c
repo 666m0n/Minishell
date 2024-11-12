@@ -6,13 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 14:25:31 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:51:56 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*copy_str(char *str, char c)
+static char	*copy_str(char *str, char c)
 {
 	int		len;
 	char	*new_str;

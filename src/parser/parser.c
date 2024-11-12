@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 13:54:17 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:46:13 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,6 @@ t_cmd	*parser(t_lexer *tokens, t_ctx *data)
 	tmp = tokens;
 	init_cmd(&head, &current_cmd);
 	handle_dollar(tmp, data);
+	process_pars(current_cmd, tmp, data);
+	return (head);
 }
