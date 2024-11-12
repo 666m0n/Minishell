@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/10 11:02:19 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:17:27 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,20 @@ int	execute_command(t_command *cmd, t_ctx *ctx)
 	cmd_name = get_command_name(cmd);
 	if (!cmd_name)
 		return (CMD_NOT_FOUND);
-	if (have_heredoc(cmd))
+	if (is_builtin(cmd_name) == TRUE)
 	{
-		if (handle_heredocs(cmd, ctx) == ERROR)
-			return (ERROR);
+		if (has_redirection(cmd))
+			status = exec_builtin_redir(cmd, ctx);
+		else
+			status = exec_builtin(cmd, ctx);
 	}
-	if (is_builtin(cmd_name))
-		status = execute_builtin(cmd, ctx);
 	else
-		status = execute_external(cmd, ctx);
+	{
+		if (is_simple_command(cmd))
+			status = exec_simple(cmd);
+		else
+			status = exec_pipe(cmd, ctx);
+	}
 	set_exit_status(cmd, status);
 	return (status);
 }

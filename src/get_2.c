@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 10:20:48 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/10 10:36:18 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:27:54 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,6 @@ t_redirection	*get_redirections(t_command *cmd)
 	if (!cmd || !cmd->cmd)
 		return (NULL);
 	return (cmd->cmd->redirections);
-}
-
-/*
-** Récupère le pipeline actuel du contexte
-** @param ctx: contexte du shell
-** @return: pipeline actuel ou NULL si invalide
-*/
-t_pipeline	*get_current_pipeline(t_ctx *ctx)
-{
-	if (!ctx)
-		return (NULL);
-	return (ctx->curr_pipeline);
-}
-
-/*
-** Récupère la liste des heredocs en attente
-** @param ctx: contexte du shell
-** @return: liste des heredocs ou NULL si invalide
-*/
-t_heredoc	*get_pending_heredocs(t_ctx *ctx)
-{
-	if (!ctx)
-		return (NULL);
-	return (ctx->pend_heredocs);
 }
 
 /*
