@@ -3,82 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/06 11:29:42 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/12 14:44:46 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/*
-** Configure une redirection de sortie
-** @param file: nom du fichier
-** @param append: TRUE pour mode append (>>), FALSE pour écraser (>)
-** @return: SUCCESS en cas de succès, ERROR sinon
-*/
-static int	setup_output_redir(char *file, t_bool append)
-{
-	int	fd;
-
-	if (append == TRUE)
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-		return (ERROR);
-	if (dup2(fd, STDOUT_FILENO) == -1)
-	{
-		close(fd);
-		return (ERROR);
-	}
-	close(fd);
-	return (SUCCESS);
-}
-
-/*
-** Configure une redirection d'entrée
-** @param file: nom du fichier
-** @return: SUCCESS en cas de succès, ERROR sinon
-*/
-static int	setup_input_redir(char *file)
-{
-	int	fd;
-
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (ERROR);
-	if (dup2(fd, STDIN_FILENO) == -1)
-	{
-		close(fd);
-		return (ERROR);
-	}
-	close(fd);
-	return (SUCCESS);
-}
-
-/*
-** Configure les redirections pour le processus enfant
-** @param redirections: liste des redirections à appliquer
-** @return: SUCCESS en cas de succès, ERROR sinon
-*/
-int	setup_redirections(t_redirection *redirections)
+int	find_final_redirections(t_cmd *cmd, t_redirection **last_in, \
+							t_redirection **last_out)
 {
 	t_redirection	*current;
-	int				ret;
 
-	current = redirections;
-	ret = SUCCESS;
-	while (current && ret == SUCCESS)
+	if (!cmd || !last_in || !last_out)
+		return (ERROR);
+	*last_in = NULL;
+	*last_out = NULL;
+	current = cmd->redirections;
+	if (!current)
+		return (ERROR);
+	while (current)
 	{
-		if (current->type == REDIR_IN)
-			ret = setup_input_redir(current->file);
-		else if (current->type == REDIR_OUT)
-			ret = setup_output_redir(current->file, FALSE);
-		else if (current->type == APPEND)
-			ret = setup_output_redir(current->file, TRUE);
+		if (current->type == REDIR_IN || current->type == HEREDOC)
+			*last_in == current;
+		else if (current->type == REDIR_OUT || current->type == APPEND)
+			*last_out == current;
 		current = current->next;
 	}
-	return (ret);
+	return (SUCCESS);
+}
+
+static int	save_fd(t_cmd *cmd)
+{
+	int	fd_in;
+	int	fd_out;
+
+	fd_in = dup(STDIN_FILENO);
+	if (fd_in == SYSCALL_ERROR)
+		return (handle_system_error("dup"));
+	fd_out = dup(STDOUT_FILENO);
+	if (fd_out == SYSCALL_ERROR)
+	{
+		close(fd_in);
+		return (handle_system_error("dup"));
+	}
+	cmd->stdin_backup = fd_in;
+	cmd->stdout_backup = fd_out;
+	return (SUCCESS);
+}
+
+int	exec_builtin_redir(t_cmd *cmd, t_ctx *ctx)
+{
+	int	status;
+	int	last_in;
+	int	last_out;
+
+	if (!cmd || !ctx)
+		return (ERROR);
+	status = save_fd(cmd);
+	if (status == ERROR)
+		return (status);
+	status = find_final_redirections(cmd, &last_in, &last_out);
+	if (status == ERROR)
+		return (status);
+	return (SUCCESS);
 }

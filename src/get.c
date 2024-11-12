@@ -3,37 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 19:26:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/04 10:19:51 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/12 14:09:27 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-const	char *get_command_name(t_command *cmd)
+const char	*get_cmd_name(t_cmd *cmd)
 {
-	if (!cmd || !cmd->cmd || !cmd->cmd->args || !cmd->cmd->args[0])
+	if (!cmd || !cmd->args || !cmd->args[0])
 		return (NULL);
-	return (cmd->cmd->args[0]);
+	return (cmd->args[0]);
 }
 
-int	get_exit_status(t_command *cmd)
+int	get_exit_status(t_cmd *cmd)
 {
 	if (!cmd)
 		return (ERROR);
 	return (cmd->exit_status);
 }
 
-char *get_command_path(t_command *cmd)
+char	*get_cmd_path(t_cmd *cmd)
 {
-	if (!cmd || !cmd->cmd)
+	if (!cmd)
 		return (NULL);
-	return (cmd->cmd->path);
+	return (cmd->path);
 }
 
-builtin_func get_builtin_function(const char *cmd_name)
+builtin_func	get_builtin_function(const char *cmd_name)
 {
 	if (!ft_strcmp(cmd_name, "echo"))
 		return (builtin_echo);

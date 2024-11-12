@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/11 16:17:27 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:07:57 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 ** @param ctx: contexte du shell
 ** @return: code de retour de la commande, CMD_NOT_FOUND ou ERROR si échec
 */
-int	execute_command(t_command *cmd, t_ctx *ctx)
+int	execute_command(t_cmd *cmd, t_ctx *ctx)
 {
 	const char	*cmd_name;
 	int			status;
 
 	if (!ctx)
 		return (ERROR);
-	cmd_name = get_command_name(cmd);
+	cmd_name = get_cmd_name(cmd);
 	if (!cmd_name)
 		return (CMD_NOT_FOUND);
 	if (is_builtin(cmd_name) == TRUE)
