@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 11:46:25 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:27:38 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,17 @@ typedef struct s_redirection
 	struct s_redirection	*next;
 }	t_redirection;
 
-typedef struct s_simple_cmd
+typedef struct s_cmd
 {
 	char				**args;
 	t_redirection		*redirections;
-	struct s_simple_cmd	*pipe;
-}	t_simple_cmd;
-
-typedef struct s_command
-{
-	t_simple_cmd	*cmd; // premiere cmd
-	int				exit_status; // pour gerer $?
-}	t_command;
+	struct s_cmd		*next;
+	struct s_cmd		*prev;
+	char				*path;
+	int					index;
+	int					stdin_backup;
+	int					stdout_backup;
+}	t_cmd;
 
 //lexer
 
@@ -71,15 +70,6 @@ typedef struct s_command
 
 //parser
 
-t_simple_cmd	*new_simple_cmd(void);
-void			free_simple_cmd(t_simple_cmd *cmd);
-void			free_command(t_command *cmd);
-int				handle_argument(t_simple_cmd *cmd, t_token *token);
-t_command		*parser(t_token *tokens);
-void			free_redirection(t_redirection *redir);
-void			add_redirection(t_simple_cmd *cmd, t_redirection *new_redir);
-int				is_redirection(t_token_type type);
-int				handle_redirection(t_simple_cmd *cmd, t_token *token);
 
 
 #endif

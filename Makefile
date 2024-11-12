@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/12 11:50:17 by sviallon         ###   ########.fr        #
+#    Updated: 2024/11/12 14:31:28 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ UTILS_DIR	= utils/
 UTLS		= utils
 
 PARSER_DIR	= parser/
-PRS			= cmd parser redir syntax
+PRS			= cmd parser redir syntax var var2
 
 BUILTINS	= builtins/
 BLTN		= env builtins
