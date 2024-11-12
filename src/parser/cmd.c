@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 16:18:30 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:20:41 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ static char	**create_tab(char *str)
 	new_tab = ft_calloc(sizeof(char *), 2);
 	if (!new_tab)
 		exit_error("Calloc failed");
-	new_tab[0] = ft_strdup
+	new_tab[0] = ft_strdup(str);
+	new_tab[1] = NULL;
+	return (new_tab);
 }
 
 static void	add_to_tab(char *str, t_cmd *cmd)
