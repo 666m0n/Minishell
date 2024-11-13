@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/04 10:36:30 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:22:41 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	print_error(const char *cmd_name, const char *arg, const char *msg)
 ** Gère les erreurs de commande (command not found, permission denied, etc.)
 ** Retourne le code approprié selon le type d'erreur
 */
-int handle_command_error(t_command *cmd, int error_code)
+int handle_command_error(t_cmd *cmd, int error_code)
 {
 	const char *cmd_name;
 

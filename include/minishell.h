@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:45:18 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/06 11:24:33 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:56:46 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "types.h"
 # include "parsing.h"
 # include "errors.h"
+# include <dirent.h>
 
 
 /* Constants */
@@ -40,7 +41,7 @@
 # define EXIT_CODE_SHIFT  8
 
 /* Type definitions */
-typedef int (*builtin_func)(t_command *, t_ctx *);
+typedef int (*builtin_func)(t_cmd *, t_ctx *);
 
 /* Core Functions */
 int				main(int ac, char **av, char **envp);
@@ -53,7 +54,7 @@ void			free_all(t_ctx *ctx);
 
 /* Process Management */
 pid_t			create_child_process(void);
-void			exec_in_child(t_command *cmd, t_ctx *ctx);
+void			exec_in_child(t_cmd *cmd, t_ctx *ctx);
 int				wait_child(pid_t pid);
 
 /* Environment Management */
@@ -62,34 +63,34 @@ void			env_del_one(t_env *env);
 void			env_free(t_env *env);
 
 /* Command Execution */
-int				execute_command(t_command *cmd, t_ctx *ctx);
-int				execute_external_command(t_command *cmd, t_ctx *ctx);
-int				execute_builtin(t_command *cmd, t_ctx *ctx);
+int				execute_command(t_cmd *cmd, t_ctx *ctx);
+int				execute_external_command(t_cmd *cmd, t_ctx *ctx);
+int				execute_builtin(t_cmd *cmd, t_ctx *ctx);
 t_bool			is_builtin(const char *cmd);
 
 /* Built-in Commands */
-int				builtin_echo(t_command *cmd, t_ctx *ctx);
-int				builtin_cd(t_command *cmd, t_ctx *ctx);
-int				builtin_pwd(t_command *cmd, t_ctx *ctx);
-int				builtin_env(t_command *cmd, t_ctx *ctx);
-int				builtin_exit(t_command *cmd, t_ctx *ctx);
-int				builtin_export(t_command *cmd, t_ctx *ctx);
-int				builtin_unset(t_command *cmd, t_ctx *ctx);
+int				builtin_echo(t_cmd *cmd, t_ctx *ctx);
+int				builtin_cd(t_cmd *cmd, t_ctx *ctx);
+int				builtin_pwd(t_cmd *cmd, t_ctx *ctx);
+int				builtin_env(t_cmd *cmd, t_ctx *ctx);
+int				builtin_exit(t_cmd *cmd, t_ctx *ctx);
+int				builtin_export(t_cmd *cmd, t_ctx *ctx);
+int				builtin_unset(t_cmd *cmd, t_ctx *ctx);
 
 /* Path Management */
 char			*find_command_path(const char *cmd);
 t_bool			is_dir(const char *path);
-int				check_command(t_command *cmd);
+int				check_command(t_cmd *cmd);
 
 /* Getters */
-const char		*get_command_name(t_command *cmd);
-int				get_exit_status(t_command *cmd);
-char			*get_command_path(t_command *cmd);
+const char		*get_cmd_name(t_cmd *cmd);
+int				get_exit_status(t_cmd *cmd);
+char			*get_cmd_path(t_cmd *cmd);
 builtin_func	get_builtin_function(const char *cmd_name);
 
 /* Setters */
-void			set_exit_status(t_command *cmd, int status);
-int				set_command_path(t_command *cmd, char *path);
+void			set_exit_status(t_cmd *cmd, int status);
+int				set_cmd_path(t_cmd *cmd, char *path);
 
 /* Utility Functions */
 void			ft_free_array(char **array);
@@ -104,14 +105,14 @@ t_bool	is_valid_identifier(const char *var_name);
 t_env	*find_existing_var(t_env *env, const char *name);
 int update_existing_var(t_env *var, const char *name, const char *value);
 t_env	*create_env_var(const char *name, const char *value);
-int handle_command_error(t_command *cmd, int error_code);
+int handle_command_error(t_cmd *cmd, int error_code);
 void	ft_free_array(char **array);
 int handle_builtin_error(const char *builtin, const char *arg, const char *msg);
 int handle_system_error(const char *syscall);
 int	ft_str_isdigit(const char *str);
 pid_t   create_child_process(void);
 int     wait_child(pid_t pid);
-void    exec_in_child(t_command *cmd, t_ctx *ctx);
+void    exec_in_child(t_cmd *cmd, t_ctx *ctx);
 
 
 

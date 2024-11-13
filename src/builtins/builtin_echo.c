@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 10:49:11 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/04 16:02:56 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 09:47:42 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,16 @@ static void	print_args(char **args, int start)
 ** @param ctx: contexte d'exécution (non utilisé)
 ** @return: SUCCESS en cas de succès, ERROR en cas d'erreur
 */
-int	builtin_echo(t_command *cmd, t_ctx *ctx)
+int	builtin_echo(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**args;
 	t_bool	n_option;
 	int		start;
 
 	(void)ctx;
-	if (!cmd || !cmd->cmd || !cmd->cmd->args)
+	if (!cmd || !cmd->args)
 		return (ERROR);
-	args = cmd->cmd->args;
+	args = cmd->args;
 	if (!args[1])
 		return (handle_no_args());
 	start = 1;

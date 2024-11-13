@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buitlin_export.c                                   :+:      :+:    :+:   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 10:28:54 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/03 11:04:39 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 09:50:38 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,15 +119,15 @@ static int	update_env_variable(t_ctx *ctx, const char *arg)
 ** @param ctx: contexte d'exécution
 ** @return: SUCCESS en cas de succès, ERROR en cas d'erreur
 */
-int builtin_export(t_command *cmd, t_ctx *ctx)
+int builtin_export(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**args;
 	int		i;
 	int		status;
 
-	if (cmd == NULL || cmd->cmd == NULL || cmd->cmd->args == NULL)
+	if (!cmd || !cmd->args)
 		return (ERROR);
-	args = cmd->cmd->args;
+	args = cmd->args;
 	if (args[1] == NULL)
 	{
 		display_sorted_env(ctx);

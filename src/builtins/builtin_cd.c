@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:28:37 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/04 10:00:08 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 09:53:47 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,15 @@ static int change_directory(const char *path)
 ** - Le répertoire personnel si aucun argument n'est fourni
 ** - Le chemin spécifié en argument sinon
 */
-int builtin_cd(t_command *cmd, t_ctx *ctx)
+int builtin_cd(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**args;
 	char	*target_path;
 	int		status;
 
-	if (cmd == NULL || cmd->cmd == NULL || cmd->cmd->args == NULL)
+	if (!cmd || !cmd->args)
 		return (ERROR);
-	args = cmd->cmd->args;
+	args = cmd->args;
 	if (args[1] == NULL)
 		return (handle_no_args(ctx));
 	if (args[2] != NULL)

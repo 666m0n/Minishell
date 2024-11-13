@@ -3,39 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/12 14:44:46 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:21:21 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	find_final_redirections(t_cmd *cmd, t_redirection **last_in, \
-							t_redirection **last_out)
+int	handle_redirections(t_cmd *cmd)
 {
-	t_redirection	*current;
+	int	status;
 
-	if (!cmd || !last_in || !last_out)
-		return (ERROR);
-	*last_in = NULL;
-	*last_out = NULL;
-	current = cmd->redirections;
-	if (!current)
-		return (ERROR);
-	while (current)
+	if	(cmd->fd->curr_in)
 	{
-		if (current->type == REDIR_IN || current->type == HEREDOC)
-			*last_in == current;
-		else if (current->type == REDIR_OUT || current->type == APPEND)
-			*last_out == current;
-		current = current->next;
+		status = apply_input_redirection(cmd);
+		if (status != SUCCESS)
+			return (status);
+	}
+	if (cmd->fd->curr_out)
+	{
+		status = apply_output_redirection(cmd);
+		if (status != SUCCESS)
+			return (status);
 	}
 	return (SUCCESS);
 }
 
-static int	save_fd(t_cmd *cmd)
+void	find_final_redirections(t_cmd *cmd)
+{
+	t_redirection	*current;
+
+	cmd->fd->curr_in = NULL;
+	cmd->fd->curr_out = NULL;
+	current = cmd->redirections;
+	while (current)
+	{
+		if (current->type == REDIR_IN || current->type == HEREDOC)
+			cmd->fd->curr_in = current;
+		else if (current->type == REDIR_OUT || current->type == APPEND)
+			cmd->fd->curr_out = current;
+		current = current->next;
+	}
+}
+
+/*
+** Restaure les descripteurs de fichiers standard
+*/
+int	restore_fds(t_cmd *cmd)
+{
+	if (dup2(cmd->fd->stdin_backup, STDIN_FILENO) == SYSCALL_ERROR)
+		return (handle_system_error("dup2"));
+	if (dup2(cmd->fd->stdout_backup, STDOUT_FILENO) == SYSCALL_ERROR)
+		return (handle_system_error("dup2"));
+	close(cmd->fd->stdin_backup);
+	close(cmd->fd->stdout_backup);
+	return (SUCCESS);
+}
+
+int	save_fd(t_cmd *cmd)
 {
 	int	fd_in;
 	int	fd_out;
@@ -49,24 +76,24 @@ static int	save_fd(t_cmd *cmd)
 		close(fd_in);
 		return (handle_system_error("dup"));
 	}
-	cmd->stdin_backup = fd_in;
-	cmd->stdout_backup = fd_out;
+	cmd->fd->stdin_backup = fd_in;
+	cmd->fd->stdout_backup = fd_out;
 	return (SUCCESS);
 }
 
-int	exec_builtin_redir(t_cmd *cmd, t_ctx *ctx)
+int	setup_redirections(t_cmd *cmd)
 {
-	int	status;
-	int	last_in;
-	int	last_out;
+	int				status;
 
-	if (!cmd || !ctx)
-		return (ERROR);
 	status = save_fd(cmd);
-	if (status == ERROR)
+	if (status != SUCCESS)
 		return (status);
-	status = find_final_redirections(cmd, &last_in, &last_out);
-	if (status == ERROR)
+	find_final_redirections(cmd);
+	status = handle_redirections(cmd);
+	if (status != SUCCESS)
+	{
+		cleanup_fds(cmd);
 		return (status);
+	}
 	return (SUCCESS);
 }

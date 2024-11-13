@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 11:54:02 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/05 12:00:49 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 09:49:55 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,9 @@ static int	handle_multiple_args(char **args)
 ** @param cmd: structure de commande à vérifier
 ** @return: TRUE si la commande est valide, FALSE sinon
 */
-static t_bool	is_valid_command(t_command *cmd)
+static t_bool	is_valid_command(t_cmd *cmd)
 {
-	if (cmd == NULL)
-		return (FALSE);
-	if (cmd->cmd == NULL)
-		return (FALSE);
-	if (cmd->cmd->args == NULL)
+	if (!cmd || !cmd->args )
 		return (FALSE);
 	return (TRUE);
 }
@@ -146,13 +142,13 @@ static t_bool	is_valid_command(t_command *cmd)
 ** @param ctx: contexte d'exécution
 ** @return: ne retourne jamais si l'exit réussit, ERROR sinon
 */
-int	builtin_exit(t_command *cmd, t_ctx *ctx)
+int	builtin_exit(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**args;
 
 	if (is_valid_command(cmd) == FALSE)
 		return (ERROR);
-	args = cmd->cmd->args;
+	args = cmd->args;
 	ft_putendl_fd("exit", STDERR_FILENO);
 	if (args[1] == NULL)
 		exit(ctx->exit_code);

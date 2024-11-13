@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 19:26:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/12 14:09:27 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/13 10:06:03 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ const char	*get_cmd_name(t_cmd *cmd)
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (NULL);
 	return (cmd->args[0]);
+}
+
+t_redirection	*get_redirections(t_cmd *cmd)
+{
+	if (!cmd)
+		return (NULL);
+	return (cmd->redirections);
 }
 
 int	get_exit_status(t_cmd *cmd)

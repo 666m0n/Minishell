@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 15:09:21 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/03 18:51:24 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 10:00:24 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ static t_bool	is_valid_var_name(const char *var_name)
 		i++;
 	}
 	return (TRUE);
+}
+
+void    env_del_one(t_env *env)
+{
+    if (!env)
+        return ;
+    if (env->raw)
+        free(env->raw);
+    free(env);
 }
 
 /*
@@ -72,20 +81,20 @@ static int	remove_env_var(t_ctx *ctx, const char *var_name)
 ** @return: SUCCESS si la variable est supprimée ou n'existe pas,
 **          ERROR   si le nom de la variable est invalide.
 */
-int	builtin_unset(t_command *cmd, t_ctx *ctx)
+int	builtin_unset(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**args;
 	int		status;
 	int		i;
 
-	if (cmd == NULL || cmd->cmd == NULL || cmd->cmd->args == NULL)
+	if (!cmd || !cmd->args)
 		return (ERROR);
-	args = cmd->cmd->args;
+	args = cmd->args;
 	if (args[1] == NULL)
 		return (SUCCESS);
 	status = SUCCESS;
-	i = 1;
-	while (args[i] != NULL)
+	i = 0;
+	while (args[++i] != NULL)
 	{
 		if (is_valid_var_name(args[i]) == FALSE)
 		{
@@ -97,7 +106,7 @@ int	builtin_unset(t_command *cmd, t_ctx *ctx)
 			if (remove_env_var(ctx, args[i]) == ERROR)
 				status = ERROR;
 		}
-		i++;
 	}
 	return (status);
 }
+

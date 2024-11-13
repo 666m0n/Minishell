@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/11 15:02:18 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/13 10:30:04 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,16 @@ typedef struct s_env
 	char			*value;		/* Variable value */
 }	t_env;
 
+/* FDs management */
+typedef struct s_fd_state {
+    int stdin_backup;
+    int stdout_backup;
+    int pipe_read;    // Pour heredoc
+    int pipe_write;   // Pour heredoc
+    int curr_in;      // FD d'entrée actuel
+    int curr_out;     // FD de sortie actuel
+} t_fd_state;
+
 /* Redirection management */
 typedef struct s_redirection
 {
@@ -65,22 +75,16 @@ typedef struct s_redirection
 	t_token					type;	/* Redirection type */
 }	t_redirection;
 
-/* Simple command */
-typedef struct s_simple_cmd
-{
-	struct s_simple_cmd  *pipe;          // Commande suivante dans le pipe
-    t_redirection       *redirections;   // Redirections (>, <, >>)
-    char               **args;           // Arguments de la commande
-    char               *path;           // Chemin de la commande
-    t_bool             is_builtin;     // Est-ce un builtin?
-}	t_simple_cmd;
-
 /* Command structure */
-typedef struct s_command
+typedef struct s_cmd
 {
-	t_simple_cmd	*cmd;			/* Command data */
-	int				exit_status;	/* Command exit status */
-}	t_command;
+	struct s_simple_cmd	*next;          // Commande suivante dans le pipe
+    t_redirection		*redirections;   // Redirections (>, <, >>)
+    char				**args;           // Arguments de la commande
+    char				*path;           // Chemin de la commande
+	t_fd_state			*fd;
+	int					exit_status;	/* Command exit status */
+}	t_cmd;
 
 /* Shell context */
 typedef struct s_ctx

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 19:47:22 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/12 13:09:49 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/13 10:13:08 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,3 @@ int	set_cmd_path(t_cmd *cmd, char *path)
 	return (SUCCESS);
 }
 
-int	set_fd_backup(t_cmd *cmd, int fd_in, int fd_out)
-{
-	if (!cmd || !cmd)
-		return (ERROR);
-	cmd->stdin_backup = fd_in;
-	cmd->stdout_backup = fd_out;
-	return (SUCCESS);
-}

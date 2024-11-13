@@ -6,11 +6,31 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:21:31 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/04 11:44:14 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 15:32:02 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	*search_in_directory(char **directories, const char *cmd)
+{
+	char	*full_path;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (directories[i])
+	{
+		tmp = ft_strjoin(directories[i], "/");
+		full_path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(full_path, F_OK) == SYSCALL_SUCCESS)
+			return (full_path); // ATTENTION -> FREE à faire dans une fonction appelante
+		free(full_path);
+		i++;
+	}
+	return (NULL);
+}
 
 void ft_putstr_fd(char *s, int fd)
 {

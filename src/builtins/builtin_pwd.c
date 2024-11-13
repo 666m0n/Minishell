@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:03:33 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/04 10:07:32 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/13 09:51:09 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@
 ** @param ctx: contexte d'exécution
 ** @return: SUCCESS en cas de succès, ERROR en cas d'erreur
 */
-int	builtin_pwd(t_command *cmd, t_ctx *ctx)
+int	builtin_pwd(t_cmd *cmd, t_ctx *ctx)
 {
 	char	*current_path;
 	char	**args;
 
 	(void)ctx;
-	if (cmd == NULL || cmd->cmd == NULL || cmd->cmd->args == NULL)
+	if (!cmd || !cmd->args)
 		return (ERROR);
-	args = cmd->cmd->args;
+	args = cmd->args;
 	if (args[1] != NULL)
 		 return (handle_builtin_error("pwd", NULL, "too many arguments"));
 	current_path = getcwd(NULL, 0);
