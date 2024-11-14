@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 15:56:23 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:25:22 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,25 @@ void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
 	char	**env_array;
 	int		status;
 
+	env_array = NULL;
 	if (has_redirection(cmd))
 	{
 		status = setup_redirections(cmd);
 		if (status != SUCCESS)
+		{
+			cleanup_fds(cmd);
 			exit(status);
+		}
 	}
 	env_array = env_to_array(ctx->envp);
 	if (!env_array)
+	{
+		cleanup_fds(cmd);
 		exit(MEMORY_ERROR);
+    }
 	execve(cmd->path, cmd->args, env_array);
 	ft_free_array(env_array);
+	cleanup_fds(cmd);
 	exit(handle_system_error("execve"));
 }
 
@@ -78,6 +86,7 @@ int prepare_exec(t_cmd *cmd)
 		free(path);
 		return (ERROR);
 	}
+	free(path);
 	return (SUCCESS);
 }
 

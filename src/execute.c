@@ -6,12 +6,16 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 15:56:01 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:53:54 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+/*
+** TO DO :
+** Géstion des signaux et nettoyage dans le cas d'interruption (ctrl C, ...)
+*/
 int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 {
 	pid_t	pid;
@@ -27,7 +31,11 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 		exec_in_child(cmd, ctx);
 	if (waitpid(pid, &status, 0) == -1)
 		return (handle_system_error("waitpid"));
-	return (WEXITSTATUS(status));
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (ERROR);
 }
 
 /*

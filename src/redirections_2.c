@@ -6,20 +6,11 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 12:34:56 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:27:01 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-/*
-** Ferme les descripteurs en cas d'erreur
-*/
-void	cleanup_fds(t_cmd *cmd)
-{
-	close(cmd->fd->stdin_backup);
-	close(cmd->fd->stdout_backup);
-}
 
 int	apply_input_redirection(t_cmd *cmd)
 {
