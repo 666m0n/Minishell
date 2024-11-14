@@ -6,11 +6,43 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:51:59 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/14 12:03:14 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:07:40 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
+{
+	int i;
+
+	i = 0;
+	while (i < nb_of_pipes)
+	{
+		if (i != cmd_position - 1)
+			close(pipe_array[i][0]);
+		if (i != cmd_position)
+			close(pipe_array[i][1]);
+		i++;
+	}
+}
+
+void	configure_pipe_fds(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
+{
+	if (cmd_position == 0)
+	{
+		dup2(pipe_array[cmd_position][1], STDOUT_FILENO);
+	}
+	else if (cmd_position == nb_of_pipes)
+	{
+		dup2(pipe_array[cmd_position - 1][0], STDIN_FILENO);
+	}
+	else
+	{
+		dup2(pipe_array[cmd_position  - 1][0], STDIN_FILENO);
+		dup2(pipe_array[cmd_position][1], STDOUT_FILENO);
+	}
+}
 
 /*
 ** Crée un tableau avec les pipes :
@@ -20,7 +52,7 @@
 */
 t_pipe *create_pipe_array(t_cmd *cmd, int nb_of_pipes)
 {
-	int		(*pipe_array)[2];
+	t_pipe	*pipe_array;
 	int		i;
 
 	pipe_array = malloc(sizeof(int[2]) * nb_of_pipes);

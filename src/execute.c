@@ -6,15 +6,46 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/14 12:08:48 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:30:29 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
+{
+	t_cmd	*current;
+	int		i;
+	pid_t	pid;
+	int		status;
+
+	current = cmd;
+	i = 0;
+	while (current)
+	{
+		pid = fork();
+		if (pid == SYSCALL_ERROR)
+			return (handle_system_error("fork"));
+		if (pid == 0)
+		{
+			configure_pipe_fds(pipe_array, i, nb_of_pipes);
+			close_unused_pipes(pipe_array, i, nb_of_pipes);
+			/* setup_redirections(cmd); */
+			status = execute_command(current, ctx);
+			exit(status);
+		}
+		else // parent
+		{
+			// Fermer les FDs utilisés par l'enfant
+			// Stocker le PID
+		}
+		current = current->next;
+		i++;
+	}
+}
+
 int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
 {
-	pid_t	pid;
 	int		status;
 	int		nb_of_pipes;
 	t_pipe	*pipe_array;
@@ -23,7 +54,8 @@ int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
 	pipe_array = create_pipe_array(cmd, nb_of_pipes);
 	if (!pipe_array)
 		return (PIPE_ERROR);
-
+	status = run_pipeline(cmd, pipe_array, nb_of_pipes, ctx);
+	// compléter
 
 }
 
