@@ -6,11 +6,26 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/14 10:53:54 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/14 12:08:48 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
+{
+	pid_t	pid;
+	int		status;
+	int		nb_of_pipes;
+	t_pipe	*pipe_array;
+
+	nb_of_pipes = count_pipes(cmd);
+	pipe_array = create_pipe_array(cmd, nb_of_pipes);
+	if (!pipe_array)
+		return (PIPE_ERROR);
+
+
+}
 
 /*
 ** TO DO :

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/13 10:30:04 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:58:44 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define TYPES_H
 
 /* Forward declarations */
-struct	s_pars_node;
 struct	s_ctx;
+
+/* type def pour simplifier prototype fonction create_pipe_array */
+typedef int t_pipe[2];
 
 /* Basic types */
 typedef enum e_bool
@@ -78,12 +80,12 @@ typedef struct s_redirection
 /* Command structure */
 typedef struct s_cmd
 {
-	struct s_simple_cmd	*next;          // Commande suivante dans le pipe
-    t_redirection		*redirections;   // Redirections (>, <, >>)
-    char				**args;           // Arguments de la commande
-    char				*path;           // Chemin de la commande
+	struct s_cmd		*next;			// Commande suivante dans le pipe
+    t_redirection		*redirections;	// Redirections (>, <, >>)
+    char				**args;			// Arguments de la commande
+    char				*path;			// Chemin de la commande
 	t_fd_state			*fd;
-	int					exit_status;	/* Command exit status */
+	int					exit_status;	// Command exit status
 }	t_cmd;
 
 /* Shell context */
