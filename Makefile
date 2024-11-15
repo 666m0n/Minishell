@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/12 14:31:28 by sviallon         ###   ########.fr        #
+#    Updated: 2024/11/15 20:46:06 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,10 +47,10 @@ LEXER_DIR	= lexer/
 LXR			= lexer_handler lexer lexer_utils lexer_utils_2
 
 UTILS_DIR	= utils/
-UTLS		= utils
+UTLS		= utils utils2
 
 PARSER_DIR	= parser/
-PRS			= cmd parser redir syntax var var2
+PRS			= cmd parser_utils parser redir  syntax var var2
 
 BUILTINS	= builtins/
 BLTN		= env builtins

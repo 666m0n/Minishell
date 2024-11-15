@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 16:09:29 by sviallon          #+#    #+#             */
-/*   Updated: 2024/10/24 15:09:50 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:46:04 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	bui_err_env(char *arg)
 	ft_putstr_fd("': No such file or directory\n", 2);
 }
 
-int	bui_env(t_ctx *ctx, t_simple_cmd *cmd)
+int	bui_env(t_ctx *ctx, t_cmd *cmd)
 {
 	t_env	*tmp;
 

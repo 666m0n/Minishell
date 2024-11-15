@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 19:00:54 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:32:41 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,21 @@ int	check_line(char *line)
 	return (FALSE);
 }
 
-char	*ft_chartostr(char c)
+char	*ft_realloc(void *s, int old_size, int new_size)
 {
-	char	*str;
+	char	*ret;
 
-	str = malloc(2);
-	if (!str)
-		return (NULL);
-	str[0] = c;
-	str[1] = '\0';
-	return (str);
+	if (!new_size || new_size <= 0)
+		return (free(s), NULL);
+	ret = malloc(new_size);
+	if (!ret)
+		return (free(s), NULL);
+	if (s)
+	{
+		ft_memcpy(ret, s, old_size);
+		free(s);
+	}
+	return (ret);
 }
 
 // Join avec free du premier argument

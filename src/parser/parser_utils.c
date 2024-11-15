@@ -6,16 +6,29 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:48:17 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 19:00:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:51:20 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	free_redirections(t_redirection *redirections)
+{
+	t_redirection	*tmp;
+
+	while (redirections)
+	{
+		tmp = redirections;
+		redirections = redirections->next;
+		if (tmp->file)
+			free(tmp->file);
+		free(tmp);
+	}
+}
+
 void	free_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
-
 
 	while (cmd)
 	{
@@ -24,7 +37,7 @@ void	free_cmd(t_cmd *cmd)
 		if (tmp->args)
 			free_double(tmp->args);
 		if (tmp->redirections)
-			free_token(tmp->redirections);
+			free_redirections(tmp->redirections);
 		free(tmp);
 	}
 }
@@ -37,18 +50,11 @@ int	is_redir(t_token type)
 	return (FALSE);
 }
 
-int	is_cmd(t_token type)
-{
-	if (type == T_SQUOTE || type == T_DQUOTE || \
-		type == T_STRING)
-		return (TRUE);
-	return (FALSE);
-}
-
 static t_cmd	*create_node(t_ctx *data)
 {
 	t_cmd	*new;
 
+	(void)data;
 	new = ft_calloc(sizeof(t_cmd), 1);
 	if (!new)
 		return (NULL);

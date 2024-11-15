@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 11:07:30 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 21:00:20 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_quotes(char *s)
 	return (0);
 }
 
-static int	check_tokens(char **str, t_lexer **tokens)
+/* static int	check_tokens(char **str, t_lexer **tokens)
 {
 	char	unknown[2];
 
@@ -69,7 +69,7 @@ static void	check_cmd(char **str, t_lexer **tokens)
 	i = 0;
 	cmd = ft_strdup(*str);
 	if (!cmd)
-		return (NULL);
+		return ;
 	while (**str && !ft_isspace(**str) && !ft_strchr(IS_TOKEN, **str))
 	{
 		(*str)++;
@@ -78,7 +78,7 @@ static void	check_cmd(char **str, t_lexer **tokens)
 	cmd[i] = '\0';
 	create_token(T_CMD, cmd, tokens);
 	free(cmd);
-}
+} */
 
 void	check_options(char **str, t_lexer **tokens)
 {
@@ -88,7 +88,7 @@ void	check_options(char **str, t_lexer **tokens)
 	i = 0;
 	options = ft_strdup(*str);
 	if (!options)
-		return (NULL);
+		return ;
 	while (**str && !ft_isspace(**str) && !ft_strchr(IS_TOKEN, **str))
 	{
 		if (ft_strchr(IS_TOKEN, **str))
@@ -101,7 +101,24 @@ void	check_options(char **str, t_lexer **tokens)
 	free(options);
 }
 
-t_lexer	*lexer(char *input)
+static void	handle_word(char **str, t_lexer **tokens)
+{
+	char	*start;
+	char	*content;
+	int		len;
+
+	start = *str;
+	while (**str && !ft_isspace(**str) && !ft_strchr(IS_TOKEN, **str))
+		(*str)++;
+	len = *str - start;
+	content = ft_substr(start, 0, len);
+	if (!content)
+		return ;
+	create_token(T_STRING, content, tokens);
+	free(content);
+}
+
+/* t_lexer	*lexer(char *input)
 {
 	t_lexer	*tokens;
 
@@ -123,6 +140,38 @@ t_lexer	*lexer(char *input)
 				continue ;
 			else
 				input++;
+		}
+	}
+	add_index_token(tokens);
+	return (tokens);
+} */
+
+t_lexer	*lexer(char *input)
+{
+	t_lexer	*tokens;
+
+	tokens = NULL;
+	while (*input && ft_isspace(*input))
+		input++;
+	if (!check_quotes(input))
+	{
+		while (*input)
+		{
+			if (ft_isspace(*input))
+				space_handler(&tokens, &input);
+			else if (*input && ft_strchr(IS_TOKEN, *input))
+			{
+				if (*input == '|')
+					pipe_handler(&tokens, &input);
+				else if (*input == '<' || *input == '>')
+					redir_handler(&tokens, &input);
+				else if (*input == '\'' || *input == '"')
+					quotes_handler(&tokens, &input);
+				else
+					input++;
+			}
+			else
+				handle_word(&input, &tokens);
 		}
 	}
 	add_index_token(tokens);

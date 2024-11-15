@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 22:52:49 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 19:28:22 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:43:36 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,21 @@ void	print_tokens(t_lexer *tokens)
 
 void	print_command(t_cmd *cmd)
 {
-	t_lexer		*redir;
-	int			i;
+	t_redirection	*redir;
+	int				i;
 
 	while (cmd)
 	{
 		printf("Command %d:\n", cmd->index);
-		i = 0;
 		if (cmd->args)
 		{
 			printf("  Arguments:\n");
+			i = 0;
 			while (cmd->args[i])
-				printf("    Arg[%d]: %s\n", i++, cmd->args[i]);
+			{
+				printf("    Arg[%d]: %s\n", i, cmd->args[i]);
+				i++;
+			}
 		}
 		redir = cmd->redirections;
 		if (redir)
@@ -68,13 +71,13 @@ void	print_command(t_cmd *cmd)
 		{
 			printf("    Type: ");
 			if (redir->type == T_REDIRIN)
-				printf("< %s\n", redir->content);
+				printf("< %s\n", redir->file);
 			else if (redir->type == T_REDIROUT)
-				printf("> %s\n", redir->content);
+				printf("> %s\n", redir->file);
 			else if (redir->type == T_APPEND)
-				printf(">> %s\n", redir->content);
+				printf(">> %s\n", redir->file);
 			else if (redir->type == T_HEREDOC)
-				printf("<< %s\n", redir->content);
+				printf("<< %s\n", redir->file);
 			redir = redir->next;
 		}
 		cmd = cmd->next;

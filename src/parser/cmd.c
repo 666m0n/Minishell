@@ -6,11 +6,19 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 18:45:37 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:48:33 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_cmd(t_token type)
+{
+	if (type == T_SQUOTE || type == T_DQUOTE || \
+		type == T_STRING)
+		return (TRUE);
+	return (FALSE);
+}
 
 static char	**create_tab(char *str)
 {

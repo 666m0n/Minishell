@@ -6,11 +6,25 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 19:02:07 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:51:16 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*get_env_value(t_env *env, char *var_name)
+{
+	t_env	*current;
+
+	current = env;
+	while (current)
+	{
+		if (ft_strcmp(current->id, var_name) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
+}
 
 void	free_double(char **tab)
 {
@@ -44,7 +58,7 @@ t_cmd	*parser(t_lexer *tokens, t_ctx *data)
 {
 	t_cmd			*head;
 	t_cmd			*current_cmd;
-	t_token			*tmp;
+	t_lexer			*tmp;
 
 	head = NULL;
 	current_cmd = NULL;

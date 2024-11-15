@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 19:36:05 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:41:37 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void		pipe_handler(t_lexer **tokens, char **str);
 void		space_handler(t_lexer **tokens, char **str);
 void		quotes_handler(t_lexer **tokens, char **str);
 
+
 //parser
 t_cmd		*parser(t_lexer *tokens, t_ctx *data);
 void		free_cmd(t_cmd *cmd);
@@ -91,6 +92,14 @@ void		process_pars(t_cmd *cmd, t_lexer *tokens, t_ctx *data);
 //dollar expansion
 void		handle_dollar(t_lexer *token, t_ctx *data);
 char		*replace_var(char *s, t_ctx *data, int *i);
-char		*replace_dollar(char *s, t_ctx *data);
+char		*get_env_value(t_env *env, char *var_name);
+
+//test
+int	execute_builtin(t_ctx *ctx, t_cmd *cmd);
+int	is_builtin(char *cmd);
+int	bui_env(t_ctx *ctx, t_cmd *cmd);
+void	env_free(t_env *env);
+void	env_del_one(t_env *env);
+t_env	*create_env_list(char **envp);
 
 #endif

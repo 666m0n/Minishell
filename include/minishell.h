@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 19:38:50 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:35:05 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ int			check_line(char *line);
 t_ctx		*init_ctx(char **envp);
 
 // Utils
-char		*ft_chartostr(char c);
+char		*ft_realloc(void *s, int old_size, int new_size);
 char		*ft_strjoin_free(char *s1, char *s2);
+size_t		ft_strcpy(char *dest, const char *src);
+size_t		ft_strcat(char *dest, char *src);
 
 // Debug functions
 void		print_tokens(t_lexer *tokens);

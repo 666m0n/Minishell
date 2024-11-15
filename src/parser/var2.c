@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:30:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 18:34:16 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 20:37:19 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*end_expand(char *tofind, char *to_ret, t_ctx *data)
 	char	*var;
 
 	var = NULL;
-	var = /*  mettre la fonction de MAnu getenv(data->envp, tofind, data) */;
+	var = get_env_value(data->envp, tofind);
 	if (!var)
 	{
 		to_ret = ft_strdup("");
@@ -58,7 +58,7 @@ static char	*expand_case(t_ctx *data, char *s, int start, int *i)
 	return (end_expand(tofind, to_ret, data));
 }
 
-static char	expand_zero(char *s, int start, int *i)
+static char	*expand_zero(char *s, int start, int *i)
 {
 	char	*ifzero;
 	char	*to_ret;
