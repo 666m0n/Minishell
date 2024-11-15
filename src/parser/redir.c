@@ -6,9 +6,61 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:16:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 16:19:08 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:23:45 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+/* void	handle_redir(t_cmd *cmd, t_lexer **tokens)
+{
+	t_lexer			*new_tok;
+	t_token			type;
+
+	if (!tokens || !(*tokens) || !(*tokens)->next)
+		return ;
+	type = (*tokens)->type;
+	if ((*tokens)->next->type == T_SPACE && (*tokens)->next->next)
+		(*tokens) = (*tokens)->next->next;
+	else if ((*tokens)->next)
+		(*tokens) = (*tokens)->next;
+	if (!is_cmd((*tokens)->type))
+		return ;
+	new_tok = create_token((*tokens)->content,
+			ft_strlen((*tokens)->content), type);
+	if (!new_tok)
+		exit_error("create_token failed");
+	if (cmd->redirections)
+		add_token(&(cmd->redirections), new_tok);
+	else
+		cmd->redirections = new_tok;
+} */
+
+void	handle_redir(t_cmd *cmd, t_lexer **tokens)
+{
+	t_lexer		*new_tok;
+	t_token		type;
+
+	if (!tokens || !(*tokens) || !(*tokens)->next)
+		return ;
+	type = (*tokens)->type;
+	if ((*tokens)->next->type == T_SPACE)
+	{
+		if (!(*tokens)->next->next)
+			return ;
+		(*tokens) = (*tokens)->next->next;
+	}
+	else
+		(*tokens) = (*tokens)->next;
+	if (!is_cmd((*tokens)->type))
+		return ;
+	new_tok = create_token((*tokens)->content,
+			ft_strlen((*tokens)->content), type);
+	if (!new_tok)
+		exit_error("create_token failed");
+	if (cmd->redirections)
+		add_token(&(cmd->redirections), new_tok);
+	else
+		cmd->redirections = new_tok;
+}

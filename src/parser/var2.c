@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:30:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 15:43:20 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:34:16 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*expand_case(t_ctx *data, char *s, int start, int *i)
 	return (end_expand(tofind, to_ret, data));
 }
 
-static char	expand_zero(char *s, t_ctx *data, int *i)
+static char	expand_zero(char *s, int start, int *i)
 {
 	char	*ifzero;
 	char	*to_ret;

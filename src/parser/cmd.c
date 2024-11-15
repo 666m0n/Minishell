@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 16:20:41 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:45:37 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,42 +53,42 @@ static void	add_to_tab(char *str, t_cmd *cmd)
 		cmd->args = create_tab(str);
 }
 
-static char	*copy_str(char *str, t_token **tok)
+static char	*copy_str(char *str, t_lexer **tokens)
 {
-	str = ft_strdup((*token)->content);
+	str = ft_strdup((*tokens)->content);
 	if (!str)
 		return (NULL);
-	while ((*token)->next && is_cmd((*token)->next->type))
+	while ((*tokens)->next && is_cmd((*tokens)->next->type))
 	{
-		str = ft_stjoin(str, (*token)->next->token);
+		str = ft_strjoin(str, (*tokens)->next->content);
 		if (!str)
 			return (NULL);
-		(*token) = (*token)->next;
+		(*tokens) = (*tokens)->next;
 	}
 	return (str);
 }
 
-void	process_pars(t_cmd *cmd, t_lexer *token, t_ctx *data)
+void	process_pars(t_cmd *cmd, t_lexer *tokens, t_ctx *data)
 {
 	char	*tmp;
 
-	while (token)
+	while (tokens)
 	{
-		if (is_cmd(token->type))
+		if (is_cmd(tokens->type))
 		{
-			if (!token->content || token->content[0] == '\0')
+			if (!tokens->content || tokens->content[0] == '\0')
 			{
-				token = token->next;
+				tokens = tokens->next;
 				continue ;
 			}
-			tmp = copy_str(tmp, &token);
+			tmp = copy_str(tmp, &tokens);
 			add_to_tab(tmp, cmd);
 			free(tmp);
 		}
-		else if (token->type == T_PIPE)
+		else if (tokens->type == T_PIPE)
 			extend_cmd(&cmd, data);
-		else if (is_redir(token->type))
-			handle_redir(cmd, &token);
-		token = token->next;
+		else if (is_redir(tokens->type))
+			handle_redir(cmd, &tokens);
+		tokens = tokens->next;
 	}
 }

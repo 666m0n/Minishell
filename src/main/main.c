@@ -6,36 +6,26 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/08 13:49:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:33:03 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	execute_command(t_ctx *ctx, t_command *cmd)
-{
-	if (!cmd || !cmd->cmd || !cmd->cmd->args || !cmd->cmd->args[0])
-		return (0);
-	if (ft_strcmp(cmd->cmd->args[0], "env") == 0)
-		ctx->exit_code = bui_env(ctx, cmd->cmd);
-	print_command(cmd);
-	return (1);
-}
-
 static void	process_line(char *line, t_ctx *ctx)
 {
-	t_token		*tokens;
-	t_command	*cmd;
+	t_lexer		*tokens;
+	t_cmd		*cmd;
 
-	tokens = lexer(line, ctx->envp, ctx->exit_code);
+	tokens = lexer(line);
 	if (tokens)
 	{
 		print_tokens(tokens);
-		cmd = parser(tokens);
+		cmd = parser(tokens, ctx);
 		if (cmd)
 		{
-			execute_command(ctx, cmd);
-			free_command(cmd);
+			print_command(cmd);
+			free_cmd(cmd);
 		}
 		free_token(tokens);
 	}
@@ -51,7 +41,7 @@ t_return	handle_loop(t_ctx *ctx)
 		line = readline(PROMPT);
 		if (!line)
 			break ;
-		if (line[0] != '\0' && !check_line(line))
+		if (!check_line(line))
 		{
 			add_history(line);
 			process_line(line, ctx);

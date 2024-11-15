@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 16:53:16 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 11:51:24 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:16:44 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,19 @@ void	add_index_token(t_lexer *tokens)
 		current->index = i;
 		current = current->next;
 		i++;
+	}
+}
+
+void	free_token(t_lexer	*tokens)
+{
+	t_lexer	*tmp;
+
+	while (tokens)
+	{
+		tmp = tokens;
+		tokens = tokens->next;
+		if (tmp->content)
+			free(tmp->content);
+		free(tmp);
 	}
 }

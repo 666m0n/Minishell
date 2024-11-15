@@ -6,11 +6,30 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 15:46:13 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:02:07 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_double(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+void	exit_error(const char *s)
+{
+	perror(s);
+	exit(EXIT_FAILURE);
+}
 
 static void	init_cmd(t_cmd **head, t_cmd **curr)
 {

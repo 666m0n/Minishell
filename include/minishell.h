@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/07 11:37:47 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:38:50 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,20 @@ typedef enum e_bool
 	TRUE = 1
 }	t_bool;
 
+// Main functions
 int			main(int ac, char **av, char **envp);
-int			check_line(char *line);
-void		free_all(t_ctx	*ctx);
-t_ctx		*init_ctx(char **envp);
-t_env		*create_env_list(char **envp);
-void		env_del_one(t_env *env);
-void		env_free(t_env *env);
-t_return	handle_loop(t_ctx *ctx);
 void		free_all(t_ctx *ctx);
+void		free_double(char **tab);
+void		exit_error(const char *s);
+int			check_line(char *line);
+t_ctx		*init_ctx(char **envp);
+
+// Utils
 char		*ft_chartostr(char c);
 char		*ft_strjoin_free(char *s1, char *s2);
-int			validate_syntax(t_token *tokens);
-int			syntax_error(const char *token);
-void		exit_error(const char *s);
 
-//builtins
-int			execute_builtin(t_ctx *ctx, t_simple_cmd *cmd);
-int			is_builtin(char *cmd);
-int			bui_env(t_ctx *ctx, t_simple_cmd *cmd);
-
-//test
-
-void		print_tokens(t_token *tokens);
-void		print_command(t_command *cmd);
+// Debug functions
+void		print_tokens(t_lexer *tokens);
+void		print_command(t_cmd *cmd);
 
 #endif
