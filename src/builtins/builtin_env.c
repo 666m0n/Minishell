@@ -6,22 +6,21 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 20:26:26 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 09:48:21 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:04:05 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /*
-** Implémente la commande builtin env de bash
+** Implémente la commande env
+** Affiche les variables d'environnement selon les règles suivantes :
+** - N'accepte aucun argument ou option
+** - Affiche uniquement les variables qui ont une valeur assignée
+** - Format d'affichage : "nom=valeur"
 ** @param cmd: structure contenant la commande et ses arguments
-** @param ctx: contexte d'exécution contenant l'environnement
-** @return: SUCCESS en cas de succès, ERROR en cas d'erreur
-** N'accepte aucune option ni argument
-** Affiche les variables d'environnement selon les règles suivantes:
-** - Affiche les variables avec une valeur (même vide): "nom=valeur"
-** - Affiche les variables avec une valeur vide: "nom="
-** - N'affiche pas les variables sans valeur assignée
+** @param ctx: contexte contenant l'environnement
+** @return: SUCCESS si pas d'argument, ERROR sinon
 */
 int	builtin_env(t_cmd *cmd, t_ctx *ctx)
 {

@@ -6,16 +6,16 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 15:09:21 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 10:00:24 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:15:34 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /*
-** Vérifie si le nom de la variable est valide selon les règles POSIX
-** @param var_name: nom de la variable à vérifier
-** @return: TRUE si le nom est valide, FALSE sinon
+** Vérifie si le nom de variable est valide selon POSIX
+** @param var_name: nom à vérifier
+** @return: TRUE si commence par lettre/_ et suivi de alphanum/_, FALSE sinon
 */
 static t_bool	is_valid_var_name(const char *var_name)
 {
@@ -35,20 +35,25 @@ static t_bool	is_valid_var_name(const char *var_name)
 	return (TRUE);
 }
 
-void    env_del_one(t_env *env)
+/*
+** Libère la mémoire d'une variable d'environnement
+** @param env: variable à libérer
+** Note: ne libère que la structure, pas le suivant dans la liste
+*/
+void	env_del_one(t_env *env)
 {
-    if (!env)
-        return ;
-    if (env->raw)
-        free(env->raw);
-    free(env);
+	if (!env)
+		return ;
+	if (env->raw)
+		free(env->raw);
+	free(env);
 }
 
 /*
 ** Supprime une variable de l'environnement
-** @param ctx: contexte contenant l'environnement
+** @param ctx: contexte shell
 ** @param var_name: nom de la variable à supprimer
-** @return: SUCCESS dans tous les cas (même si la variable n'existe pas)
+** @return: SUCCESS même si variable non trouvée
 */
 static int	remove_env_var(t_ctx *ctx, const char *var_name)
 {
@@ -75,11 +80,11 @@ static int	remove_env_var(t_ctx *ctx, const char *var_name)
 }
 
 /*
-** Implémente la commande builtin unset de bash
-** @param cmd: structure contenant la commande et ses arguments
-** @param ctx: contexte d'exécution
-** @return: SUCCESS si la variable est supprimée ou n'existe pas,
-**          ERROR   si le nom de la variable est invalide.
+** Implémente la commande unset
+** Supprime chaque variable listée en argument si son nom est valide
+** @param cmd: structure commande
+** @param ctx: contexte shell
+** @return: SUCCESS si tout ok, ERROR si un nom invalide
 */
 int	builtin_unset(t_cmd *cmd, t_ctx *ctx)
 {

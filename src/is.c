@@ -6,12 +6,17 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:19:01 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/11/13 15:24:04 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:21:41 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+/*
+** Vérifie si la commande est un chemin (absolu ou relatif)
+** @param cmd_name: nom de la commande
+** @return: TRUE si commence par '/' ou './' ou '../', FALSE sinon
+*/
 t_bool	is_path(const char *cmd_name)
 {
 	if (!cmd_name)
@@ -25,6 +30,11 @@ t_bool	is_path(const char *cmd_name)
 	return (FALSE);
 }
 
+/*
+** Vérifie si le chemin correspond à un dossier
+** @param path: chemin à vérifier
+** @return: TRUE si c'est un dossier accessible, FALSE sinon
+*/
 t_bool	is_dir(const char *path)
 {
 	DIR	*dir;
@@ -38,6 +48,11 @@ t_bool	is_dir(const char *path)
 	return (TRUE);
 }
 
+/*
+** Vérifie si la commande est un builtin
+** @param cmd_name: nom de la commande
+** @return: TRUE si c'est un builtin (echo, cd, pwd...), FALSE sinon
+*/
 t_bool	is_builtin(const char *cmd_name)
 {
 	int					i;
@@ -54,6 +69,11 @@ t_bool	is_builtin(const char *cmd_name)
 	return (FALSE);
 }
 
+/*
+** Vérifie si c'est une commande simple (sans pipe)
+** @param cmd: structure de commande
+** @return: TRUE si pas de commande suivante dans le pipe, FALSE sinon
+*/
 t_bool	is_simple_command(t_cmd *cmd)
 {
 	if (!cmd || !cmd->args || !cmd->args[0])

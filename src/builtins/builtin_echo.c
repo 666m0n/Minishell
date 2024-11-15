@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 10:49:11 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 09:47:42 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:03:39 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	handle_no_args(void)
 }
 
 /*
-** Vérifie si un argument est l'option -n
+** Vérifie si un argument est une option -n valide (-n, -nn, -nnn, etc.)
 ** @param str: chaîne à vérifier
 ** @return: TRUE si c'est une option -n valide, FALSE sinon
 */
@@ -45,7 +45,7 @@ static t_bool	is_n_option(const char *str)
 }
 
 /*
-** Affiche les arguments de la commande echo
+** Affiche les arguments de la commande echo avec un espace entre chaque argument
 ** @param args: tableau d'arguments à afficher
 ** @param start: index de début d'affichage
 */
@@ -64,10 +64,13 @@ static void	print_args(char **args, int start)
 }
 
 /*
-** Implémente la commande builtin echo de bash
+** Implémente la commande echo
+** - Gère l'option -n (pas de retour à la ligne)
+** - Affiche les arguments séparés par un espace
+** - Si pas d'option -n, ajoute un retour à la ligne à la fin
 ** @param cmd: structure contenant la commande et ses arguments
 ** @param ctx: contexte d'exécution (non utilisé)
-** @return: SUCCESS en cas de succès, ERROR en cas d'erreur
+** @return: SUCCESS ou ERROR
 */
 int	builtin_echo(t_cmd *cmd, t_ctx *ctx)
 {

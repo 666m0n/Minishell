@@ -6,12 +6,17 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/14 10:25:22 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:17:56 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+/*
+** Convertit la liste chaînée d'environnement en tableau pour execve
+** @param env: liste chaînée des variables d'environnement
+** @return: tableau de chaînes au format "nom=valeur", NULL si erreur
+*/
 static char	**env_to_array(t_env *env)
 {
 	t_env	*current;
@@ -36,6 +41,14 @@ static char	**env_to_array(t_env *env)
 	return (array);
 }
 
+/*
+** Exécute une commande dans le processus fils
+** - Configure les redirections si présentes
+** - Exécute la commande via execve
+** @param cmd: commande à exécuter
+** @param ctx: contexte du shell
+** Note: ne retourne jamais, termine le processus en cas d'erreur
+*/
 void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**env_array;
@@ -63,6 +76,14 @@ void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
 	exit(handle_system_error("execve"));
 }
 
+/*
+** Prépare l'exécution d'une commande externe
+** - Vérifie l'existence de la commande
+** - Vérifie les permissions
+** - Trouve le chemin complet
+** @param cmd: commande à préparer
+** @return: SUCCESS ou code d'erreur approprié
+*/
 int prepare_exec(t_cmd *cmd)
 {
 	const char	*cmd_name;

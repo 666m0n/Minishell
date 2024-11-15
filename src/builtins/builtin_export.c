@@ -6,15 +6,16 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 10:28:54 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 09:50:38 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:12:22 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /*
-** Affiche une seule variable d'environnement au format export
-** @param var: variable d'environnement à afficher
+** Affiche une variable d'environnement au format export
+** @param var: variable à afficher
+** Format: declare -x nom="valeur" ou declare -x nom si pas de valeur
 */
 static void	print_env_var(t_env *var)
 {
@@ -25,11 +26,11 @@ static void	print_env_var(t_env *var)
 }
 
 /*
-** Trouve la prochaine variable d'environnement à afficher dans l'ordre
-** @param env: liste des variables d'environnement
-** @param printed: tableau des variables déjà affichées
+** Trouve la prochaine variable à afficher dans l'ordre alphabétique
+** @param env: liste des variables
+** @param printed: tableau de suivi des variables déjà affichées
 ** @param size: taille du tableau printed
-** @return: variable suivante ou NULL si toutes ont été affichées
+** @return: prochaine variable ou NULL si toutes affichées
 */
 static t_env	*find_next_var(t_env *env, t_bool *printed, int size)
 {
@@ -48,8 +49,9 @@ static t_env	*find_next_var(t_env *env, t_bool *printed, int size)
 }
 
 /*
-** Affiche toutes les variables d'environnement triées
+** Affiche toutes les variables d'environnement triées alphabétiquement
 ** @param ctx: contexte contenant l'environnement
+** Limite: ne gère que 1024 variables maximum
 */
 static void	display_sorted_env(t_ctx *ctx)
 {
@@ -83,8 +85,8 @@ static void	display_sorted_env(t_ctx *ctx)
 /*
 ** Met à jour ou ajoute une variable d'environnement
 ** @param ctx: contexte contenant l'environnement
-** @param arg: chaîne au format "name=value" ou "name"
-** @return: SUCCESS en cas de succès, ERROR sinon
+** @param arg: chaîne au format "nom=valeur" ou "nom"
+** @return: SUCCESS si mise à jour réussie, ERROR sinon
 */
 static int	update_env_variable(t_ctx *ctx, const char *arg)
 {
@@ -114,10 +116,12 @@ static int	update_env_variable(t_ctx *ctx, const char *arg)
 }
 
 /*
-** Implémente la commande builtin export de bash
-** @param cmd: structure contenant la commande et ses arguments
-** @param ctx: contexte d'exécution
-** @return: SUCCESS en cas de succès, ERROR en cas d'erreur
+** Implémente la commande export
+** Sans arg: affiche les variables triées
+** Avec args: ajoute/met à jour chaque variable
+** @param cmd: structure commande
+** @param ctx: contexte shell
+** @return: SUCCESS si ok, ERROR si au moins une erreur
 */
 int builtin_export(t_cmd *cmd, t_ctx *ctx)
 {

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 11:54:02 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 09:49:55 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:07:26 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 #include <limits.h>
 
 /*
-** Vérifie si une chaîne représente un nombre valide
+** Vérifie si une chaîne représente un nombre valide pour exit
 ** @param str: chaîne à vérifier
-** @return: TRUE si la chaîne est un nombre valide, FALSE sinon
-** Un nombre valide peut commencer par + ou - et ne contient que des chiffres
+** @return: TRUE si nombre valide (peut commencer par +/-), FALSE sinon
 */
 static t_bool	is_valid_number(const char *str)
 {
@@ -40,10 +39,10 @@ static t_bool	is_valid_number(const char *str)
 }
 
 /*
-** Convertit une chaîne en long en gérant les dépassements
+** Convertit une chaîne en long en détectant les dépassements
 ** @param str: chaîne à convertir
-** @param overflow: pointeur pour indiquer un dépassement
-** @return: valeur convertie
+** @param overflow: pointeur pour signaler un dépassement
+** @return: valeur convertie, 0 si dépassement
 */
 static long	ft_atol(const char *str, t_bool *overflow)
 {
@@ -75,7 +74,7 @@ static long	ft_atol(const char *str, t_bool *overflow)
 }
 
 /*
-** Affiche un message d'erreur pour exit
+** Affiche un message d'erreur pour la commande exit sur stderr
 ** @param msg: message d'erreur
 ** @param arg: argument optionnel à inclure dans le message
 */
@@ -91,8 +90,9 @@ static void	print_exit_error(const char *msg, const char *arg)
 }
 
 /*
-** Termine le programme avec le code approprié
+** Termine le shell avec le code de sortie approprié
 ** @param arg: argument numérique à utiliser comme code de sortie
+** Note: ne retourne jamais, termine le processus
 */
 static void	handle_numeric_exit(const char *arg)
 {
@@ -110,8 +110,10 @@ static void	handle_numeric_exit(const char *arg)
 
 /*
 ** Gère le cas où exit a plusieurs arguments
+** Si le premier n'est pas un nombre : quitte avec code 2
+** Sinon : affiche erreur "too many arguments" et continue le shell
 ** @param args: tableau d'arguments
-** @return: ERROR si trop d'arguments, ne retourne pas sinon
+** @return: ERROR si trop d'arguments, ne retourne pas si quitte
 */
 static int	handle_multiple_args(char **args)
 {
@@ -125,9 +127,9 @@ static int	handle_multiple_args(char **args)
 }
 
 /*
-** Vérifie si la commande est valide
+** Vérifie si la structure de commande est valide
 ** @param cmd: structure de commande à vérifier
-** @return: TRUE si la commande est valide, FALSE sinon
+** @return: TRUE si la commande est valide, FALSE si NULL ou args NULL
 */
 static t_bool	is_valid_command(t_cmd *cmd)
 {
@@ -137,10 +139,14 @@ static t_bool	is_valid_command(t_cmd *cmd)
 }
 
 /*
-** Implémente la commande builtin exit de bash
-** @param cmd: structure contenant la commande et ses arguments
-** @param ctx: contexte d'exécution
-** @return: ne retourne jamais si l'exit réussit, ERROR sinon
+** Implémente la commande exit
+** - Sans arg : quitte avec dernier code de sortie
+** - Un arg numérique : quitte avec ce code
+** - Arg non numérique : erreur (code 2)
+** - Plusieurs args : erreur si premier non numérique, sinon continue
+** @param cmd: structure commande
+** @param ctx: contexte shell
+** @return: ne retourne que si erreur
 */
 int	builtin_exit(t_cmd *cmd, t_ctx *ctx)
 {

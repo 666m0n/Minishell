@@ -6,12 +6,17 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/14 10:27:01 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:22:56 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+/*
+** Configure la redirection d'entrée (<) ou le heredoc (<<)
+** @param cmd: structure de commande
+** @return: SUCCESS si ok, code d'erreur sinon
+*/
 int	apply_input_redirection(t_cmd *cmd)
 {
 	int		new_fd;
@@ -34,6 +39,12 @@ int	apply_input_redirection(t_cmd *cmd)
 	return (SUCCESS);
 }
 
+/*
+** Configure la redirection de sortie (> ou >>)
+** @param cmd: structure de commande
+** @return: SUCCESS si ok, code d'erreur sinon
+** Note: crée le fichier avec permissions 0644 si nécessaire
+*/
 int	apply_output_redirection(t_cmd *cmd)
 {
 	int		new_fd;

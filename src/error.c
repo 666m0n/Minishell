@@ -6,15 +6,19 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 11:22:41 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:17:05 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 /*
-** Format standard des erreurs: "minishell: [cmd]: [arg]: [msg]"
-** Les arguments cmd et arg sont optionnels
+** Formate et affiche un message d'erreur sur stderr
+** Format: "minishell: [cmd]: [arg]: [msg]"
+** @param cmd_name: nom de la commande (optionnel)
+** @param arg: argument concerné (optionnel)
+** @param msg: message d'erreur
+** @return: ERROR
 */
 static int	print_error(const char *cmd_name, const char *arg, const char *msg)
 {
@@ -35,8 +39,13 @@ static int	print_error(const char *cmd_name, const char *arg, const char *msg)
 }
 
 /*
-** Gère les erreurs de commande (command not found, permission denied, etc.)
-** Retourne le code approprié selon le type d'erreur
+** Gère les erreurs d'exécution de commande
+** - CMD_NOT_FOUND: commande introuvable
+** - PERMISSION_DENIED: pas les droits d'exécution
+** - IS_DIR: tentative d'exécuter un dossier
+** @param cmd: commande concernée
+** @param error_code: code d'erreur
+** @return: code d'erreur approprié
 */
 int handle_command_error(t_cmd *cmd, int error_code)
 {
@@ -66,7 +75,11 @@ int handle_command_error(t_cmd *cmd, int error_code)
 }
 
 /*
-** Gestion des erreurs de builtin avec support des arguments
+** Gère les erreurs des commandes builtin
+** @param builtin: nom du builtin
+** @param arg: argument problématique (optionnel)
+** @param msg: message d'erreur
+** @return: ERROR après affichage du message
 */
 int handle_builtin_error(const char *builtin, const char *arg, const char *msg)
 {
@@ -74,8 +87,9 @@ int handle_builtin_error(const char *builtin, const char *arg, const char *msg)
 }
 
 /*
-** Gère les erreurs de syntaxe
-** Exemple: quotes non fermées, pipes mal placés, etc.
+** Gère les erreurs de syntaxe du shell
+** @param token: token problématique (optionnel)
+** @return: SYNTAX_ERROR après affichage du message
 */
 int	handle_syntax_error(const char *token)
 {
@@ -91,8 +105,10 @@ int	handle_syntax_error(const char *token)
 }
 
 /*
-** Gère les erreurs système (fork, pipe, malloc, etc.)
-** Utilise errno pour le message d'erreur
+** Gère les erreurs système (fork, pipe, malloc...)
+** Utilise errno pour le message
+** @param syscall: nom de l'appel système échoué
+** @return: MEMORY_ERROR si plus de mémoire, ERROR sinon
 */
 int handle_system_error(const char *syscall)
 {

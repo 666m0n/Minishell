@@ -6,12 +6,18 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 14:21:21 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:25:09 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+/*
+** Applique les redirections d'entrée et sortie actives
+** @param cmd: structure de commande
+** @return: SUCCESS si ok, code d'erreur si échec
+** Note: vérifie curr_in et curr_out avant d'appliquer
+*/
 int	handle_redirections(t_cmd *cmd)
 {
 	int	status;
@@ -31,6 +37,11 @@ int	handle_redirections(t_cmd *cmd)
 	return (SUCCESS);
 }
 
+/*
+** Identifie les dernières redirections d'entrée et sortie dans la liste
+** @param cmd: structure de commande
+** Met à jour curr_in et curr_out avec les dernières redirections valides
+*/
 void	find_final_redirections(t_cmd *cmd)
 {
 	t_redirection	*current;
@@ -49,7 +60,9 @@ void	find_final_redirections(t_cmd *cmd)
 }
 
 /*
-** Restaure les descripteurs de fichiers standard
+** Restaure les descripteurs stdin/stdout sauvegardés
+** @param cmd: structure de commande
+** @return: SUCCESS si ok, ERROR si échec de dup2
 */
 int	restore_fds(t_cmd *cmd)
 {
@@ -62,6 +75,11 @@ int	restore_fds(t_cmd *cmd)
 	return (SUCCESS);
 }
 
+/*
+** Sauvegarde les descripteurs stdin/stdout actuels
+** @param cmd: structure de commande
+** @return: SUCCESS si ok, ERROR si échec de dup
+*/
 int	save_fd(t_cmd *cmd)
 {
 	int	fd_in;
@@ -81,6 +99,14 @@ int	save_fd(t_cmd *cmd)
 	return (SUCCESS);
 }
 
+/*
+** Configure toutes les redirections pour une commande
+** - Sauvegarde les FDs originaux
+** - Trouve les redirections finales
+** - Applique les redirections
+** @param cmd: structure de commande
+** @return: SUCCESS si ok, code d'erreur sinon
+*/
 int	setup_redirections(t_cmd *cmd)
 {
 	int				status;

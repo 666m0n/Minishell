@@ -6,16 +6,17 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:28:37 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/13 09:53:47 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:00:50 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /*
-** Obtient le chemin du répertoire personnel de l'utilisateur
-** @param ctx: contexte contenant l'environnement
-** @return: chemin du répertoire personnel ou NULL en cas d'erreur
+** Récupère le chemin du répertoire personnel ($HOME) depuis les variables
+** d'environnement.
+** @return: NULL si HOME n'est pas défini, sinon le chemin du répertoire
+** personnel
 */
 static char *get_home_directory(void)
 {
@@ -28,10 +29,10 @@ static char *get_home_directory(void)
 }
 
 /*
-** Gère le cas où cd est appelé sans argument
-** Change le répertoire courant vers le répertoire personnel
-** @param ctx: contexte contenant l'environnement
-** @return: SUCCESS en cas de succès, ERROR sinon
+** Change le répertoire courant vers $HOME quand cd est appelé sans argument
+** @param ctx: contexte du shell
+** @return: SUCCESS si le changement a réussi, ERROR sinon avec affichage de
+** l'erreur appropriée
 */
 static int handle_no_args(t_ctx *ctx)
 {
@@ -47,9 +48,12 @@ static int handle_no_args(t_ctx *ctx)
 }
 
 /*
-** Gère le changement de répertoire avec un chemin spécifique
-** @param path: chemin vers lequel changer
-** @return: SUCCESS en cas de succès, ERROR sinon
+** Change le répertoire courant vers le chemin spécifié
+** Gère les différents cas d'erreur :
+**  chemin inexistant, permissions, pas un dossier
+** @param path: chemin cible
+** @return: SUCCESS si le changement a réussi,
+**			ERROR sinon avec message d'erreur approprié
 */
 static int change_directory(const char *path)
 {
@@ -68,13 +72,14 @@ static int change_directory(const char *path)
 }
 
 /*
-** Implémente la commande builtin cd de bash
+** Implémente la commande cd
+** Change le répertoire courant selon les règles suivantes :
+** - Sans argument : change vers $HOME
+** - Avec un argument : change vers le chemin spécifié
+** - Avec plus d'un argument : erreur
 ** @param cmd: structure contenant la commande et ses arguments
-** @param ctx: contexte d'exécution
+** @param ctx: contexte du shell
 ** @return: SUCCESS en cas de succès, ERROR en cas d'erreur
-** Change le répertoire courant vers:
-** - Le répertoire personnel si aucun argument n'est fourni
-** - Le chemin spécifié en argument sinon
 */
 int builtin_cd(t_cmd *cmd, t_ctx *ctx)
 {

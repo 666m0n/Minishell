@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   has.c                                              :+:      :+:    :+:   */
+/*   pipe_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/11 16:20:17 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/11/15 11:20:42 by emmanuel         ###   ########.fr       */
+/*   Created: 2024/11/15 09:42:55 by emmanuel          #+#    #+#             */
+/*   Updated: 2024/11/15 11:25:57 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 /*
-** Vérifie si la commande a des redirections
-** @param cmd: structure de commande
-** @return: TRUE si au moins une redirection, FALSE sinon
+** Ferme tous les descripteurs de fichiers des pipes restants
+** @param pipe_array: tableau de pipes à nettoyer
+** @param nb_of_pipes: nombre de pipes dans le tableau
+** Note: utilisé après l'exécution du pipeline pour éviter les fuites
 */
-t_bool	has_redirection(t_cmd *cmd)
+void cleanup_remaining_pipes(t_pipe *pipe_array, int nb_of_pipes)
 {
-	if (get_redirections(cmd) == NULL)
-		return (FALSE);
-	else
-		return (TRUE);
+	int i;
+
+	i = 0;
+	while (i < nb_of_pipes)
+	{
+		close(pipe_array[i][0]);
+		close(pipe_array[i][1]);
+		i++;
+	}
 }
