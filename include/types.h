@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/14 11:58:44 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:45:00 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 /* Forward declarations */
 struct	s_ctx;
 
-/* type def pour simplifier prototype fonction create_pipe_array */
+/* typedef pour rendre certains prototypes de fonctions plus fqcile à lire */
 typedef int t_pipe[2];
+typedef int (*builtin_func)(t_cmd *, t_ctx *);
 
 /* Basic types */
 typedef enum e_bool
@@ -26,48 +27,43 @@ typedef enum e_bool
 	TRUE = 1
 }	t_bool;
 
-typedef enum e_return
-{
-	RETURN_SUCCESS = 0,
-	RETURN_ERROR = -1
-}	t_return;
-
 /* Token types */
 typedef enum e_token
 {
-	CMD,			/* Command or simple argument */
-	STRING,			/* String literal */
-	ESPACE,			/* Space or tab */
-	VAR,			/* Environment variable ($...) */
-	APPEND,			/* Append redirection (>>) */
-	HEREDOC,		/* Here document (<<) */
-	REDIR_IN,		/* Input redirection (<) */
-	REDIR_OUT,		/* Output redirection (>) */
-	D_QUOTE,		/* Double quote (") */
-	S_QUOTE,		/* Single quote (') */
-	PIPE,			/* Pipe (|) */
-	INFILE,			/* Input file */
-	OUTFILE			/* Output file */
+	CMD,							/* Command or simple argument */
+	STRING,							/* String literal */
+	ESPACE,							/* Space or tab */
+	VAR,							/* Environment variable ($...) */
+	APPEND,							/* Append redirection (>>) */
+	HEREDOC,						/* Here document (<<) */
+	REDIR_IN,						/* Input redirection (<) */
+	REDIR_OUT,						/* Output redirection (>) */
+	D_QUOTE,						/* Double quote (") */
+	S_QUOTE,						/* Single quote (') */
+	PIPE,							/* Pipe (|) */
+	INFILE,							/* Input file */
+	OUTFILE							/* Output file */
 }	t_token;
 
 /* Environment variables */
 typedef struct s_env
 {
-	struct s_env	*next;		/* Next environment variable */
-	char			*raw;		/* Full "name=value" string */
-	char			*id;		/* Variable name */
-	char			*value;		/* Variable value */
+	struct s_env	*next;			/* Next environment variable */
+	char			*raw;			/* Full "name=value" string */
+	char			*id;			/* Variable name */
+	char			*value;			/* Variable value */
 }	t_env;
 
 /* FDs management */
-typedef struct s_fd_state {
-    int stdin_backup;
-    int stdout_backup;
-    int pipe_read;    // Pour heredoc
-    int pipe_write;   // Pour heredoc
-    int curr_in;      // FD d'entrée actuel
-    int curr_out;     // FD de sortie actuel
-} t_fd_state;
+typedef struct s_fd_state
+{
+	int	stdin_backup;				/* FD d'entrée par défaut */
+	int	stdout_backup;				/* FD de sortie par défaut */
+	int	pipe_read;					/* Pour heredoc */
+	int	pipe_write;					/* Pour heredoc */
+	int	curr_in;					/* FD d'entrée actuel */
+	int	curr_out;					/* FD de sortie actuel */
+}	t_fd_state;
 
 /* Redirection management */
 typedef struct s_redirection
@@ -80,12 +76,12 @@ typedef struct s_redirection
 /* Command structure */
 typedef struct s_cmd
 {
-	struct s_cmd		*next;			// Commande suivante dans le pipe
-    t_redirection		*redirections;	// Redirections (>, <, >>)
-    char				**args;			// Arguments de la commande
-    char				*path;			// Chemin de la commande
-	t_fd_state			*fd;
-	int					exit_status;	// Command exit status
+	struct s_cmd	*next;			/* Commande suivante dans le pipe */
+	t_redirection	*redirections;	/* Redirections (>, <, >>) */
+	char			**args;			/* Arguments de la commande */
+	char			*path;			/* Chemin de la commande */
+	t_fd_state		*fd;
+	int				exit_status;	/* Command exit status */
 }	t_cmd;
 
 /* Shell context */
