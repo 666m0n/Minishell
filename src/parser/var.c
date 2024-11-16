@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/16 14:58:19 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/16 15:39:56 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*expand_var(char *s, t_ctx *data, int *i, char *result)
 
 	tmp = replace_var(s, data, i);
 	if (!tmp)
-		return (free(tmp), free(result), NULL);
+		return (free(result), NULL);
 	len = ft_strlen(result) + ft_strlen(tmp);
 	new_res = ft_calloc(len + 2, sizeof(char));
 	if (!new_res)
@@ -58,6 +58,24 @@ static char	*expand_var(char *s, t_ctx *data, int *i, char *result)
 	return (new_res);
 }
 
+static int  is_between_complete_squotes(const char *s, int pos)
+{
+    int     i;
+    int     quote_count;
+
+    // Compte les quotes avant $
+    i = 0;
+    quote_count = 0;
+    while (i < pos)
+    {
+        if (s[i] == '\'')
+            quote_count++;
+        i++;
+    }
+    // Si le nombre de quotes avant $ est impair, on est dans des quotes
+    return (quote_count % 2 == 1);
+}
+
 static char	*replace_dollar(char *s, t_ctx *data)
 {
 	int		i;
@@ -69,7 +87,7 @@ static char	*replace_dollar(char *s, t_ctx *data)
 		return (NULL);
 	while (s[i])
 	{
-		if (s[i] == '$')
+		if (s[i] == '$' && !is_between_complete_squotes(s, i))
 		{
 			result = expand_var(s, data, &i, result);
 			if (!result)
