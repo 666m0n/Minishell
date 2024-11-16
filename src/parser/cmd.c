@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/16 13:39:15 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/16 14:40:11 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_cmd(t_token type)
 {
 	if (type == T_SQUOTE || type == T_DQUOTE
-		|| type == T_STRING || type == T_CMD)
+		|| type == T_STRING || type == T_CMD || type == T_OPTIONS)
 		return (TRUE);
 	return (FALSE);
 }
@@ -89,9 +89,13 @@ void	process_pars(t_cmd *cmd, t_lexer *tokens, t_ctx *data)
 				tokens = tokens->next;
 				continue ;
 			}
+			tmp = NULL;
 			tmp = copy_str(tmp, &tokens);
-			add_to_tab(tmp, cmd);
-			free(tmp);
+			if (tmp)
+			{
+				add_to_tab(tmp, cmd);
+				free(tmp);
+			}
 		}
 		else if (tokens->type == T_PIPE)
 			extend_cmd(&cmd, data);

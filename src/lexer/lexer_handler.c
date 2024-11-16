@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 20:42:01 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/16 14:45:26 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,10 @@ void	quotes_handler(t_lexer **tokens, char **str)
 	while (**str && **str != quote)
 		(*str)++;
 	content = ft_substr(start, 0, *str - start);
-	if (!content)
-		return ;
+	if (content[0] == '\0')
+	{
+		return (free(content));
+	}
 	if (**str == quote)
 	{
 		if (quote == '\'')

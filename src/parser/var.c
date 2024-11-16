@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/16 14:01:23 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/16 14:58:19 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*copy_str(char *str, char c)
 	if (!new_str)
 		return (free(str), NULL);
 	new_str[len] = c;
-	new_str[len] = '\0';
+	new_str[len + 1] = '\0';
 	return (new_str);
 }
 
