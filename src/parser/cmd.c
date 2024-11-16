@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 20:48:33 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/16 13:39:15 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	is_cmd(t_token type)
 {
-	if (type == T_SQUOTE || type == T_DQUOTE || \
-		type == T_STRING)
+	if (type == T_SQUOTE || type == T_DQUOTE
+		|| type == T_STRING || type == T_CMD)
 		return (TRUE);
 	return (FALSE);
 }

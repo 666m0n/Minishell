@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 20:41:37 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/16 13:25:53 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ char		*replace_var(char *s, t_ctx *data, int *i);
 char		*get_env_value(t_env *env, char *var_name);
 
 //test
-int	execute_builtin(t_ctx *ctx, t_cmd *cmd);
-int	is_builtin(char *cmd);
-int	bui_env(t_ctx *ctx, t_cmd *cmd);
-void	env_free(t_env *env);
-void	env_del_one(t_env *env);
-t_env	*create_env_list(char **envp);
+int			execute_builtin(t_ctx *ctx, t_cmd *cmd);
+int			is_builtin(char *cmd);
+int			bui_env(t_ctx *ctx, t_cmd *cmd);
+void		env_free(t_env *env);
+void		env_del_one(t_env *env);
+t_env		*create_env_list(char **envp);
 
 #endif
