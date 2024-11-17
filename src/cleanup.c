@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:28:37 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/17 14:59:16 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,25 @@ void cleanup_fds(t_cmd *cmd)
     cmd->fd->stdout_backup = -1;
     cmd->fd->pipe_read = -1;
     cmd->fd->pipe_write = -1;
+}
+
+/*
+** Ferme tous les descripteurs de fichiers des pipes restants
+** @param pipe_array: tableau de pipes à nettoyer
+** @param nb_of_pipes: nombre de pipes dans le tableau
+** Note: utilisé après l'exécution du pipeline pour éviter les fuites
+*/
+void cleanup_remaining_pipes(t_pipe *pipe_array, int nb_of_pipes)
+{
+	int i;
+
+	i = 0;
+	while (i < nb_of_pipes)
+	{
+		close(pipe_array[i][0]);
+		close(pipe_array[i][1]);
+		i++;
+	}
 }
 
 /*

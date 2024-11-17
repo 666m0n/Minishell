@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:25:09 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:25:01 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,19 @@ int	handle_redirections(t_cmd *cmd)
 ** @param cmd: structure de commande
 ** Met à jour curr_in et curr_out avec les dernières redirections valides
 */
-void	find_final_redirections(t_cmd *cmd)
+void    find_final_redirections(t_cmd *cmd)
 {
-	t_redirection	*current;
+	t_redirection    *current;
 
-	cmd->fd->curr_in = NULL;
-	cmd->fd->curr_out = NULL;
+	cmd->fd->curr_in = -1;
+	cmd->fd->curr_out = -1;
 	current = cmd->redirections;
 	while (current)
 	{
 		if (current->type == REDIR_IN || current->type == HEREDOC)
-			cmd->fd->curr_in = current;
+			cmd->fd->curr_in = -1;
 		else if (current->type == REDIR_OUT || current->type == APPEND)
-			cmd->fd->curr_out = current;
+			cmd->fd->curr_out = -1;
 		current = current->next;
 	}
 }

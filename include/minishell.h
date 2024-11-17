@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:45:18 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:50:47 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:05:52 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,10 @@ char			*search_in_directory(char **directories, const char *cmd_name);
 
 /* Pipeline Management */
 int				count_pipes(t_cmd *cmd);
-t_pipe			*create_pipe_array(t_cmd *cmd, int nb_of_pipes);
+t_pipe			*create_pipe_array(int nb_of_pipes);
 void			configure_pipe_fds(t_pipe *pipe_array, int cmd_position, int nb_of_pipes);
 void			cleanup_remaining_pipes(t_pipe *pipe_array, int nb_of_pipes);
+void			close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes);
 int				wait_for_processes(pid_t *pids, int count);
 
 /* Redirection Management */

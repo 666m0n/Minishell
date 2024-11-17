@@ -1,68 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/04 10:53:06 by emmanuel         ###   ########.fr       */
+/*   Created: 2024/11/01 18:21:31 by emmanuel          #+#    #+#             */
+/*   Updated: 2024/11/14 12:00:30 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
-//liste chainee du contexte du prgrm
-t_ctx	*init_ctx(char **envp)
+char	*search_in_directory(char **directories, const char *cmd)
 {
-	t_ctx	*ctx;
+	char	*full_path;
+	char	*tmp;
+	int		i;
 
-	ctx = malloc(sizeof(t_ctx));
-	if (!ctx)
-		return (NULL);
-	ctx->envp = create_env_list(envp);
-	if (!ctx->envp)
+	i = 0;
+	while (directories[i])
 	{
-		free(ctx);
-		return (NULL);
+		tmp = ft_strjoin(directories[i], "/");
+		full_path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(full_path, F_OK) == SYSCALL_SUCCESS)
+			return (full_path); // ATTENTION -> FREE à faire dans une fonction appelante
+		free(full_path);
+		i++;
 	}
-	ctx->def_in = STDIN_FILENO;
-	ctx->def_out = STDOUT_FILENO;
-	ctx->exit_code = 0;
-	return (ctx);
+	return (NULL);
 }
 
-int	check_line(char *line)
+void ft_putstr_fd(char *s, int fd)
 {
-	if (line[0] == '\0')
-		return (TRUE);
-	return (FALSE);
+	if (!s)
+		return ;
+	write(fd, s, ft_strlen(s));
 }
 
-char	*ft_chartostr(char c)
+int	ft_str_isdigit(const char *str)
 {
-	char	*str;
-
-	str = malloc(2);
 	if (!str)
-		return (NULL);
-	str[0] = c;
-	str[1] = '\0';
-	return (str);
+		return (0);
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
-/*
-** Join avec free du premier argument uniquement
-** @param s1: première chaîne (sera libérée)
-** @param s2: deuxième chaîne (ne sera pas libérée car const)
-** @return: nouvelle chaîne allouée contenant la concaténation
-*/
-char	*ft_strjoin_free(char *s1, const char *s2)
-{
-	char	*result;
-
-	result = ft_strjoin(s1, s2);
-	free(s1);
-	/* free(s2); */
-	return (result);
-}

@@ -6,11 +6,11 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 10:49:11 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:03:39 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:27:42 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 /*
 ** Gère le cas où echo est appelé sans argument

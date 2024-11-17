@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:51:59 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:28:12 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:12:20 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,14 @@ int wait_for_processes(pid_t *pids, int count)
 	int last_status;
 
 	i = 0;
+	last_status = ERROR;
 	while (i < count)
 	{
 		if (waitpid(pids[i], &status, 0) == SYSCALL_ERROR)
+		{
+			free(pids);
 			return (handle_system_error("waitpid"));
-
+		}
 		if (i == count - 1)
 		{
 			if (WIFEXITED(status))
@@ -39,6 +42,7 @@ int wait_for_processes(pid_t *pids, int count)
 		}
 		i++;
 	}
+	free(pids);
 	return (last_status);
 }
 
@@ -48,7 +52,7 @@ int wait_for_processes(pid_t *pids, int count)
 ** @param cmd_position: position de la commande dans le pipeline
 ** @param nb_of_pipes: nombre total de pipes
 */
-close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
+void	close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
 {
 	int i;
 
@@ -56,9 +60,15 @@ close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
 	while (i < nb_of_pipes)
 	{
 		if (i != cmd_position - 1)
-			close(pipe_array[i][0]);
+		{
+			if (close(pipe_array[i][0]) == SYSCALL_ERROR)
+				exit(handle_system_error("close"));
+		}
 		if (i != cmd_position)
-			close(pipe_array[i][1]);
+		{
+			if (close(pipe_array[i][1]) == SYSCALL_ERROR)
+				exit(handle_system_error("close"));
+		}
 		i++;
 	}
 }
@@ -74,19 +84,19 @@ void	configure_pipe_fds(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
 {
 	if (cmd_position == 0)
 	{
-		dup2(pipe_array[cmd_position][1], STDOUT_FILENO);
+		if(dup2(pipe_array[cmd_position][1], STDOUT_FILENO) == SYSCALL_ERROR)
 			exit(handle_system_error("dup2"));
 	}
 	else if (cmd_position == nb_of_pipes)
 	{
-		dup2(pipe_array[cmd_position - 1][0], STDIN_FILENO);
+		if(dup2(pipe_array[cmd_position - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
 			exit(handle_system_error("dup2"));
 	}
 	else
 	{
-		dup2(pipe_array[cmd_position  - 1][0], STDIN_FILENO);
+		if(dup2(pipe_array[cmd_position  - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
 			exit(handle_system_error("dup2"));
-		dup2(pipe_array[cmd_position][1], STDOUT_FILENO);
+		if(dup2(pipe_array[cmd_position][1], STDOUT_FILENO) == SYSCALL_ERROR)
 			exit(handle_system_error("dup2"));
 	}
 }
@@ -98,14 +108,14 @@ void	configure_pipe_fds(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
 ** @return: tableau de pipes alloué ou NULL si erreur
 ** Note: gère le nettoyage en cas d'échec partiel
 */
-t_pipe *create_pipe_array(t_cmd *cmd, int nb_of_pipes)
+t_pipe *create_pipe_array(int nb_of_pipes)
 {
 	t_pipe	*pipe_array;
 	int		i;
 
 	pipe_array = malloc(sizeof(int[2]) * nb_of_pipes);
 	if (!pipe_array)
-		return (handle_system_error("malloc"));
+		return (NULL);
 	i = 0;
 	while (i < nb_of_pipes)
 	{
@@ -113,8 +123,10 @@ t_pipe *create_pipe_array(t_cmd *cmd, int nb_of_pipes)
 		{
 			while (--i >= 0)
 			{
-				close(pipe_array[i][0]);
-				close(pipe_array[i][1]);
+				if (close(pipe_array[i][0]) == SYSCALL_ERROR)
+					exit(handle_system_error("close"));
+				if (close(pipe_array[i][1]) == SYSCALL_ERROR)
+					exit(handle_system_error("close"));
 			}
 			free(pipe_array);
 			return (NULL);

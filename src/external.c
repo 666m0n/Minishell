@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:17:56 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:00:20 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int prepare_exec(t_cmd *cmd)
 	const char	*cmd_name;
 	char 		*path;
 
-	cmd_name = get_command_name(cmd);
+	cmd_name = get_cmd_name(cmd);
 	if (cmd_name == NULL)
 		return (CMD_NOT_FOUND);
 	if (is_dir(cmd_name) == TRUE)

@@ -6,11 +6,11 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:03:33 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:13:44 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:28:19 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 /*
 ** Implémente la commande pwd

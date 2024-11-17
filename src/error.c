@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:17:05 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:29:22 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int handle_command_error(t_cmd *cmd, int error_code)
 {
 	const char *cmd_name;
 
-	cmd_name = get_command_name(cmd);
+	cmd_name = get_cmd_name(cmd);
 	if (cmd_name == NULL)
 		return (print_error(NULL, NULL, "command not found"));
 	if (error_code == CMD_NOT_FOUND)

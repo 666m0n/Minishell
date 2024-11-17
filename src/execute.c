@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:31:06 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:11:42 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,51 +23,30 @@
 int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 {
 	t_cmd	*current;
-	int		i;
-	pid_t	pid;
 	pid_t	*pid_array;
+	int		position;
 	int		status;
 
+	if (init_pipeline(nb_of_pipes, &pid_array) != SUCCESS)
+		return (ERROR);
 	current = cmd;
-	i = 0;
-	pid_array = malloc(sizeof(pid_t) * (nb_of_pipes + 1));
-	if (!pid)
-		return (handle_system_error("malloc"));
+	position = 0;
 	while (current)
 	{
-		pid = fork();
-		if (pid == SYSCALL_ERROR)
+		pid_array[position] = fork_pipeline_process(current, pipe_array,
+			position, nb_of_pipes, ctx);
+		if (pid_array[position] == SYSCALL_ERROR)
+		{
+			cleanup_remaining_pipes(pipe_array, nb_of_pipes);
+			free(pid_array);
 			return (handle_system_error("fork"));
-		if (pid == 0)
-		{
-			configure_pipe_fds(pipe_array, i, nb_of_pipes);
-			close_unused_pipes(pipe_array, i, nb_of_pipes);
-			if (is_builtin(current) == TRUE)
-				status = exec_builtin(current, ctx);
-			else
-			{
-				status = prepare_exec(cmd);
-				if (status != SUCCESS)
-					return (handle_command_error(cmd, status));
-				exec_in_child(cmd, ctx);
-			}
-			exit(status);
-		}
-		else
-		{
-			pid_array[i] = pid;
-			if (i > 0)
-			{
-				close(pipe_array[i-1][0]);
-				close(pipe_array[i-1][1]);
-			}
 		}
 		current = current->next;
-		i++;
+		position++;
 	}
 	status = wait_for_processes(pid_array, nb_of_pipes + 1);
-    cleanup_remaining_pipes(pipe_array, nb_of_pipes);
-	return (status)
+	cleanup_remaining_pipes(pipe_array, nb_of_pipes);
+	return (status);
 }
 
 /*
@@ -84,7 +63,7 @@ int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
 	t_pipe	*pipe_array;
 
 	nb_of_pipes = count_pipes(cmd);
-	pipe_array = create_pipe_array(cmd, nb_of_pipes);
+	pipe_array = create_pipe_array(nb_of_pipes);
 	if (!pipe_array)
 		return (PIPE_ERROR);
 	status = run_pipeline(cmd, pipe_array, nb_of_pipes, ctx);
