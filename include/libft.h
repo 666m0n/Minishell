@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:11:41 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/05 11:26:14 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:23:14 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,9 @@ void	malloc_line(char **line, t_list *stash);
 t_list	*ft_lst_get_last(t_list *stash);
 int		found_newline(t_list *stash);
 t_list	*create_clean_node(t_list *last, int i);
+
+// ajout Manu
+char	*ft_strndup(const char *s, size_t n);
+int		ft_printf_fd(int fd, const char *str);
 
 #endif

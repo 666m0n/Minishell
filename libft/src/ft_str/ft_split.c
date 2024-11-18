@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 12:46:10 by sviallon          #+#    #+#             */
-/*   Updated: 2024/05/31 11:25:49 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:22:23 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ size_t	ft_count_words(const char *s, char c)
 	return (count);
 }
 
-void	free_all(char **arr, size_t index)
+void	ft_free_all(char **arr, size_t index)
 {
 	size_t	i;
 
@@ -67,7 +67,7 @@ char	**normi_split(char **result, const char *s, char c)
 		{
 			result[j] = ft_substr(s, word_start, i - word_start);
 			if (!result[j])
-				return (free_all(result, j), NULL);
+				return (ft_free_all(result, j), NULL);
 			j++;
 		}
 	}

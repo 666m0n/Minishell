@@ -1,21 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   types1.h                                           :+:      :+:    :+:   */
+/*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 17:12:37 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:57:27 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPES_H
 # define TYPES_H
 
-/* typedef pour rendre certains prototypes de fonctions plus fqcile à lire */
-typedef int t_pipe[2];
-typedef int (*builtin_func)(t_cmd *, t_ctx *);
+# include "parsing.h"
+
+//PATOUCHE
+typedef enum e_token
+{
+	T_STRING,
+	T_SPACE,
+	T_PIPE,
+	T_REDIRIN,
+	T_REDIROUT,
+	T_APPEND,
+	T_HEREDOC,
+	T_SQUOTE,
+	T_DQUOTE,
+	T_OPTIONS,
+	T_CMD,
+	T_AMPERSAND,
+	T_UNKNOWN
+}	t_token;
+
+//PATOUCHE AUSSI
+typedef struct s_lexer
+{
+	struct s_lexer	*next;
+	struct s_lexer	*prev;
+	char			*content;
+	t_token			type;
+	int				index;
+}	t_lexer;
 
 //modifier la fonction t_return type
 typedef enum e_return

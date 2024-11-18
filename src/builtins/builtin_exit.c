@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtinstest.c                                     :+:      :+:    :+:   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/24 13:46:49 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 17:46:27 by sviallon         ###   ########.fr       */
+/*   Created: 2024/11/05 11:54:02 by emmanuel          #+#    #+#             */
+/*   Updated: 2024/11/18 18:03:17 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//execute le bon builtin
-int	execute_builtin(t_ctx *ctx, t_cmd *cmd)
+/*
+** Implémente la commande exit sans options
+** Affiche "exit" et quitte avec le dernier code de sortie
+** @param cmd: structure commande (non utilisé)
+** @param ctx: contexte shell pour le code de sortie
+** @return: ne retourne jamais, termine le processus
+*/
+int	builtin_exit(t_cmd *cmd, t_ctx *ctx)
 {
-	if (!cmd->args || !cmd->args[0])
-		return (EXIT_FAILURE);
-	if (ft_strncmp(cmd->args[0], "env", 4) == 0)
-		return (bui_env(ctx, cmd));
-	return (EXIT_SUCCESS);
+	(void)cmd;
+
+	if (!ctx)
+		exit(ERROR);
+	ft_putendl_fd("exit", STDERR_FILENO);
+	exit(ctx->exit_code);
 }

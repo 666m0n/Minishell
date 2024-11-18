@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/15 20:46:06 by sviallon         ###   ########.fr        #
+#    Updated: 2024/11/18 18:05:19 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,17 +47,23 @@ LEXER_DIR	= lexer/
 LXR			= lexer_handler lexer lexer_utils lexer_utils_2
 
 UTILS_DIR	= utils/
-UTLS		= utils utils2
+UTLS		= utils utils2 utils3
 
 PARSER_DIR	= parser/
 PRS			= cmd parser_utils parser redir  syntax var var2
 
 BUILTINS	= builtins/
-BLTN		= env builtins
+BLTN		= env builtinstest builtin_unset builtin_pwd builtin_export builtin_export_utils \
+			builtin_exit builtin_env builtin_echo builtin_cd
+
+CORE_DIR	= core/
+CORE		= cleanup error execute external find get has is pipe_executor pipe redirections \
+			redirections_2 set
 
 MAIN_DIR	= main/
 MAIN		= main test
 
+SRC_FILES+=$(addprefix $(CORE_DIR),$(CORE))
 SRC_FILES+=$(addprefix $(PARSER_DIR),$(PRS))
 SRC_FILES+=$(addprefix $(BUILTINS),$(BLTN))
 SRC_FILES+=$(addprefix $(LEXER_DIR),$(LXR))
@@ -93,7 +99,7 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJSF)
 
 $(OBJSF) :
 		@mkdir -p $(OBJ_DIR)$(LEXER_DIR) $(OBJ_DIR)$(UTILS_DIR) $(OBJ_DIR)$(MAIN_DIR) \
-				$(OBJ_DIR)$(PARSER_DIR) $(OBJ_DIR)$(BUILTINS)
+				$(OBJ_DIR)$(PARSER_DIR) $(OBJ_DIR)$(BUILTINS) $(OBJ_DIR)$(CORE_DIR)
 		@touch $(OBJSF)
 clean:
 		@$(RM) $(OBJ_DIR)

@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:48:23 by sviallon          #+#    #+#             */
-/*   Updated: 2024/05/21 18:16:30 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:22:00 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,20 @@ char	*ft_strdup(const char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
+}
+
+char	*ft_strndup(const char *s, size_t n)
+{
+	char	*str;
+	size_t	len;
+
+	len = ft_strlen(s);
+	if (len > n)
+		len = n;
+	str = (char *)malloc(len + 1);
+	if (!str)
+		return (NULL);
+	ft_memcpy(str, s, len);
+	str[len] = '\0';
+	return (str);
 }

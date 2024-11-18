@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell1.h                                       :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 17:12:47 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:09:08 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,17 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <dirent.h>
-# include "types.h"
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "parsing.h"
+# include "types.h"
 # include "errors.h"
+
+//MODIF DE SIMON mis ici car il faut d'abord declarer les struct avant de les
+// utiliser sinn erreur a la compilation
+/* typedef pour rendre certains prototypes de fonctions plus facile à lire */
+typedef int t_pipe[2];
+typedef int (*builtin_func)(t_cmd *, t_ctx *);
 
 # define PROMPT "\001\033[1;33m\002minishell >$ \001\033[0m\002"
 # define DEFAULT_PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -84,7 +92,6 @@ int				apply_output_redirection(t_cmd *cmd);
 
 /* Environment Management */
 t_env			*find_existing_var(t_env *env, const char *name);
-int				display_sorted_env(t_ctx *ctx);
 void			free_env_var(t_env *var);
 
 /* Error Handling */
@@ -120,7 +127,7 @@ char			*extract_value(const char *arg);
 t_env			*create_var(const char *arg, char *value);
 t_env			*update_env_variable(t_ctx *ctx, char *arg);
 int				is_valid_identifier(const char *str);
-int				setup_heredoc(t_cmd *cmd); // j'ai mis un type au hasard
+/* int				setup_heredoc(t_cmd *cmd); // j'ai mis un type au hasard */
 int				handle_redirections(t_cmd *cmd);
 void			find_final_redirections(t_cmd *cmd);
 int				save_fd(t_cmd *cmd);

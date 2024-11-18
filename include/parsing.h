@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 17:03:20 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:56:19 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,6 @@
 # define QUOTE_ERROR "syntax error : missing quote\n"
 # define IS_TOKEN "\"'|<>&"
 # define IS_REDIRECTION "<>"
-
-typedef enum e_token
-{
-	T_STRING,
-	T_SPACE,
-	T_PIPE,
-	T_REDIRIN,
-	T_REDIROUT,
-	T_APPEND,
-	T_HEREDOC,
-	T_SQUOTE,
-	T_DQUOTE,
-	T_OPTIONS,
-	T_CMD,
-	T_AMPERSAND,
-	T_UNKNOWN
-}	t_token;
-
-typedef struct s_lexer
-{
-	t_token			type;
-	char			*content;
-	int				index;
-	struct s_lexer	*next;
-	struct s_lexer	*prev;
-}	t_lexer;
 
 //lexer
 t_lexer		*lexer(char *input);
@@ -77,7 +51,6 @@ char		*get_env_value(t_env *env, char *var_name);
 
 //test
 int			execute_builtin(t_ctx *ctx, t_cmd *cmd);
-int			is_builtin(char *cmd);
 int			bui_env(t_ctx *ctx, t_cmd *cmd);
 void		env_free(t_env *env);
 void		env_del_one(t_env *env);
