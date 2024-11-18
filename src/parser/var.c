@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/16 15:39:56 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:02:49 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,6 @@ static char	*expand_var(char *s, t_ctx *data, int *i, char *result)
 	return (new_res);
 }
 
-static int  is_between_complete_squotes(const char *s, int pos)
-{
-    int     i;
-    int     quote_count;
-
-    // Compte les quotes avant $
-    i = 0;
-    quote_count = 0;
-    while (i < pos)
-    {
-        if (s[i] == '\'')
-            quote_count++;
-        i++;
-    }
-    // Si le nombre de quotes avant $ est impair, on est dans des quotes
-    return (quote_count % 2 == 1);
-}
-
 static char	*replace_dollar(char *s, t_ctx *data)
 {
 	int		i;
@@ -87,7 +69,7 @@ static char	*replace_dollar(char *s, t_ctx *data)
 		return (NULL);
 	while (s[i])
 	{
-		if (s[i] == '$' && !is_between_complete_squotes(s, i))
+		if (s[i] == '$')
 		{
 			result = expand_var(s, data, &i, result);
 			if (!result)

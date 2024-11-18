@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 17:57:27 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:49:58 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef struct s_ctx
 	int				def_out;		/* Default output */
 	int				interrupt_flag;	/* Interrupt status pas utile encore ?*/
 	unsigned char	exit_code;		/* Last exit code */
+	t_lexer			*current_token;
 }	t_ctx;
 
 #endif
