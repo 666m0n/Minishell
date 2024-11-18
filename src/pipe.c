@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:51:59 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 11:57:48 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:21:31 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	wait_for_processes(pid_t *pids, int count)
 ** @param cmd_position: position de la commande dans le pipeline
 ** @param nb_of_pipes: nombre total de pipes
 */
-void	close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
+void	close_unused_pipes(t_pipe *pipe_array, int cmd_position, \
+				int nb_of_pipes)
 {
 	int	i;
 
@@ -96,7 +97,7 @@ void	configure_pipe_fds(t_pipe *pipe_array, int cmd_pos, int nb_of_pipes)
 	{
 		if (dup2(pipe_array[cmd_pos - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
 			exit(handle_system_error("dup2"));
-		if (dup2(pipe_array[cmd_position][1], STDOUT_FILENO) == SYSCALL_ERROR)
+		if (dup2(pipe_array[cmd_pos][1], STDOUT_FILENO) == SYSCALL_ERROR)
 			exit(handle_system_error("dup2"));
 	}
 }

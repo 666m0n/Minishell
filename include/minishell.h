@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:45:18 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 13:21:57 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:27:57 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,11 @@ void			cleanup_remaining_pipes(t_pipe *pipe_array, int nb_of_pipes);
 void			close_unused_pipes(t_pipe *pipe_array, int cmd_position, \
 					int nb_of_pipes);
 int				wait_for_processes(pid_t *pids, int count);
+int				run_pipeline(t_cmd *cmd, t_pipe *pipe_array, \
+					int nb_of_pipes, t_ctx *ctx);
+int				init_pipeline(int nb_of_pipes, pid_t **pid_array_ptr);
+pid_t			fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
+							int position, int nb_of_pipes, t_ctx *ctx);
 
 /* Redirection Management */
 int				setup_redirections(t_cmd *cmd);
@@ -89,6 +94,7 @@ int				handle_command_error(t_cmd *cmd, int error_code);
 int				handle_builtin_error(const char *builtin, const char *arg, \
 					const char *msg);
 int				handle_system_error(const char *syscall);
+int				handle_syntax_error(const char *token);
 
 /* Getters */
 const char		*get_cmd_name(t_cmd *cmd);
@@ -108,6 +114,18 @@ t_bool			is_builtin(const char *cmd_name);
 t_bool			is_simple_command(t_cmd *cmd);
 t_bool			has_redirection(t_cmd *cmd);
 void			ft_free_array(char **array);
-void			env_del_one(t_env *env);
+t_bool			is_valid_command(t_cmd *cmd);
+/* void			env_del_one(t_env *env); */
+
+/* a trier */
+char			*extract_value(const char *arg);
+t_env			*create_var(const char *arg, char *value);
+t_env			*update_env_variable(t_ctx *ctx, char *arg);
+int				is_valid_identifier(const char *str);
+int				setup_heredoc(t_cmd *cmd); // j'ai mis un type au hasard
+int				handle_redirections(t_cmd *cmd);
+void			find_final_redirections(t_cmd *cmd);
+int				save_fd(t_cmd *cmd);
+
 
 #endif

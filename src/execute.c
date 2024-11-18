@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 13:20:49 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:17:34 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int	exec_builtin(t_cmd *cmd, t_ctx *ctx)
 	int				status;
 
 	cmd_name = get_cmd_name(cmd);
+	
 	if (!cmd_name)
 		return (ERROR);
 	builtin = get_builtin_function(cmd_name);

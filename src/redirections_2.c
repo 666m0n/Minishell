@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:22:56 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:25:43 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	apply_input_redirection(t_cmd *cmd)
 	type = cmd->redirections->type;
 	file = cmd->redirections->file;
 	if (type == HEREDOC)
-		return (setup_heredoc(cmd, cmd->redirections));
+		return (setup_heredoc(cmd));
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));

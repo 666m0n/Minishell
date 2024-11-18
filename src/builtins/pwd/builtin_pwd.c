@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:03:33 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/17 15:28:19 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:51:08 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	builtin_pwd(t_cmd *cmd, t_ctx *ctx)
 		return (ERROR);
 	args = cmd->args;
 	if (args[1] != NULL)
-		 return (handle_builtin_error("pwd", NULL, "too many arguments"));
+		return (handle_builtin_error("pwd", NULL, "too many arguments"));
 	current_path = getcwd(NULL, 0);
 	if (current_path == NULL)
 		return (handle_builtin_error("pwd", NULL, strerror(errno)));
