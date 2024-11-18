@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 11:05:03 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 14:09:59 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:35:39 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,23 @@ t_env	*update_env_variable(t_ctx *ctx, char *arg)
 	var->next = ctx->envp;
 	ctx->envp = var;
 	return (var);
+}
+
+/*
+** Libère tous les composants d'une variable d'environnement
+** @param var: variable d'environnement à libérer
+** Note: libère raw, id, value et la structure elle-même
+** Note: gère le cas où var est NULL ou certains composants sont NULL
+*/
+void	free_env_var(t_env *var)
+{
+	if (!var)
+		return ;
+	if (var->raw)
+		free(var->raw);
+	if (var->id)
+		free(var->id);
+	if (var->value)
+		free(var->value);
+	free(var);
 }

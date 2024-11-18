@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:45:18 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 16:27:57 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:33:35 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,6 @@ int				apply_output_redirection(t_cmd *cmd);
 
 /* Environment Management */
 t_env			*find_existing_var(t_env *env, const char *name);
-int				update_existing_var(t_env *var, const char *name, \
-					const char *value);
-int				extract_name_value(const char *arg, char **name, char **value);
 int				display_sorted_env(t_ctx *ctx);
 void			free_env_var(t_env *var);
 
