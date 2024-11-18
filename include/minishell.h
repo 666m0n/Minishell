@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:45:18 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/16 23:05:52 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:21:57 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <fcntl.h>
 # include "libft.h"
 # include "types.h"
-# include "parsing.h"
 # include "errors.h"
 # include <dirent.h>
 
@@ -63,9 +62,11 @@ char			*search_in_directory(char **directories, const char *cmd_name);
 /* Pipeline Management */
 int				count_pipes(t_cmd *cmd);
 t_pipe			*create_pipe_array(int nb_of_pipes);
-void			configure_pipe_fds(t_pipe *pipe_array, int cmd_position, int nb_of_pipes);
+void			configure_pipe_fds(t_pipe *pipe_array, int cmd_position, \
+					int nb_of_pipes);
 void			cleanup_remaining_pipes(t_pipe *pipe_array, int nb_of_pipes);
-void			close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes);
+void			close_unused_pipes(t_pipe *pipe_array, int cmd_position, \
+					int nb_of_pipes);
 int				wait_for_processes(pid_t *pids, int count);
 
 /* Redirection Management */
@@ -76,15 +77,17 @@ int				apply_input_redirection(t_cmd *cmd);
 int				apply_output_redirection(t_cmd *cmd);
 
 /* Environment Management */
-t_env			*find_min_var(t_env *env, char *min_id);
 t_env			*find_existing_var(t_env *env, const char *name);
-t_env			*create_env_var(const char *name, const char *value);
-int				update_existing_var(t_env *var, const char *name, const char *value);
+int				update_existing_var(t_env *var, const char *name, \
+					const char *value);
 int				extract_name_value(const char *arg, char **name, char **value);
+int				display_sorted_env(t_ctx *ctx);
+void			free_env_var(t_env *var);
 
 /* Error Handling */
 int				handle_command_error(t_cmd *cmd, int error_code);
-int				handle_builtin_error(const char *builtin, const char *arg, const char *msg);
+int				handle_builtin_error(const char *builtin, const char *arg, \
+					const char *msg);
 int				handle_system_error(const char *syscall);
 
 /* Getters */

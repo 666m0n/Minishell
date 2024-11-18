@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/17 14:59:16 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:50:15 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** @param cmd: structure de commande
 ** Note: gère les backups stdin/stdout et les pipes de heredoc
 */
-void cleanup_fds(t_cmd *cmd)
+void	cleanup_fds(t_cmd *cmd)
 {
 	if (!cmd || !cmd->fd)
 		return ;
@@ -26,14 +26,14 @@ void cleanup_fds(t_cmd *cmd)
 		close(cmd->fd->stdin_backup);
 	if (cmd->fd->stdout_backup > 2)
 		close(cmd->fd->stdout_backup);
-    if (cmd->fd->pipe_read > 2)
-        close(cmd->fd->pipe_read);
-    if (cmd->fd->pipe_write > 2)
-        close(cmd->fd->pipe_write);
-    cmd->fd->stdin_backup = -1;
-    cmd->fd->stdout_backup = -1;
-    cmd->fd->pipe_read = -1;
-    cmd->fd->pipe_write = -1;
+	if (cmd->fd->pipe_read > 2)
+		close(cmd->fd->pipe_read);
+	if (cmd->fd->pipe_write > 2)
+		close(cmd->fd->pipe_write);
+	cmd->fd->stdin_backup = -1;
+	cmd->fd->stdout_backup = -1;
+	cmd->fd->pipe_read = -1;
+	cmd->fd->pipe_write = -1;
 }
 
 /*
@@ -42,9 +42,9 @@ void cleanup_fds(t_cmd *cmd)
 ** @param nb_of_pipes: nombre de pipes dans le tableau
 ** Note: utilisé après l'exécution du pipeline pour éviter les fuites
 */
-void cleanup_remaining_pipes(t_pipe *pipe_array, int nb_of_pipes)
+void	cleanup_remaining_pipes(t_pipe *pipe_array, int nb_of_pipes)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < nb_of_pipes)

@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_executor.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/17 15:16:51 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:19:10 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-/*
-** Initialise le tableau des PIDs pour le pipeline
-** @param nb_of_pipes: nombre de pipes dans le pipeline
-** @return: tableau de PIDs alloué ou NULL si erreur
-*/
-static pid_t	*init_pipeline_processes(int nb_of_pipes)
-{
-	pid_t	*pid_array;
-
-	pid_array = malloc(sizeof(pid_t) * (nb_of_pipes + 1));
-	if (!pid_array)
-		return (NULL);
-	return (pid_array);
-}
 
 /*
 ** Execute une commande dans le processus fils du pipeline
@@ -82,8 +67,8 @@ static int	handle_parent_pipes(t_pipe *pipe_array, int position)
 ** @param ctx: contexte du shell
 ** @return: PID du processus créé ou -1 si erreur
 */
-static pid_t    fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
-									int position, int nb_of_pipes, t_ctx *ctx)
+pid_t	fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
+							int position, int nb_of_pipes, t_ctx *ctx)
 {
 	pid_t	pid;
 
@@ -106,11 +91,10 @@ static pid_t    fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
 ** @param pid_array_ptr: pointeur vers le tableau de PIDs à initialiser
 ** @return: SUCCESS ou ERROR si échec d'allocation
 */
-static int	init_pipeline(int nb_of_pipes, pid_t **pid_array_ptr)
+int	init_pipeline(int nb_of_pipes, pid_t **pid_array_ptr)
 {
 	*pid_array_ptr = malloc(sizeof(pid_t) * (nb_of_pipes + 1));
 	if (!*pid_array_ptr)
 		return (handle_system_error("malloc"));
 	return (SUCCESS);
 }
-

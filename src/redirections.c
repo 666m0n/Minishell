@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/16 23:25:01 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:58:21 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	handle_redirections(t_cmd *cmd)
 {
 	int	status;
 
-	if	(cmd->fd->curr_in)
+	if (cmd->fd->curr_in)
 	{
 		status = apply_input_redirection(cmd);
 		if (status != SUCCESS)
@@ -44,7 +44,7 @@ int	handle_redirections(t_cmd *cmd)
 */
 void    find_final_redirections(t_cmd *cmd)
 {
-	t_redirection    *current;
+	t_redirection	*current;
 
 	cmd->fd->curr_in = -1;
 	cmd->fd->curr_out = -1;

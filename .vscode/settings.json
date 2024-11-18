@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"libft.h": "c",
-		"compare": "c",
-		"type_traits": "c"
-	},
-	"makefile.configureOnOpen": false
-}

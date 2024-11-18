@@ -3,83 +3,104 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 10:28:54 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/17 15:28:12 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:03:35 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-int	builtin_export(t_cmd *cmd, t_ctx *ctx)
+/* builtin_export.c */
+int	is_valid_identifier(const char *str)
 {
-	char	**args;
-	int		i;
-	int		status;
+	int	i;
 
-	if (!cmd || !cmd->args)
-		return (ERROR);
-	args = cmd->args;
-	if (args[1] == NULL)
-		return (display_sorted_env(ctx));
-	status = SUCCESS;
+	if (!str || !*str)
+		return (0);
+	if (!ft_isalpha(*str) && *str != '_')
+		return (0);
 	i = 1;
-	while (args[i])
+	while (str[i] && str[i] != '=')
 	{
-		if (update_env_variable(ctx, args[i]) == ERROR)
-			status = ERROR;
-		i++;
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+	i++;
 	}
-	return (status);
+	return (1);
 }
 
-static int	add_new_var(t_ctx *ctx, const char *name, const char *value)
+static void	print_export_var(t_env *var)
 {
-	t_env	*new;
+	ft_putstr_fd("declare -x ", STDOUT_FILENO);
+	ft_putstr_fd(var->id, STDOUT_FILENO);
+	if (var->value)
+	{
+		ft_putstr_fd("=\"", STDOUT_FILENO);
+		ft_putstr_fd(var->value, STDOUT_FILENO);
+		ft_putchar_fd('\"', STDOUT_FILENO);
+	}
+	ft_putchar_fd('\n', STDOUT_FILENO);
+}
 
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return (ERROR);
-	new->id = ft_strdup(name);
-	new->value = value ? ft_strdup(value) : NULL;
-	if (!new->id || (value && !new->value))
+static t_env	*find_next_var(t_env *env, char *last)
+{
+	t_env	*next;
+	t_env	*current;
+
+	next = NULL;
+	current = env;
+	while (current)
 	{
-		free_env_var(new);
-		return (ERROR);
+		if ((!last || ft_strcmp(current->id, last) > 0)
+			&& (!next || ft_strcmp(current->id, next->id) < 0))
+			next = current;
+	current = current->next;
 	}
-	new->raw = build_raw_string(name, value);
-	if (!new->raw)
+	return (next);
+}
+
+static int	display_sorted_env(t_ctx *ctx)
+{
+	t_env	*current;
+	char	*last;
+	int		i;
+	int		count;
+
+	count = 0;
+	current = ctx->envp;
+	while (current && ++count)
+	current = current->next;
+	last = NULL;
+	i = 0;
+	while (i < count)
 	{
-		free_env_var(new);
-		return (ERROR);
+		current = find_next_var(ctx->envp, last);
+		if (current)
+			print_export_var(current);
+		last = current->id;
+		i++;
 	}
-	new->next = ctx->envp;
-	ctx->envp = new;
 	return (SUCCESS);
 }
 
-static int	update_env_variable(t_ctx *ctx, const char *arg)
+int	builtin_export(t_cmd *cmd, t_ctx *ctx)
 {
-	char	*name;
-	char	*value;
-	t_env	*existing;
-	int		status;
+	int		i;
+	t_env	*env;
 
-	if (!is_valid_export_syntax(arg))
-		return (handle_builtin_error("export", arg, "not a valid identifier"));
-	if (extract_name_value(arg, &name, &value) == ERROR)
-		return (ERROR);
-	if (!is_valid_identifier(name))
+	if (!cmd->args[1])
+		return (display_sorted_env(ctx));
+	i = 0;
+	while (cmd->args[++i])
 	{
-		cleanup_name_value(name, value);
-		return (handle_builtin_error("export", arg, "not a valid identifier"));
+		if (!is_valid_identifier(cmd->args[i]))
+			return (handle_builtin_error("export", cmd->args[i],
+					"not a valid identifier"));
+		env = update_env_variable(ctx, cmd->args[i]);
+		if (!env)
+			return (ERROR);
 	}
-	existing = find_existing_var(ctx->envp, name);
-	if (existing)
-		status = update_existing_var(existing, name, value);
-	else
-		status = add_new_var(ctx, name, value);
-	cleanup_name_value(name, value);
-	return (status);
+	return (SUCCESS);
 }

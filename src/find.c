@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:22:44 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/15 11:18:18 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:52:23 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*find_command_path(const char *cmd_name)
 
 	if (cmd_name == NULL)
 		return (NULL);
-	if (is_path(cmd_name)  == TRUE)
+	if (is_path(cmd_name) == TRUE)
 	{
 		if (access(cmd_name, F_OK) == SYSCALL_SUCCESS)
 			return (ft_strdup(cmd_name));

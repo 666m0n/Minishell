@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/17 15:11:42 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:20:49 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 	while (current)
 	{
 		pid_array[position] = fork_pipeline_process(current, pipe_array,
-			position, nb_of_pipes, ctx);
+				position, nb_of_pipes, ctx);
 		if (pid_array[position] == SYSCALL_ERROR)
 		{
 			cleanup_remaining_pipes(pipe_array, nb_of_pipes);

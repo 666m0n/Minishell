@@ -3,91 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 11:05:03 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/17 15:28:07 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:09:59 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-t_bool	is_valid_export_syntax(const char *arg)
-{
-	int	i;
 
-	if (!arg || !*arg)
-		return (FALSE);
-	i = 0;
-	while (arg[i] && arg[i] != '=')
-		i++;
-	if (i == 0)
-		return (FALSE);
-	return (TRUE);
+t_env	*find_existing_var(t_env *env, const char *name)
+{
+	t_env	*current;
+	int		len;
+
+	len = 0;
+	while (name[len] && name[len] != '=')
+		len++;
+	current = env;
+	while (current)
+	{
+		if (!ft_strncmp(current->id, name, len) && !current->id[len])
+			return (current);
+		current = current->next;
+	}
+	return (NULL);
 }
 
-t_bool	is_valid_identifier(const char *name)
+char	*extract_value(const char *arg)
 {
-	int	i;
+	char	*eq;
 
-	if (!name || !*name)
-		return (FALSE);
-	if (!ft_isalpha(name[0]) && name[0] != '_')
-		return (FALSE);
-	i = 1;
-	while (name[i])
-	{
-		if (!ft_isalnum(name[i]) && name[i] != '_')
-			return (FALSE);
-		i++;
-	}
-	return (TRUE);
-}
-
-int	extract_name_value(const char *arg, char **name, char **value)
-{
-	char	*equals;
-
-	*name = NULL;
-	*value = NULL;
-	equals = ft_strchr(arg, '=');
-	if (equals)
-	{
-		*name = ft_strndup(arg, equals - arg);
-		*value = ft_strdup(equals + 1);
-		if (!*name || !*value)
-		{
-			cleanup_name_value(*name, *value);
-			return (ERROR);
-		}
-	}
-	else
-	{
-		*name = ft_strdup(arg);
-		if (!*name)
-			return (ERROR);
-	}
-	return (SUCCESS);
-}
-
-char	*build_raw_string(const char *name, const char *value)
-{
-	char	*raw;
-	char	*temp;
-
-	if (!value)
-		return (ft_strdup(name));
-	temp = ft_strjoin(name, "=");
-	if (!temp)
+	eq = ft_strchr(arg, '=');
+	if (!eq)
 		return (NULL);
-	raw = ft_strjoin(temp, value);
-	free(temp);
-	return (raw);
+	return (ft_strdup(eq + 1));
 }
 
-void	cleanup_name_value(char *name, char *value)
+t_env	*create_var(const char *arg, char *value)
 {
-	if (name)
-		free(name);
-	if (value)
-		free(value);
+	t_env	*new;
+	int		len;
+
+	len = 0;
+	while (arg[len] && arg[len] != '=')
+		len++;
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	new->id = ft_strndup(arg, len);
+	new->value = value;
+	new->raw = ft_strdup(arg);
+	new->next = NULL;
+	if (!new->id || !new->raw)
+	{
+		free_env_var(new);
+		return (NULL);
+	}
+	return (new);
+}
+
+t_env	*update_env_variable(t_ctx *ctx, char *arg)
+{
+	t_env	*var;
+	char	*new_value;
+
+	var = find_existing_var(ctx->envp, arg);
+	new_value = extract_value(arg);
+	if (var)
+	{
+		free(var->value);
+		free(var->raw);
+		var->value = new_value;
+		var->raw = ft_strdup(arg);
+		if (!var->raw)
+			return (NULL);
+		return (var);
+	}
+	var = create_var(arg, new_value);
+	if (!var)
+		return (NULL);
+	var->next = ctx->envp;
+	ctx->envp = var;
+	return (var);
 }

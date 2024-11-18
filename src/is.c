@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 16:19:01 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/11/15 11:21:41 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:58:40 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,11 @@ t_bool	is_simple_command(t_cmd *cmd)
 		return (TRUE);
 	else
 		return (FALSE);
+}
+
+t_bool	is_valid_command(t_cmd *cmd)
+{
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return (FALSE);
+	return (TRUE);
 }

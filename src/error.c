@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/16 23:29:22 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:50:56 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ static int	print_error(const char *cmd_name, const char *arg, const char *msg)
 ** @param error_code: code d'erreur
 ** @return: code d'erreur approprié
 */
-int handle_command_error(t_cmd *cmd, int error_code)
+int	handle_command_error(t_cmd *cmd, int error_code)
 {
-	const char *cmd_name;
+	const char	*cmd_name;
 
 	cmd_name = get_cmd_name(cmd);
 	if (cmd_name == NULL)
@@ -81,7 +81,7 @@ int handle_command_error(t_cmd *cmd, int error_code)
 ** @param msg: message d'erreur
 ** @return: ERROR après affichage du message
 */
-int handle_builtin_error(const char *builtin, const char *arg, const char *msg)
+int	handle_builtin_error(const char *builtin, const char *arg, const char *msg)
 {
 	return (print_error(builtin, arg, msg));
 }
@@ -95,7 +95,8 @@ int	handle_syntax_error(const char *token)
 {
 	if (token)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
+		ft_putstr_fd("minishell: \
+			syntax error near unexpected token `", STDERR_FILENO);
 		ft_putstr_fd((char *)token, STDERR_FILENO);
 		ft_putstr_fd("'\n", STDERR_FILENO);
 	}
@@ -110,7 +111,7 @@ int	handle_syntax_error(const char *token)
 ** @param syscall: nom de l'appel système échoué
 ** @return: MEMORY_ERROR si plus de mémoire, ERROR sinon
 */
-int handle_system_error(const char *syscall)
+int	handle_system_error(const char *syscall)
 {
 	print_error(syscall, NULL, strerror(errno));
 	if (errno == ENOMEM)

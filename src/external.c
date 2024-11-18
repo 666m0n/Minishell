@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/16 23:00:20 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:51:33 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
 	{
 		cleanup_fds(cmd);
 		exit(MEMORY_ERROR);
-    }
+	}
 	execve(cmd->path, cmd->args, env_array);
 	ft_free_array(env_array);
 	cleanup_fds(cmd);
@@ -84,10 +84,10 @@ void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
 ** @param cmd: commande à préparer
 ** @return: SUCCESS ou code d'erreur approprié
 */
-int prepare_exec(t_cmd *cmd)
+int	prepare_exec(t_cmd *cmd)
 {
 	const char	*cmd_name;
-	char 		*path;
+	char		*path;
 
 	cmd_name = get_cmd_name(cmd);
 	if (cmd_name == NULL)
@@ -110,4 +110,3 @@ int prepare_exec(t_cmd *cmd)
 	free(path);
 	return (SUCCESS);
 }
-
