@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/16 13:25:53 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:03:20 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,6 @@ typedef struct s_lexer
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }	t_lexer;
-
-typedef struct s_redirection
-{
-	t_token					type;
-	char					*file;
-	struct s_redirection	*next;
-}	t_redirection;
-
-typedef struct s_cmd
-{
-	char				**args;
-	t_redirection		*redirections;
-	struct s_cmd		*next;
-	struct s_cmd		*prev;
-	char				*path;
-	int					index;
-	int					stdin_backup;
-	int					stdout_backup;
-}	t_cmd;
 
 //lexer
 t_lexer		*lexer(char *input);
