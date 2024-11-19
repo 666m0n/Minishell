@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 19:00:48 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:39:20 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,17 @@ void	quotes_handler(t_lexer **tokens, char **str)
 
 	quote = **str;
 	start = ++(*str);
-	while (**str && **str != quote)
+	while (**str)
+	{
+		if (**str == quote)
+        {
+            if ((*(*str + 1)) == '\0' ||
+                ft_isspace(*(*str + 1)) ||
+                ft_strchr(IS_TOKEN, *(*str + 1)))
+                break;
+        }
 		(*str)++;
+	}
 	content = ft_substr(start, 0, *str - start);
 	if (content[0] == '\0')
 	{

@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 22:52:49 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 20:43:36 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:16:49 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_tokens(t_lexer *tokens)
 	while (current)
 	{
 		printf("Token %d:\n", i++);
-		printf("  Content: '%s'\n", current->content);
+		printf("  Content: %s\n", current->content);
 		printf("  Type: ");
 		switch (current->type)
 		{
