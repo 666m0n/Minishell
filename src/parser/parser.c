@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 19:51:16 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:54:08 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,22 @@ static void	init_cmd(t_cmd **head, t_cmd **curr)
 	(*curr)->index = 0;
 }
 
-t_cmd	*parser(t_lexer *tokens, t_ctx *data)
+t_cmd	*parser(t_lexer **tokens, t_ctx data)
 {
-	t_cmd			*head;
-	t_cmd			*current_cmd;
-	t_lexer			*tmp;
+	int	error;
 
-	head = NULL;
-	current_cmd = NULL;
-	tmp = tokens;
-	init_cmd(&head, &current_cmd);
-	handle_dollar(tmp, data);
-	process_pars(current_cmd, tmp, data);
-	return (head);
+	error = 0;
+	if (handle_quotes(*tokens) != 0)
+		error = 1;
+	else if (expand_and_quotes(*tokens) != 0)
+		error = 1;
+	else if (remove_null(tokens) != 0)
+		error = 1;
+	else if (check_all_null(*tokens) != 0)
+		error = 1;
+	else if (handle_cmd(*tokens) != 0)
+		error = 1;
+	else if (handle_heredoc(*tokens) != 0)
+		error = 1;
+
 }
