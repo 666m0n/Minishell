@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/16 13:23:55 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:32:59 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ int	check_quotes(char *s)
 	return (0);
 }
 
+//test
+static void	handle_consecutive_quotes(t_lexer **tokens, char **str)
+{
+	if (**str == '"' || **str == '\'')
+	{
+		quotes_handler(tokens, str);
+		if (**str == '"' || **str == '\'')
+			handle_consecutive_quotes(tokens, str);
+	}
+}
+
 static int	check_tokens(char **str, t_lexer **tokens)
 {
 	char	unknown[2];
@@ -43,7 +54,7 @@ static int	check_tokens(char **str, t_lexer **tokens)
 	else if (ft_strchr(IS_REDIRECTION, **str))
 		return (redir_handler(tokens, str), 1);
 	else if (**str == '\'' || **str == '"')
-		return (quotes_handler(tokens, str), 1);
+		return (handle_consecutive_quotes(tokens, str), 1);
 	else if (**str == '&')
 	{
 		if (*(*str + 1) == '&')

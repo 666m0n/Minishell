@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:30:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 19:01:14 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:22:20 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*expand_case(t_ctx *data, char *s, int start, int *i)
 	char	*to_ret;
 
 	to_ret = NULL;
-	if (s[(*i)++] == '?' && data->exit_code >= 0)
+	if (s[(*i)++] == '?')
 		return (ft_itoa(data->exit_code));
 	else if (ft_isdigit(s[start]))
 	{
@@ -73,22 +73,22 @@ static char	*expand_zero(char *s, int start, int *i)
 	return (free(ifzero), to_ret);
 }
 
-char	*replace_var(char *s, t_ctx *data, int *i)
+char *replace_var(char *s, t_ctx *data, int *i)
 {
-	int	start;
+    int start;
 
-	start = *i + 1;
-	(*i)++;
-	while (s[*i] && (s[*i] == '_' || ft_isalnum(s[*i]) || s[*i] == '?'))
-	{
-		if (s[*i] == '$' || s[*i] == '?')
-			break ;
-		(*i)++;
-	}
-	if (s[*i] == '\0')
-		(*i)--;
-	if (s[start] == '0')
-		return (expand_zero(s, start, i));
-	else
-		return (expand_case(data, s, start, i));
+    start = *i + 1;
+    (*i)++;
+    while (s[*i])
+    {
+        if (!ft_isalnum(s[*i]) && s[*i] != '_' && s[*i] != '?')
+            break;
+        (*i)++;
+    }
+    if (s[*i] == '\0')
+        (*i)--;
+    if (s[start] == '0')
+        return (expand_zero(s, start, i));
+    else
+        return (expand_case(data, s, start, i));
 }

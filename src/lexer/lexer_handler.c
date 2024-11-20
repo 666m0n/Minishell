@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 19:00:48 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:14:52 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	space_handler(t_lexer **tokens, char **str)
 	free(new);
 }
 
-void	quotes_handler(t_lexer **tokens, char **str)
+/* void	quotes_handler(t_lexer **tokens, char **str)
 {
 	char	quote;
 	char	*start;
@@ -116,5 +116,50 @@ void	quotes_handler(t_lexer **tokens, char **str)
 	else
 		create_token(T_UNKNOWN, ft_strjoin(ft_strdup(start - 1), content),
 			tokens);
+	free(content);
+} */
+
+static int	get_quote_content(char **str, char **content, char quote)
+{
+    char    *start;
+    int     len;
+    char    curr_quote;
+    int     quote_count;
+
+    start = ++(*str);
+    len = 0;
+    quote_count = 1;  // On a déjà vu une quote
+    while (**str)
+    {
+        curr_quote = **str;
+        if (curr_quote == quote)
+        {
+            quote_count++;
+            if (quote_count % 2 == 0)  // Quote fermante trouvée
+                break;
+        }
+        (*str)++;
+        len++;
+    }
+    *content = ft_substr(start, 0, len);
+    if (!*content)
+        return (0);
+    if (**str == quote)
+        (*str)++;
+    return (1);
+}
+
+void	quotes_handler(t_lexer **tokens, char **str)
+{
+	char	*content;
+	char	quote;
+
+	quote = **str;
+	if (!get_quote_content(str, &content, quote))
+		return ;
+	if (quote == '\'')
+		create_token(T_SQUOTE, content, tokens);
+	else
+		create_token(T_DQUOTE, content, tokens);
 	free(content);
 }
