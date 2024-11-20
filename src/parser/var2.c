@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:30:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 19:01:14 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:53:45 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*expand_case(t_ctx *data, char *s, int start, int *i)
 	char	*to_ret;
 
 	to_ret = NULL;
-	if (s[(*i)++] == '?' && data->exit_code >= 0)
+	if (s[(*i)++] == '?')
 		return (ft_itoa(data->exit_code));
 	else if (ft_isdigit(s[start]))
 	{

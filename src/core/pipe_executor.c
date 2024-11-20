@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_executor.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 18:04:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:47:44 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,19 @@ static void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array, \
 {
 	int	status;
 
+    if (has_redirection(cmd))
+    {
+        status = setup_redirections(cmd);
+        if (status != SUCCESS)
+        {
+            cleanup_fds(cmd);
+            exit(status);
+        }
+    }
 	configure_pipe_fds(pipe_array, position, nb_of_pipes);
 	close_unused_pipes(pipe_array, position, nb_of_pipes);
 	if (is_builtin(cmd->args[0]))
-		status = exec_builtin(cmd, ctx);
+		status = exec_builtin(cmd, ctx, TRUE);
 	else
 	{
 		status = prepare_exec(cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 18:09:08 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:39:39 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int				execute_command(t_cmd *cmd, t_ctx *ctx);
 /* Command Execution */
 int				exec_simple(t_cmd *cmd, t_ctx *ctx);
 int				exec_pipe(t_cmd *cmd, t_ctx *ctx);
-int				exec_builtin(t_cmd *cmd, t_ctx *ctx);
+int				exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections);
 void			exec_in_child(t_cmd *cmd, t_ctx *ctx);
 int				prepare_exec(t_cmd *cmd);
 

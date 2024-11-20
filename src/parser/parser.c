@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 19:51:16 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:03:54 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,17 @@ static void	init_cmd(t_cmd **head, t_cmd **curr)
 	(*curr)->next = NULL;
 	(*curr)->prev = NULL;
 	(*curr)->index = 0;
+    // Ajout MANU
+    (*curr)->fd = ft_calloc(sizeof(t_fd_state), 1);
+    if ((*curr)->fd)
+    {
+        (*curr)->fd->stdin_backup = -1;
+        (*curr)->fd->stdout_backup = -1;
+        (*curr)->fd->pipe_read = -1;
+        (*curr)->fd->pipe_write = -1;
+        (*curr)->fd->curr_in = -1;
+        (*curr)->fd->curr_out = -1;
+    }
 }
 
 t_cmd	*parser(t_lexer *tokens, t_ctx *data)

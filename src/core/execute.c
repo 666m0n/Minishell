@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 18:03:43 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:09:28 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,20 +110,19 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 ** @return: code de sortie du builtin
 ** Note: gère les redirections si présentes
 */
-int	exec_builtin(t_cmd *cmd, t_ctx *ctx)
+int	exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections)
 {
 	builtin_func	builtin;
 	const char		*cmd_name;
 	int				status;
 
 	cmd_name = get_cmd_name(cmd);
-
 	if (!cmd_name)
 		return (ERROR);
 	builtin = get_builtin_function(cmd_name);
 	if (!builtin)
 		return (ERROR);
-	if (has_redirection(cmd))
+	if (has_redirection(cmd) && skip_redirections == FALSE)
 	{
 		status = setup_redirections(cmd);
 		if (status != SUCCESS)
@@ -159,7 +158,7 @@ int	execute_command(t_cmd *cmd, t_ctx *ctx)
 	if (!cmd_name)
 		return (CMD_NOT_FOUND);
 	if (is_builtin(cmd_name) == TRUE)
-		status = exec_builtin(cmd, ctx);
+		status = exec_builtin(cmd, ctx, FALSE);
 	else if (is_simple_command(cmd) == TRUE)
 		status = exec_simple(cmd, ctx);
 	else

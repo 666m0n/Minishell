@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 18:19:06 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:08:41 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,18 @@ int	apply_output_redirection(t_cmd *cmd)
 
 	type = cmd->redirections->type;
 	file = cmd->redirections->file;
+    ft_printf("Debug: Redirection type: %d\n", type);
+    ft_printf("Debug: File to open: %s\n", file);
 	if (type == T_REDIROUT)
-		flags = O_WRONLY | O_CREAT | O_TRUNC;
+	{
+	    flags = O_WRONLY | O_CREAT | O_TRUNC;
+        ft_printf("Debug: REDIR_OUT with flags: %d\n", flags);
+    }
 	else
-		flags = O_WRONLY | O_CREAT | O_APPEND;
+	{
+	    flags = O_WRONLY | O_CREAT | O_APPEND;
+        ft_printf("Debug: APPEND with flags: %d\n", flags);
+    }
 	new_fd = open(file, flags, 0644);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));
