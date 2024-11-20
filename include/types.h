@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 18:49:58 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:27:30 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,14 @@ typedef struct s_env
 	char			*value;			/* Variable value */
 }	t_env;
 
+/* Redirection management */
+typedef struct s_redirection
+{
+	struct s_redirection	*next;	/* Next redirection */
+	char					*file;	/* Redirection target */
+	t_token					type;	/* Redirection type */
+}	t_redirection;
+
 /* FDs management */
 typedef struct s_fd_state
 {
@@ -75,15 +83,9 @@ typedef struct s_fd_state
 	int	pipe_write;					/* Pour heredoc */
 	int	curr_in;					/* FD d'entrée actuel */
 	int	curr_out;					/* FD de sortie actuel */
+    t_redirection   *last_in;       // Pour garder la dernière redirection d'entrée
+    t_redirection   *last_out;      // Pour garder la dernière redirection de sortie
 }	t_fd_state;
-
-/* Redirection management */
-typedef struct s_redirection
-{
-	struct s_redirection	*next;	/* Next redirection */
-	char					*file;	/* Redirection target */
-	t_token					type;	/* Redirection type */
-}	t_redirection;
 
 /* Command structure */
 typedef struct s_cmd

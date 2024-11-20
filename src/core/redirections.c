@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/20 13:21:36 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:23:48 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,15 @@
 */
 int	handle_redirections(t_cmd *cmd)
 {
-    ft_printf("Debug: Entering handle_redirections\n");
 	int	status;
-    ft_printf("Debug: curr_in: %d, curr_out: %d\n", cmd->fd->curr_in, cmd->fd->curr_out);
 	if (cmd->fd->curr_in > 0)
 	{
-        ft_printf("Debug: Handling input redirection\n");
 		status = apply_input_redirection(cmd);
 		if (status != SUCCESS)
 			return (status);
 	}
 	if (cmd->fd->curr_out > 0)
 	{
-        ft_printf("Debug: Handling output redirection\n");
 		status = apply_output_redirection(cmd);
 		if (status != SUCCESS)
 			return (status);
@@ -45,24 +41,29 @@ int	handle_redirections(t_cmd *cmd)
 ** @param cmd: structure de commande
 ** Met à jour curr_in et curr_out avec les dernières redirections valides
 */
-void	find_final_redirections(t_cmd *cmd)
+void    find_final_redirections(t_cmd *cmd)
 {
-    ft_printf("Debug: Entering find_final_redirections\n");
-	t_redirection	*current;
+    t_redirection    *current;
 
-	cmd->fd->curr_in = -1;
-	cmd->fd->curr_out = -1;
-	current = cmd->redirections;
-	while (current)
-	{
-        ft_printf("Debug: Redirection type: %d\n", current->type);
-		if (current->type == T_REDIRIN || current->type == T_HEREDOC)
-			cmd->fd->curr_in = 1;
-		else if (current->type == T_REDIROUT || current->type == T_APPEND)
-			cmd->fd->curr_out = 1;
-		current = current->next;
-	}
-    ft_printf("Debug: Final curr_in: %d, curr_out: %d\n", cmd->fd->curr_in, cmd->fd->curr_out);
+    cmd->fd->curr_in = -1;
+    cmd->fd->curr_out = -1;
+    cmd->fd->last_in = NULL;
+    cmd->fd->last_out = NULL;
+    current = cmd->redirections;
+    while (current)
+    {
+        if (current->type == T_REDIRIN || current->type == T_HEREDOC)
+        {
+            cmd->fd->curr_in = 1;
+            cmd->fd->last_in = current;
+        }
+        else if (current->type == T_REDIROUT || current->type == T_APPEND)
+        {
+            cmd->fd->curr_out = 1;
+            cmd->fd->last_out = current;
+        }
+        current = current->next;
+    }
 }
 
 /*

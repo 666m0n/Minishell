@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/20 13:08:41 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:26:00 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	apply_input_redirection(t_cmd *cmd)
 	t_token	type;
 	char	*file;
 
-	type = cmd->redirections->type;
-	file = cmd->redirections->file;
+    type = cmd->fd->last_in->type;
+    file = cmd->fd->last_in->file;
 	if (type == T_HEREDOC)
 		return (1);
 		/* return (setup_heredoc(cmd)); */
@@ -53,10 +53,10 @@ int	apply_output_redirection(t_cmd *cmd)
 	t_token	type;
 	char	*file;
 
-	type = cmd->redirections->type;
-	file = cmd->redirections->file;
+    type = cmd->fd->last_out->type;
+    file = cmd->fd->last_out->file;
     ft_printf("Debug: Redirection type: %d\n", type);
-    ft_printf("Debug: File to open: %s\n", file);
+    ft_printf("Debug: Valeur fd out : %d\n", cmd->fd->curr_out);
 	if (type == T_REDIROUT)
 	{
 	    flags = O_WRONLY | O_CREAT | O_TRUNC;
