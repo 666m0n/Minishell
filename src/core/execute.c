@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/20 13:09:28 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:52:11 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 	pid_t	*pid_array;
 	int		position;
 	int		status;
-
+    
 	if (init_pipeline(nb_of_pipes, &pid_array) != SUCCESS)
 		return (ERROR);
 	current = cmd;
@@ -142,27 +142,22 @@ int	exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections)
 ** @return: code de sortie de la commande
 ** Note: détecte le type (builtin/simple/pipe) et redirige
 */
-int	execute_command(t_cmd *cmd, t_ctx *ctx)
+int execute_command(t_cmd *cmd, t_ctx *ctx)
 {
-	const char	*cmd_name;
-	int			status;
+    const char  *cmd_name;
+    int         status;
 
-	if (!cmd || !ctx)
-		return (ERROR);
-	// TO DO
-	// Phase de prétraitement des heredocs
-    // status = preprocess_heredocs(cmd);
-    // if (status != SUCCESS)
-    //   return (status);
-	cmd_name = get_cmd_name(cmd);
-	if (!cmd_name)
-		return (CMD_NOT_FOUND);
-	if (is_builtin(cmd_name) == TRUE)
-		status = exec_builtin(cmd, ctx, FALSE);
-	else if (is_simple_command(cmd) == TRUE)
-		status = exec_simple(cmd, ctx);
-	else
-		status = exec_pipe(cmd, ctx);
-	set_exit_status(cmd, status);
-	return (status);
+    if (!cmd || !ctx)
+        return (ERROR);
+    cmd_name = get_cmd_name(cmd);
+    if (!cmd_name)
+        return (CMD_NOT_FOUND);
+    if (is_simple_command(cmd) == FALSE)
+        status = exec_pipe(cmd, ctx);
+    else if (is_builtin(cmd_name) == TRUE)
+        status = exec_builtin(cmd, ctx, FALSE);
+    else
+        status = exec_simple(cmd, ctx);
+    set_exit_status(cmd, status);
+    return (status);
 }

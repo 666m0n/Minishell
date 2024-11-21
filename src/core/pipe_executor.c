@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/20 12:47:44 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:50:08 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,32 +21,24 @@
 ** @param ctx: contexte du shell
 ** Note: ne retourne jamais, termine le processus
 */
-static void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array, \
-									int position, int nb_of_pipes, t_ctx *ctx)
+void execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array, 
+                            int position, int nb_of_pipes, t_ctx *ctx)
 {
-	int	status;
-
+    configure_pipe_fds(pipe_array, position, nb_of_pipes);
+    close_unused_pipes(pipe_array, position, nb_of_pipes);
     if (has_redirection(cmd))
     {
-        status = setup_redirections(cmd);
-        if (status != SUCCESS)
-        {
-            cleanup_fds(cmd);
-            exit(status);
-        }
+        if (setup_redirections(cmd) != SUCCESS)
+            exit(ERROR);
     }
-	configure_pipe_fds(pipe_array, position, nb_of_pipes);
-	close_unused_pipes(pipe_array, position, nb_of_pipes);
-	if (is_builtin(cmd->args[0]))
-		status = exec_builtin(cmd, ctx, TRUE);
-	else
-	{
-		status = prepare_exec(cmd);
-		if (status != SUCCESS)
-			exit(handle_command_error(cmd, status));
-		exec_in_child(cmd, ctx);
-	}
-	exit(status);
+    if (is_builtin(cmd->args[0]))
+        exit(exec_builtin(cmd, ctx, TRUE));
+    else
+    {
+        if (prepare_exec(cmd) != SUCCESS)
+            exit(ERROR);
+        exec_in_child(cmd, ctx);
+    }
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/20 15:23:48 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:50:34 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,7 @@ int	save_fd(t_cmd *cmd)
 */
 int	setup_redirections(t_cmd *cmd)
 {
-    ft_printf("Debug: Entering setup_redirections\n");
-    ft_printf("Debug: Redirection chain: %p\n", (void*)cmd->redirections);
-	int				status;
+	int status;
 
     if (!cmd->fd)
     {

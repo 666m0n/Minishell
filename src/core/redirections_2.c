@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/20 15:26:00 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/21 12:12:35 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,13 @@ int	apply_output_redirection(t_cmd *cmd)
 
     type = cmd->fd->last_out->type;
     file = cmd->fd->last_out->file;
-    ft_printf("Debug: Redirection type: %d\n", type);
-    ft_printf("Debug: Valeur fd out : %d\n", cmd->fd->curr_out);
 	if (type == T_REDIROUT)
 	{
 	    flags = O_WRONLY | O_CREAT | O_TRUNC;
-        ft_printf("Debug: REDIR_OUT with flags: %d\n", flags);
     }
 	else
 	{
 	    flags = O_WRONLY | O_CREAT | O_APPEND;
-        ft_printf("Debug: APPEND with flags: %d\n", flags);
     }
 	new_fd = open(file, flags, 0644);
 	if (new_fd == SYSCALL_ERROR)
