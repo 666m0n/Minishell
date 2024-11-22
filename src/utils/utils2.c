@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 20:33:28 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 20:34:24 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 20:31:16 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,42 @@ size_t	ft_strcpy(char *dest, const char *src)
 	}
 	dest[i] = '\0';
 	return (i);
+}
+
+void	skip_consecutive_quotes(char **str, char quote_type, int *effective_q)
+{
+	int		count;
+	char	*ptr;
+
+	ptr = *str;
+	count = 0;
+	while (*ptr == quote_type)
+	{
+		count++;
+		ptr++;
+	}
+	*effective_q = (count % 2);
+	if (count % 2 == 0)
+		*str = ptr;
+	else
+		(*str)++;
+}
+
+t_token	get_quote_type(char quote)
+{
+	if (quote == '"')
+		return (T_DQUOTE);
+	return (T_SQUOTE);
+}
+
+char	*get_quote_content(char **str, char quote)
+{
+	char	*start;
+	char	*content;
+
+	start = *str;
+	while (**str && **str != quote)
+		(*str)++;
+	content = ft_substr(start, 0, *str - start);
+	return (content);
 }

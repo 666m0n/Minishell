@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 18:51:57 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 20:31:33 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void		redir_handler(t_lexer **token, char **str);
 void		pipe_handler(t_lexer **tokens, char **str);
 void		space_handler(t_lexer **tokens, char **str);
 void		quotes_handler(t_lexer **tokens, char **str);
-
+void		skip_consecutive_quotes(char **str, char quote_type,
+				int *effective_q);
+t_token		get_quote_type(char quote);
+char		*get_quote_content(char **str, char quote);
 
 //parser
 t_cmd		*parser(t_lexer *tokens, t_ctx *data);
@@ -43,10 +46,12 @@ int			is_cmd(t_token type);
 void		extend_cmd(t_cmd **cmd, t_ctx *data);
 void		handle_redir(t_cmd *cmd, t_lexer **tokens);
 void		process_pars(t_cmd *cmd, t_lexer *tokens, t_ctx *data);
+size_t		get_var_len(char *s, size_t *i);
+
 
 //dollar expansion
 void		handle_dollar(t_lexer *token, t_ctx *data);
-char		*replace_var(char *s, t_ctx *data, int *i);
+char		*replace_var(char *s, t_ctx *data, size_t *i);
 char		*get_env_value(t_env *env, char *var_name);
 
 //test

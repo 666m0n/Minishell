@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/20 16:14:06 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:05:59 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*copy_str(char *str, char c)
 	return (new_str);
 }
 
-static char	*expand_var(char *s, t_ctx *data, int *i, char *result)
+static char	*expand_var(char *s, t_ctx *data, size_t *i, char *result)
 {
 	char	*tmp;
 	char	*new_res;
@@ -58,10 +58,10 @@ static char	*expand_var(char *s, t_ctx *data, int *i, char *result)
 	return (new_res);
 }
 
-/* static char	*replace_dollar(char *s, t_ctx *data)
+static char	*replace_dollar(char *s, t_ctx *data)
 {
-	int		i;
-	char	*result;
+	size_t		i;
+	char		*result;
 
 	i = 0;
 	result = ft_strdup("");
@@ -74,65 +74,20 @@ static char	*expand_var(char *s, t_ctx *data, int *i, char *result)
 			result = expand_var(s, data, &i, result);
 			if (!result)
 				return (NULL);
+			i += get_var_len(s, &i);
 		}
 		else
 		{
-			result = copy_str(result, s[i++]);
+			result = copy_str(result, s[i]);
 			if (!result)
 				return (NULL);
 		}
-	}
-	return (result);
-} */
-
-static char	*expand_content(char *s, t_ctx *data, int *i, char *result)
-{
-	int	b = *i;
-	while (s[b] && s[b] != '$')
-		b++;
-	if (s[b] == '$')
-	{
-		*i = b;
-		result = expand_var(s, data, i, result);
-		if (!result)
-			return (NULL);
-	}
-	else
-	{
-		result = copy_str(result, s[*i]);
-		if (!result)
-			return (NULL);
-		(*i)++;
+		i++;
 	}
 	return (result);
 }
 
-static char	*replace_dollar(char *s, t_ctx *data, t_token type)
-{
-	int		i;
-	char	*result;
-	t_bool	in_squote;
-
-	i = 0;
-	in_squote = FALSE;
-	result = ft_strdup("");
-	if (!result)
-		return (NULL);
-	while (s[i])
-	{
-		if (s[i] == '\'')
-			in_squote = TRUE;
-		if ((in_squote == FALSE) || (in_squote == TRUE && type == T_DQUOTE))
-			result = expand_content(s, data, &i, result);
-		else
-			result = copy_str(result, s[i++]);
-		if (!result)
-			return (NULL);
-	}
-	return (result);
-}
-
-/* void	handle_dollar(t_lexer *token, t_ctx *data)
+void	handle_dollar(t_lexer *token, t_ctx *data)
 {
 	char	*new_token;
 
@@ -154,31 +109,4 @@ static char	*replace_dollar(char *s, t_ctx *data, t_token type)
 		}
 		token = token->next;
 	}
-} */
-
-void handle_dollar(t_lexer *token, t_ctx *data)
-{
-    char    *new_token;
-    t_bool  should_expand;
-
-    while (token)
-    {
-        should_expand = (token->type == T_DQUOTE) ||
-                       (token->type == T_STRING) ||
-                       (token->type == T_CMD && token->content[0] == '$');
-
-        if (should_expand &&
-            !(token->prev && token->prev->type == T_HEREDOC) &&
-            !(token->prev && token->prev->type == T_SPACE &&
-              token->prev->prev && token->prev->prev->type == T_HEREDOC))
-        {
-            new_token = replace_dollar(token->content, data, token->type);
-            if (new_token)
-            {
-                free(token->content);
-                token->content = new_token;
-            }
-        }
-        token = token->next;
-    }
 }
