@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 22:21:31 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 22:24:13 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ void	space_handler(t_lexer **tokens, char **str)
 	free(new);
 }
 
+
+// le probleme ici est surement lie a une incrementation en trop
 void	quotes_handler(t_lexer **tokens, char **str)
 {
 	char	quote;
