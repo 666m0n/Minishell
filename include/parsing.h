@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 20:31:33 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 22:02:08 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		redir_handler(t_lexer **token, char **str);
 void		pipe_handler(t_lexer **tokens, char **str);
 void		space_handler(t_lexer **tokens, char **str);
 void		quotes_handler(t_lexer **tokens, char **str);
-void		skip_consecutive_quotes(char **str, char quote_type,
+void		skip_consecutive_quotes(char **str, char *quote_type,
 				int *effective_q);
 t_token		get_quote_type(char quote);
 char		*get_quote_content(char **str, char quote);

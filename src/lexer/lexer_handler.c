@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 20:29:54 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 22:21:31 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,24 +93,24 @@ void	space_handler(t_lexer **tokens, char **str)
 void	quotes_handler(t_lexer **tokens, char **str)
 {
 	char	quote;
-	char	*start;
 	char	*content;
-	int		*effective_q;
+	int		effective_q;
 
+	if (!str || !*str)
+		return ;
 	quote = **str;
-	skip_consecutive_quotes(str, quote, effective_q);
-	if (**str != '\'' && **str != '"')
-
-	start = ++(*str);
-	while (**str && **str != quote)
+	while (**str && (**str == '\'' || **str == '"'))
+	{
+		skip_consecutive_quotes(str, &quote, &effective_q);
 		(*str)++;
-	content = ft_substr(start, 0, *str - start);
+	}
+	if (!effective_q && **str && (**str == '\'' || **str == '"'))
+		quote = **str;
+	content = get_quote_content(str, quote);
 	if (content[0] == '\0')
 		return (free(content));
-	if (quote == '\'')
-		create_token(T_SQUOTE, content, tokens);
-	else
-		create_token(T_DQUOTE, content, tokens);
+	/* if (!effective_q && (**str == '$' || **str)) */
+	create_token(get_quote_type(quote), content, tokens);
 	(*str)++;
 	free(content);
 }

@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 20:33:28 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 20:31:16 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 22:15:18 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,27 @@ size_t	ft_strcpy(char *dest, const char *src)
 	return (i);
 }
 
-void	skip_consecutive_quotes(char **str, char quote_type, int *effective_q)
+void	skip_consecutive_quotes(char **str, char *quote_type, int *effective_q)
 {
 	int		count;
 	char	*ptr;
 
 	ptr = *str;
 	count = 0;
-	while (*ptr == quote_type)
+	while (*ptr == *quote_type)
 	{
 		count++;
 		ptr++;
 	}
 	*effective_q = (count % 2);
 	if (count % 2 == 0)
+	{
 		*str = ptr;
+		if (**str == '\'' || **str == '"')
+			*quote_type = **str;
+	}
 	else
-		(*str)++;
+		*str += count - 1;
 }
 
 t_token	get_quote_type(char quote)
@@ -79,9 +83,17 @@ char	*get_quote_content(char **str, char quote)
 	char	*start;
 	char	*content;
 
+	if (!str || !*str)
+		return (NULL);
 	start = *str;
 	while (**str && **str != quote)
+	{
+		if (!*str)
+			return (NULL);
 		(*str)++;
+	}
+	if (!*str)
+		return (NULL);
 	content = ft_substr(start, 0, *str - start);
 	return (content);
 }
