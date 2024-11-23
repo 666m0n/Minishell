@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/23 16:02:28 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:15:12 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,12 @@ void	handle_dollar(t_lexer *token, t_ctx *data)
 
 	while (token)
 	{
-		if ((token->type == T_STRING || token->type == T_DQUOTE) \
+		if ((token->type == T_STRING || token->type == T_DQUOTE || \
+			(token->type == T_CMD && token->content[0] == '$')) \
 			&& !(token->prev && token->prev->type == T_HEREDOC) \
 			&& !(token->prev && token->prev->type == T_SPACE \
-			&& token->prev->prev && token->prev->prev->type == T_HEREDOC))
+			&& token->prev->prev && \
+							token->prev->prev->type == T_HEREDOC))
 		{
 			new_token = replace_dollar(token->content, data);
 			if (new_token)

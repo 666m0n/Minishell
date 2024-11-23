@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 18:09:08 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:10:45 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 typedef int t_pipe[2];
 typedef int (*builtin_func)(t_cmd *, t_ctx *);
 
-# define PROMPT "\001\033[1;33m\002minishell >$ \001\033[0m\002"
+# define PROMPT "\001\033[1;93m\002minishell >$ \001\033[0m\002"
 # define DEFAULT_PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 /* Masque pour isoler les 8 bits de poids fort du statut */
