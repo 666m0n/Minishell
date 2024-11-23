@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 17:13:03 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:11:28 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,24 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	free(s1);
 	free(s2);
 	return (result);
+}
+
+//calcule la taille d'une variable
+size_t	get_var_len(char *s, size_t *i)
+{
+	size_t	y;
+
+	y = *i;
+	if (s[y + 1] >= '0' && s[y + 1] <= '9')
+		return (1);
+	else
+	{
+		y++;
+		while (s[y] && ((s[y] >= 'a' && s[y] <= 'z')
+				|| (s[y] >= 'A' && s[y] <= 'Z')
+				|| (s[y] >= '0' && s[y] <= '9')
+				|| s[y] == '_'))
+			y++;
+		return (y - *i - 1);
+	}
 }

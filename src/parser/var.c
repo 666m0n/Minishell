@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/19 14:20:34 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:02:28 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*copy_str(char *str, char c)
 	return (new_str);
 }
 
-static char	*expand_var(char *s, t_ctx *data, int *i, char *result)
+static char	*expand_var(char *s, t_ctx *data, size_t *i, char *result)
 {
 	char	*tmp;
 	char	*new_res;
@@ -60,8 +60,8 @@ static char	*expand_var(char *s, t_ctx *data, int *i, char *result)
 
 static char	*replace_dollar(char *s, t_ctx *data)
 {
-	int		i;
-	char	*result;
+	size_t		i;
+	char		*result;
 
 	i = 0;
 	result = ft_strdup("");
@@ -74,13 +74,15 @@ static char	*replace_dollar(char *s, t_ctx *data)
 			result = expand_var(s, data, &i, result);
 			if (!result)
 				return (NULL);
+			i += get_var_len(s, &i);
 		}
 		else
 		{
-			result = copy_str(result, s[i++]);
+			result = copy_str(result, s[i]);
 			if (!result)
 				return (NULL);
 		}
+		i++;
 	}
 	return (result);
 }

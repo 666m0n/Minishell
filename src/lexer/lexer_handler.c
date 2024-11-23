@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/19 13:39:20 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:01:19 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,40 +90,26 @@ void	space_handler(t_lexer **tokens, char **str)
 	free(new);
 }
 
+
+// le probleme ici est surement lie a une incrementation en trop
 void	quotes_handler(t_lexer **tokens, char **str)
 {
 	char	quote;
-	char	*start;
+	char	changed;
 	char	*content;
+	int		effective_q;
 
+	if (!str || !*str)
+		return ;
 	quote = **str;
-	start = ++(*str);
-	while (**str)
-	{
-		if (**str == quote)
-        {
-            if ((*(*str + 1)) == '\0' ||
-                ft_isspace(*(*str + 1)) ||
-                ft_strchr(IS_TOKEN, *(*str + 1)))
-                break;
-        }
+	changed = quote;
+	skip_consecutive_quotes(str, &quote, &effective_q);
+	if (**str == '\'' || **str == '"')
 		(*str)++;
-	}
-	content = ft_substr(start, 0, *str - start);
+	content = get_quote_content(str, quote, changed);
 	if (content[0] == '\0')
-	{
 		return (free(content));
-	}
-	if (**str == quote)
-	{
-		if (quote == '\'')
-			create_token(T_SQUOTE, content, tokens);
-		else
-			create_token(T_DQUOTE, content, tokens);
-		(*str)++;
-	}
-	else
-		create_token(T_UNKNOWN, ft_strjoin(ft_strdup(start - 1), content),
-			tokens);
+	create_token(get_quote_type(quote), content, tokens);
+	(*str)++;
 	free(content);
 }
