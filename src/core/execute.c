@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/21 12:52:11 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:10:00 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
 		return (PIPE_ERROR);
 	status = run_pipeline(cmd, pipe_array, nb_of_pipes, ctx);
 	free(pipe_array);
+    cleanup_fds(cmd);
 	return (status);
 }
 
@@ -96,6 +97,7 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 		exec_in_child(cmd, ctx);
 	if (waitpid(pid, &status, 0) == SYSCALL_ERROR)
 		return (handle_system_error("waitpid"));
+    cleanup_fds(cmd);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/22 10:20:19 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:34:15 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 */
 void	cleanup_fds(t_cmd *cmd)
 {
-	t_redirection	*redir;
+	t_redirection	*current;
 
+    ft_printf("Début cleanup_fds\n");
 	if (!cmd || !cmd->fd)
 		return ;
 	if (cmd->fd->stdin_backup > 2)
@@ -35,17 +36,22 @@ void	cleanup_fds(t_cmd *cmd)
 	cmd->fd->stdout_backup = -1;
 	cmd->fd->pipe_read = -1;
 	cmd->fd->pipe_write = -1;
-	redir = cmd->redirections;
-	while (redir)
+	// Nettoyage des fichiers temporaires des heredocs
+	current = cmd->redirections;
+	while (current)
 	{
-		if (redir->type == T_HEREDOC && redir->file
-			&& ft_strncmp(redir->file, "/tmp/heredoc_", 13) == 0)
+		ft_printf("Redirection trouvée - type: %d, fichier: %s\n", 
+			current->type, current->file);
+		ft_printf("Adresse de current: %p\n", (void*)current);
+		if (current->type == T_HEREDOC && current->file)
 		{
-			unlink(redir->file);
-			free(redir->file);
-			redir->file = NULL;
+			ft_printf("Tentative de suppression de: %s\n", current->file);
+			if (access(current->file, F_OK) != -1)
+				ft_printf("Le fichier existe\n");
+			else
+				ft_printf("Le fichier n'existe pas\n");
 		}
-		redir = redir->next;
+		current = current->next;
 	}
 }
 
