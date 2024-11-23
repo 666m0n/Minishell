@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 22:24:13 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:50:29 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,23 +95,20 @@ void	space_handler(t_lexer **tokens, char **str)
 void	quotes_handler(t_lexer **tokens, char **str)
 {
 	char	quote;
+	char	changed;
 	char	*content;
 	int		effective_q;
 
 	if (!str || !*str)
 		return ;
 	quote = **str;
-	while (**str && (**str == '\'' || **str == '"'))
-	{
-		skip_consecutive_quotes(str, &quote, &effective_q);
+	changed = quote;
+	skip_consecutive_quotes(str, &quote, &effective_q);
+	if (**str == '\'' || **str == '"')
 		(*str)++;
-	}
-	if (!effective_q && **str && (**str == '\'' || **str == '"'))
-		quote = **str;
-	content = get_quote_content(str, quote);
+	content = get_quote_content(str, quote, changed);
 	if (content[0] == '\0')
 		return (free(content));
-	/* if (!effective_q && (**str == '$' || **str)) */
 	create_token(get_quote_type(quote), content, tokens);
 	(*str)++;
 	free(content);

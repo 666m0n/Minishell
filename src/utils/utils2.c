@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 20:33:28 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 22:15:18 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:44:42 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,26 @@ void	skip_consecutive_quotes(char **str, char *quote_type, int *effective_q)
 		*str = ptr;
 		if (**str == '\'' || **str == '"')
 			*quote_type = **str;
+		else
+			*quote_type = '"';
+		return ;
 	}
 	else
 		*str += count - 1;
+	return ;
 }
 
 t_token	get_quote_type(char quote)
 {
 	if (quote == '"')
 		return (T_DQUOTE);
-	return (T_SQUOTE);
+	else if (quote == '\'')
+		return (T_SQUOTE);
+	else
+		return (T_DQUOTE);
 }
 
-char	*get_quote_content(char **str, char quote)
+char	*get_quote_content(char **str, char quote, char changed)
 {
 	char	*start;
 	char	*content;
@@ -86,6 +93,8 @@ char	*get_quote_content(char **str, char quote)
 	if (!str || !*str)
 		return (NULL);
 	start = *str;
+	if (changed != quote)
+		quote = changed;
 	while (**str && **str != quote)
 	{
 		if (!*str)
