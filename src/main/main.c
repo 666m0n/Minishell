@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/20 12:13:57 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:14:24 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_return	handle_loop(t_ctx *ctx)
 	char	*line;
 
 	line = NULL;
+    ft_printf("\033[2J\033[H"); // pour effacer l'écran
 	while (1)
 	{
 		line = readline(PROMPT);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:38:27 by sviallon          #+#    #+#             */
-/*   Updated: 2024/09/25 11:39:17 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:37:32 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	malloc_line(char **line, t_list *stash)
 	(*line)[len] = '\0';
 }
 
-size_t	ft_strlen(const char *s)
+/* size_t	ft_strlen(const char *s)
 {
 	int	i;
 
@@ -77,7 +77,7 @@ size_t	ft_strlen(const char *s)
 	while (*(s++))
 		i++;
 	return (i);
-}
+} */
 
 void	free_stash(t_list *stash)
 {

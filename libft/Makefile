@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
+#    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 10:06:44 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/18 18:22:48 by sviallon         ###   ########.fr        #
+#    Updated: 2024/11/22 16:47:35 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@ BLUE = \033[0;94m
 MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
+NEON_GREEN = \033[38;2;0;255;34m
+DARK = \033[38;2;65;65;65m
 
 #Sources
 
@@ -80,35 +82,35 @@ OBJSF		=	.cache_exists
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			@$(AR) $(NAME) $(OBJS)
-			@echo "$(GREEN)Libft compiled!$(DEF_COLOR)"
+	@$(AR) $(NAME) $(OBJS)
+#	@printf "\033[K$(DARK)Libft compiled ✓$(DEF_COLOR)\n"
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c | $(OBJSF)
-			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
-			@$(CC) $(CFLAGS) -MMD -MP -I $(INCLUDES) -c $< -o $@
+	@printf "\033[K$(NEON_GREEN)Compiling ➤ $<\r$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) -MMD -MP -I $(INCLUDES) -c $< -o $@
 
 $(OBJSF):
-			@mkdir -p $(OBJS_DIR)
-			@mkdir -p $(OBJS_DIR)$(FTIS_DIR)
-			@mkdir -p $(OBJS_DIR)$(FTMEM_DIR)
-			@mkdir -p $(OBJS_DIR)$(FTPUT_DIR)
-			@mkdir -p $(OBJS_DIR)$(FTTO_DIR)
-			@mkdir -p $(OBJS_DIR)$(FTSTR_DIR)
-			@mkdir -p $(OBJS_DIR)$(FTLST_DIR)
-			@mkdir -p $(OBJS_DIR)$(GNL_DIR)
-			@mkdir -p $(OBJS_DIR)$(PRINTF_DIR)
+	@mkdir -p $(OBJS_DIR)
+	@mkdir -p $(OBJS_DIR)$(FTIS_DIR)
+	@mkdir -p $(OBJS_DIR)$(FTMEM_DIR)
+	@mkdir -p $(OBJS_DIR)$(FTPUT_DIR)
+	@mkdir -p $(OBJS_DIR)$(FTTO_DIR)
+	@mkdir -p $(OBJS_DIR)$(FTSTR_DIR)
+	@mkdir -p $(OBJS_DIR)$(FTLST_DIR)
+	@mkdir -p $(OBJS_DIR)$(GNL_DIR)
+	@mkdir -p $(OBJS_DIR)$(PRINTF_DIR)
 
 clean:
-			@$(RM) -rf $(OBJS_DIR)
-			@$(RM) -rf $(OBJSF)
-			@echo "$(BLUE)libft objects files cleaned!$(DEF_COLOR)"
+	@$(RM) -rf $(OBJS_DIR)
+	@$(RM) -rf $(OBJSF)
+	@echo "$(BLUE)libft objects files cleaned!$(DEF_COLOR)"
 
 fclean:		clean
-			@$(RM) -f $(NAME)
-			@echo "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
+	@$(RM) -f $(NAME)
+	@echo "$(CYAN)libft executable files cleaned!$(DEF_COLOR)"
 
 re:			fclean all
-			@echo "$(GREEN)Cleaned and rebuilt everything for libft!$(DEF_COLOR)"
+	@echo "$(GREEN)Cleaned and rebuilt everything for libft!$(DEF_COLOR)"
 
 -include $(DEP)
 

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/21 12:50:34 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/23 17:59:16 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,21 +116,22 @@ int	save_fd(t_cmd *cmd)
 */
 int	setup_redirections(t_cmd *cmd)
 {
-	int status;
+    int status;
 
     if (!cmd->fd)
-    {
         return (ERROR);
+    status = process_heredocs(cmd);
+    if (status != SUCCESS)
+        return (status);
+    status = save_fd(cmd);
+    if (status != SUCCESS)
+        return (status);
+    find_final_redirections(cmd);
+    status = handle_redirections(cmd);
+    if (status != SUCCESS)
+    {
+        cleanup_fds(cmd);
+        return (status);
     }
-	status = save_fd(cmd);
-	if (status != SUCCESS)
-		return (status);
-	find_final_redirections(cmd);
-	status = handle_redirections(cmd);
-	if (status != SUCCESS)
-	{
-		cleanup_fds(cmd);
-		return (status);
-	}
-	return (SUCCESS);
+    return (SUCCESS);
 }

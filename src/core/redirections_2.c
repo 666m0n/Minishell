@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/21 12:12:35 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:26:00 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,8 @@ int	apply_input_redirection(t_cmd *cmd)
 	t_token	type;
 	char	*file;
 
-    type = cmd->fd->last_in->type;
-    file = cmd->fd->last_in->file;
-	if (type == T_HEREDOC)
-		return (1);
-		/* return (setup_heredoc(cmd)); */
+	type = cmd->fd->last_in->type;
+	file = cmd->fd->last_in->file;
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));
@@ -37,6 +34,11 @@ int	apply_input_redirection(t_cmd *cmd)
 		return (handle_system_error("dup2"));
 	}
 	close(new_fd);
+	if (type == T_HEREDOC)
+	{
+		if (unlink(file) == SYSCALL_ERROR)
+			return (handle_system_error("unlink"));
+	}
 	return (SUCCESS);
 }
 
