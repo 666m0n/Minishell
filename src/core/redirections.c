@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/23 19:23:17 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:51:13 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,9 @@ int	handle_redirections(t_cmd *cmd)
 {
 	int	status;
 
-    ft_printf("Début handle_redirections\n");
 	if (cmd->fd->curr_in > 0)
 	{
-        ft_printf("Fichier dans handle_redirections: %s\n", cmd->fd->last_in->file);
 		status = apply_input_redirection(cmd);
-        ft_printf("Fichier après apply_input_redirection: %s\n", cmd->fd->last_in->file);
 		if (status != SUCCESS)
 			return (status);
 	}
@@ -60,7 +57,6 @@ void    find_final_redirections(t_cmd *cmd)
         {
             cmd->fd->curr_in = 1;
             cmd->fd->last_in = current;
-            ft_printf("Fichier dans find_final_redirections: %s\n", current->file);
         }
         else if (current->type == T_REDIROUT || current->type == T_APPEND)
         {
@@ -125,9 +121,6 @@ int	setup_redirections(t_cmd *cmd)
 
     if (!cmd->fd)
         return (ERROR);
-    status = process_heredocs(cmd);
-    if (status != SUCCESS)
-        return (status);
     status = save_fd(cmd);
     if (status != SUCCESS)
         return (status);

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 10:17:00 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/23 19:32:46 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:52:04 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static char	*generate_temp_filename(void)
 		free(number);
 		if (!name)
 			return (NULL);
-        ft_printf("Tentative de création du fichier: %s\n", name);
 		if (access(name, F_OK) == -1)
 			return (name);
 		free(name);
@@ -72,8 +71,6 @@ static int	process_single_heredoc(t_redirection *redir)
 	char	*temp_file;
 	int		status;
 
-    ft_printf("Début process_single_heredoc\n");
-	ft_printf("Délimiteur original: %s\n", redir->file);
 	temp_file = create_temp_file();
 	if (!temp_file)
 		return (MEMORY_ERROR);
@@ -83,11 +80,8 @@ static int	process_single_heredoc(t_redirection *redir)
 		free(temp_file);
 		return (status);
 	}
-    ft_printf("Avant free et remplacement - redir->file: %s\n", redir->file);
 	free(redir->file);
 	redir->file = temp_file;
-    ft_printf("Après remplacement - redir->file: %s\n", redir->file);
-	ft_printf("Adresse de redir: %p\n", (void*)redir);
 	return (SUCCESS);
 }
 
@@ -109,7 +103,6 @@ int	process_heredocs(t_cmd *cmd)
 		if (redir->type == T_HEREDOC)
 		{
 			status = process_single_heredoc(redir);
-            ft_printf("Fichier après process_single_heredoc: %s\n", redir->file);
 			if (status != SUCCESS)
 				return (status);
 		}

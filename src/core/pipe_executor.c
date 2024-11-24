@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/21 12:50:08 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:08:50 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,11 @@ pid_t	fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
 							int position, int nb_of_pipes, t_ctx *ctx)
 {
 	pid_t	pid;
+
+    printf("PIPE: Position %d - Avant fork\n", position);
+    printf("PIPE: Redirections: %p\n", (void*)cmd->redirections);
+    if (cmd->redirections)
+    printf("PIPE: Premier fichier: %s\n", cmd->redirections->file);
 
 	pid = fork();
 	if (pid == SYSCALL_ERROR)

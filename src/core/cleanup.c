@@ -6,11 +6,30 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/23 19:34:15 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:50:45 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void cleanup_heredoc_files(t_cmd *cmd)
+{
+    t_redirection *redir;
+
+    redir = cmd->redirections;
+    while (redir)
+    {
+        if (redir->type == T_HEREDOC && redir->file)
+        {
+            // Le fichier commence par .heredoc_ donc c'est un fichier temporaire
+            if (!strncmp(redir->file, ".heredoc_", 9))
+            {
+                unlink(redir->file);
+            }
+        }
+        redir = redir->next;
+    }
+}
 
 /*
 ** Ferme tous les descripteurs de fichiers ouverts d'une commande
@@ -19,9 +38,6 @@
 */
 void	cleanup_fds(t_cmd *cmd)
 {
-	t_redirection	*current;
-
-    ft_printf("Début cleanup_fds\n");
 	if (!cmd || !cmd->fd)
 		return ;
 	if (cmd->fd->stdin_backup > 2)
@@ -36,23 +52,6 @@ void	cleanup_fds(t_cmd *cmd)
 	cmd->fd->stdout_backup = -1;
 	cmd->fd->pipe_read = -1;
 	cmd->fd->pipe_write = -1;
-	// Nettoyage des fichiers temporaires des heredocs
-	current = cmd->redirections;
-	while (current)
-	{
-		ft_printf("Redirection trouvée - type: %d, fichier: %s\n", 
-			current->type, current->file);
-		ft_printf("Adresse de current: %p\n", (void*)current);
-		if (current->type == T_HEREDOC && current->file)
-		{
-			ft_printf("Tentative de suppression de: %s\n", current->file);
-			if (access(current->file, F_OK) != -1)
-				ft_printf("Le fichier existe\n");
-			else
-				ft_printf("Le fichier n'existe pas\n");
-		}
-		current = current->next;
-	}
 }
 
 /*

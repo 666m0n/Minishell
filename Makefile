@@ -6,7 +6,7 @@
 #    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/23 17:55:42 by emmanuel         ###   ########.fr        #
+#    Updated: 2024/11/24 12:26:23 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,6 +81,10 @@ SRC	= $(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 
 OBJSF	= .cache_exists
+define full_line_background
+    @printf '\033[41m\033[30m%-*s\033[0m\n' "$$(tput cols)" " ";
+endef
+export full_line_background
 
 define MINISHELL_LOGO
 $(BG)                                                                                
@@ -95,6 +99,7 @@ export MINISHELL_LOGO
 
 all:
 	@clear
+	@printf '\e[8;30;80t'
 	@$(MAKE) base
 
 base: $(NAME)
@@ -105,8 +110,12 @@ $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBCOMP) $(LDFLAGS) -o $(NAME)
 #	@echo "$(DARK)Minishell compiled ✓$(DEF_COLOR)"
 	@clear
-	@echo "$$MINISHELL_LOGO\n\n"
+	@$(call full_line_background)  # Ligne rouge vif
+	@echo "$$MINISHELL_LOGO"
+	@$(call full_line_background)  # Ligne rouge vif
+	@printf '\033[37m'
 	@printf "\033[?25h"  # Réaffiche le curseur
+
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJSF)
 	@printf "\033[?25l"  # Cache le curseur

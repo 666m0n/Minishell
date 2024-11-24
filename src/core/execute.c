@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/23 19:10:00 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:53:21 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,9 @@ int execute_command(t_cmd *cmd, t_ctx *ctx)
     cmd_name = get_cmd_name(cmd);
     if (!cmd_name)
         return (CMD_NOT_FOUND);
+    status = process_heredocs(cmd);
+    if (status != SUCCESS)
+        return (status);
     if (is_simple_command(cmd) == FALSE)
         status = exec_pipe(cmd, ctx);
     else if (is_builtin(cmd_name) == TRUE)
@@ -161,5 +164,6 @@ int execute_command(t_cmd *cmd, t_ctx *ctx)
     else
         status = exec_simple(cmd, ctx);
     set_exit_status(cmd, status);
+    cleanup_heredoc_files(cmd);
     return (status);
 }

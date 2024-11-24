@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/23 19:25:57 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:51:27 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	apply_output_redirection(t_cmd *cmd)
 
     type = cmd->fd->last_out->type;
     file = cmd->fd->last_out->file;
-    ft_printf("Début apply_input_redirection avec fichier: %s\n", file);
 	if (type == T_REDIROUT)
 	{
 	    flags = O_WRONLY | O_CREAT | O_TRUNC;
