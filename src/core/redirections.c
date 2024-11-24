@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 12:51:13 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:17:26 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	save_fd(t_cmd *cmd)
 ** @param cmd: structure de commande
 ** @return: SUCCESS si ok, code d'erreur sinon
 */
-int	setup_redirections(t_cmd *cmd)
+int setup_redirections(t_cmd *cmd)
 {
     int status;
 
@@ -131,5 +131,6 @@ int	setup_redirections(t_cmd *cmd)
         cleanup_fds(cmd);
         return (status);
     }
+
     return (SUCCESS);
 }

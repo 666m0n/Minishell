@@ -6,7 +6,7 @@
 #    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/24 12:26:23 by emmanuel         ###   ########.fr        #
+#    Updated: 2024/11/24 13:33:44 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -113,7 +113,8 @@ $(NAME): $(OBJ)
 	@$(call full_line_background)  # Ligne rouge vif
 	@echo "$$MINISHELL_LOGO"
 	@$(call full_line_background)  # Ligne rouge vif
-	@printf '\033[37m'
+	@echo "$(DARK)Run by sviallon & emmmarti$(DEF_COLOR)"
+	@echo
 	@printf "\033[?25h"  # Réaffiche le curseur
 
 

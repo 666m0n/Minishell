@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 12:08:50 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:20:29 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,34 @@
 ** @param ctx: contexte du shell
 ** Note: ne retourne jamais, termine le processus
 */
-void execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array, 
+void    execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array, 
                             int position, int nb_of_pipes, t_ctx *ctx)
 {
+    int status;
+
     configure_pipe_fds(pipe_array, position, nb_of_pipes);
     close_unused_pipes(pipe_array, position, nb_of_pipes);
     if (has_redirection(cmd))
     {
-        if (setup_redirections(cmd) != SUCCESS)
-            exit(ERROR);
+        status = setup_redirections(cmd);
+        if (status != SUCCESS)
+        {
+            cleanup_fds(cmd);
+            exit(status);
+        }
     }
     if (is_builtin(cmd->args[0]))
         exit(exec_builtin(cmd, ctx, TRUE));
-    else
+    status = prepare_exec(cmd);
+    if (status != SUCCESS)
     {
-        if (prepare_exec(cmd) != SUCCESS)
-            exit(ERROR);
-        exec_in_child(cmd, ctx);
+        handle_command_error(cmd, status);
+        cleanup_fds(cmd);
+        exit(CMD_NOT_FOUND);
     }
+    execve(cmd->path, cmd->args, NULL);
+    cleanup_fds(cmd);
+    exit(handle_system_error("execve"));
 }
 
 /*
@@ -72,11 +82,6 @@ pid_t	fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
 							int position, int nb_of_pipes, t_ctx *ctx)
 {
 	pid_t	pid;
-
-    printf("PIPE: Position %d - Avant fork\n", position);
-    printf("PIPE: Redirections: %p\n", (void*)cmd->redirections);
-    if (cmd->redirections)
-    printf("PIPE: Premier fichier: %s\n", cmd->redirections->file);
 
 	pid = fork();
 	if (pid == SYSCALL_ERROR)
