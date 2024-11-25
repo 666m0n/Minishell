@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/23 16:19:45 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:11:35 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static void	process_line(char *line, t_ctx *ctx)
 	tokens = lexer(line);
 	if (tokens)
 	{
-		/* print_tokens(tokens); */
+/*		print_tokens(tokens);*/
 		cmd = parser(tokens, ctx);
 		if (cmd)
 		{
-		/* 	print_command(cmd); */
+			/* print_command(cmd); */
 			execute_command(cmd, ctx);
 			free_cmd(cmd);
 		}

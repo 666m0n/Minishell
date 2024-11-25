@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:30:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 19:17:31 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:10:55 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,20 @@ static char	*end_expand(char *tofind, char *to_ret, t_ctx *data)
 	return (to_ret);
 }
 
-static char	*expand_case(t_ctx *data, char *s, int start, int *i,
-	size_t full_len)
+static char	*expand_case(t_ctx *data, char *s, int start, int *i)
 {
 	char	*tofind;
 	char	*to_ret;
 	size_t	len;
+	size_t	full_len;
 
+	full_len = ft_strlen(s);
 	to_ret = NULL;
 	if (s[(*i)++] == '?')
 		return (ft_itoa(data->exit_code));
 	else if (ft_isdigit(s[start]))
 	{
 		tofind = ft_substr(s, start + 1, *i - start - 1);
-		if (!tofind)
-			return (NULL);
 		to_ret = ft_strdup(tofind);
 		return (free(tofind), to_ret);
 	}
@@ -61,12 +60,10 @@ static char	*expand_case(t_ctx *data, char *s, int start, int *i,
 			len++;
 		tofind = ft_substr(s, start, len);
 	}
-	if (!tofind)
-		return (NULL);
 	return (end_expand(tofind, to_ret, data));
 }
 
-static char	*expand_zero(char *s, int start, size_t *i)
+/* static char	*expand_zero(char *s, int start, int *i)
 {
 	char	*ifzero;
 	char	*to_ret;
@@ -79,15 +76,13 @@ static char	*expand_zero(char *s, int start, size_t *i)
 	to_ret = ft_strdup("minishell");
 	to_ret = ft_strjoin(to_ret, ifzero);
 	return (free(ifzero), to_ret);
-}
+} */
 
 char	*replace_var(char *s, t_ctx *data, size_t *i)
 {
 	int		start;
 	int		y;
-	size_t	full_len;
 
-	full_len = ft_strlen(s);
 	y = *i;
 	start = *i + 1;
 	y++;
@@ -100,7 +95,7 @@ char	*replace_var(char *s, t_ctx *data, size_t *i)
 	if (s[y] == '\0')
 		y--;
 	if (s[start] == '0')
-		return (expand_zero(s, start, i));
+		return (ft_strdup("minishell"));
 	else
-		return (expand_case(data, s, start, &y, full_len));
+		return (expand_case(data, s, start, &y));
 }

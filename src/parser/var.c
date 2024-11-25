@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/23 16:15:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/25 14:49:01 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,15 @@ static char	*replace_dollar(char *s, t_ctx *data)
 		return (NULL);
 	while (s[i])
 	{
-		if (s[i] == '$')
+		if (s[i] == '$' && (s[i + 1] < '1' || s[i + 1] > '9'))
 		{
 			result = expand_var(s, data, &i, result);
-			if (!result)
-				return (NULL);
 			i += get_var_len(s, &i);
 		}
+		else if (s[i] == '$' && (s[i + 1] >= '1' && s[i + 1] <= '9'))
+			i++;
 		else
-		{
 			result = copy_str(result, s[i]);
-			if (!result)
-				return (NULL);
-		}
 		i++;
 	}
 	return (result);
