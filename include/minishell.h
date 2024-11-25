@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/23 16:10:45 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:11:37 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@
 # include "types.h"
 # include "errors.h"
 
+extern int	g_sig_status;
+
 //MODIF DE SIMON mis ici car il faut d'abord declarer les struct avant de les
 // utiliser sinn erreur a la compilation
 /* typedef pour rendre certains prototypes de fonctions plus facile à lire */
-typedef int t_pipe[2];
-typedef int (*builtin_func)(t_cmd *, t_ctx *);
+typedef int	t_pipe[2];
+typedef int	(*builtin_func)(t_cmd *, t_ctx *);
 
 # define PROMPT "\001\033[1;93m\002minishell >$ \001\033[0m\002"
 # define DEFAULT_PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"

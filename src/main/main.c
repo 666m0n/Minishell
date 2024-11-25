@@ -6,11 +6,13 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/25 15:11:35 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:28:27 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_sig_status = 0;
 
 static void	process_line(char *line, t_ctx *ctx)
 {
@@ -41,7 +43,7 @@ t_return	handle_loop(t_ctx *ctx)
 	{
 		line = readline(PROMPT);
 		if (!line)
-			break ;
+			return (-1);
 		if (!check_line(line))
 		{
 			add_history(line);

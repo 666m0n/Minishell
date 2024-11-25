@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 18:49:58 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:29:34 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,12 @@ typedef struct s_ctx
 	unsigned char	exit_code;		/* Last exit code */
 	t_lexer			*current_token;
 }	t_ctx;
+
+/*gestion des retours
+typedef struct s_minishell
+{
+	char	*line;
+	int		i;
+}	t_minishell; */
 
 #endif

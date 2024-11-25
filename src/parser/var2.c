@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:30:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/25 15:10:55 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:59:04 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ static char	*expand_case(t_ctx *data, char *s, int start, int *i)
 
 	full_len = ft_strlen(s);
 	to_ret = NULL;
-	if (s[(*i)++] == '?')
-		return (ft_itoa(data->exit_code));
-	else if (ft_isdigit(s[start]))
+	if (ft_isdigit(s[start]))
 	{
 		tofind = ft_substr(s, start + 1, *i - start - 1);
 		to_ret = ft_strdup(tofind);
@@ -96,6 +94,11 @@ char	*replace_var(char *s, t_ctx *data, size_t *i)
 		y--;
 	if (s[start] == '0')
 		return (ft_strdup("minishell"));
+	else if (s[start] == '?')
+	{
+		(*i)++;
+		return (ft_itoa(data->exit_code));
+	}
 	else
 		return (expand_case(data, s, start, &y));
 }

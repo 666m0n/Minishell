@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/18 18:05:19 by sviallon         ###   ########.fr        #
+#    Updated: 2024/11/25 17:30:10 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,13 +44,13 @@ C10 = \033[38;5;75m # Bleu brillant
 
 # Sources
 LEXER_DIR	= lexer/
-LXR			= lexer_handler lexer lexer_utils lexer_utils_2
+LXR			= lexer_handler lexer lexer_utils lexer_utils_2 syntax
 
 UTILS_DIR	= utils/
 UTLS		= utils utils2 utils3
 
 PARSER_DIR	= parser/
-PRS			= cmd parser_utils parser redir  syntax var var2
+PRS			= cmd parser_utils parser redir var var2
 
 BUILTINS	= builtins/
 BLTN		= env builtinstest builtin_unset builtin_pwd builtin_export builtin_export_utils \
