@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:33:05 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/25 14:49:01 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:57:59 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,35 @@ static char	*expand_var(char *s, t_ctx *data, size_t *i, char *result)
 	return (new_res);
 }
 
+static char	*print_dollar(char *s, size_t *i, char *result)
+{
+	char	*tmp;
+	char	*new_result;
+	char	*pid_str;
+	pid_t	current_pid;
+
+	tmp = NULL;
+	if (s[*i + 1] == '$')
+	{
+		current_pid = fork();
+		if (current_pid == 0)
+			exit(0);
+		else if (current_pid > 0)
+		{
+			wait(NULL);
+			pid_str = ft_itoa(current_pid - 1);
+			tmp = pid_str;
+		}
+		(*i)++;
+	}
+	else
+		tmp = ft_strdup("$");
+	new_result = ft_strjoin(result, tmp);
+	free(tmp);
+	free(result);
+	return (new_result);
+}
+
 static char	*replace_dollar(char *s, t_ctx *data)
 {
 	size_t		i;
@@ -69,13 +98,16 @@ static char	*replace_dollar(char *s, t_ctx *data)
 		return (NULL);
 	while (s[i])
 	{
-		if (s[i] == '$' && (s[i + 1] < '1' || s[i + 1] > '9'))
+		if (s[i] == '$' && (s[i + 1] == '\0' || s[i + 1] == '$'
+				|| ft_isspace(s[i + 1])))
+			result = print_dollar(s, &i, result);
+		else if (s[i] == '$' && (s[i + 1] >= '1' && s[i + 1] <= '9'))
+			i++;
+		else if (s[i] == '$' && (s[i + 1] < '1' || s[i + 1] > '9'))
 		{
 			result = expand_var(s, data, &i, result);
 			i += get_var_len(s, &i);
 		}
-		else if (s[i] == '$' && (s[i + 1] >= '1' && s[i + 1] <= '9'))
-			i++;
 		else
 			result = copy_str(result, s[i]);
 		i++;
