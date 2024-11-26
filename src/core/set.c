@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 19:47:22 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 18:04:53 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:09:32 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	set_cmd_path(t_cmd *cmd, char *path)
 {
 	if (!cmd)
 		return (ERROR);
-	cmd->path = path;
+	cmd->path = ft_strdup(path);
+	if (!cmd->path)
+		return (ERROR);
 	return (SUCCESS);
 }

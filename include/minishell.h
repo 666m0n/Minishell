@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/25 17:11:37 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:58:39 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef int	t_pipe[2];
 typedef int	(*builtin_func)(t_cmd *, t_ctx *);
 
 # define PROMPT "\001\033[1;93m\002minishell >$ \001\033[0m\002"
+# define HEREDOC_PROMPT "\001\033[38;2;0;255;34m\002  › \001\033[38;2;255;255;255m\002"
 # define DEFAULT_PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 /* Masque pour isoler les 8 bits de poids fort du statut */
@@ -53,7 +54,7 @@ int				execute_command(t_cmd *cmd, t_ctx *ctx);
 /* Command Execution */
 int				exec_simple(t_cmd *cmd, t_ctx *ctx);
 int				exec_pipe(t_cmd *cmd, t_ctx *ctx);
-int				exec_builtin(t_cmd *cmd, t_ctx *ctx);
+int				exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections);
 void			exec_in_child(t_cmd *cmd, t_ctx *ctx);
 int				prepare_exec(t_cmd *cmd);
 
@@ -92,6 +93,12 @@ void			cleanup_fds(t_cmd *cmd);
 int				apply_input_redirection(t_cmd *cmd);
 int				apply_output_redirection(t_cmd *cmd);
 
+/* Heredoc Management */
+int	            process_heredocs(t_cmd *cmd);
+char	        *create_temp_file(void);
+int             handle_single_heredoc(const char *delimiter, const char *file);
+int             write_heredoc_line(int fd, const char *line);
+
 /* Environment Management */
 t_env			*find_existing_var(t_env *env, const char *name);
 void			free_env_var(t_env *var);
@@ -129,10 +136,10 @@ char			*extract_value(const char *arg);
 t_env			*create_var(const char *arg, char *value);
 t_env			*update_env_variable(t_ctx *ctx, char *arg);
 int				is_valid_identifier(const char *str);
-/* int				setup_heredoc(t_cmd *cmd); // j'ai mis un type au hasard */
 int				handle_redirections(t_cmd *cmd);
 void			find_final_redirections(t_cmd *cmd);
 int				save_fd(t_cmd *cmd);
+void            cleanup_heredoc_files(t_cmd *cmd);
 
 
 //Simon

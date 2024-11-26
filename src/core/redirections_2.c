@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 18:19:06 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:21:53 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,9 @@
 int	apply_input_redirection(t_cmd *cmd)
 {
 	int		new_fd;
-	t_token	type;
 	char	*file;
 
-	type = cmd->redirections->type;
-	file = cmd->redirections->file;
-	if (type == T_HEREDOC)
-		return (1);
-		/* return (setup_heredoc(cmd)); */
+	file = cmd->fd->last_in->file;
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));
@@ -53,12 +48,16 @@ int	apply_output_redirection(t_cmd *cmd)
 	t_token	type;
 	char	*file;
 
-	type = cmd->redirections->type;
-	file = cmd->redirections->file;
+    type = cmd->fd->last_out->type;
+    file = cmd->fd->last_out->file;
 	if (type == T_REDIROUT)
-		flags = O_WRONLY | O_CREAT | O_TRUNC;
+	{
+	    flags = O_WRONLY | O_CREAT | O_TRUNC;
+    }
 	else
-		flags = O_WRONLY | O_CREAT | O_APPEND;
+	{
+	    flags = O_WRONLY | O_CREAT | O_APPEND;
+    }
 	new_fd = open(file, flags, 0644);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:48:17 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/15 20:51:20 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:54:18 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,18 @@ static t_cmd	*create_node(t_ctx *data)
 	new->next = NULL;
 	new->prev = NULL;
 	new->redirections = NULL;
+	new->fd = ft_calloc(sizeof(t_fd_state), 1);
+	if (new->fd)
+	{
+		new->fd->stdin_backup = -1;
+		new->fd->stdout_backup = -1;
+		new->fd->pipe_read = -1;
+		new->fd->pipe_write = -1;
+		new->fd->curr_in = -1;
+		new->fd->curr_out = -1;
+		new->fd->last_in = NULL;
+		new->fd->last_out = NULL;
+	}
 	return (new);
 }
 

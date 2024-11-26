@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 18:04:49 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/24 15:17:26 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	handle_redirections(t_cmd *cmd)
 {
 	int	status;
 
-	if (cmd->fd->curr_in)
+	if (cmd->fd->curr_in > 0)
 	{
 		status = apply_input_redirection(cmd);
 		if (status != SUCCESS)
 			return (status);
 	}
-	if (cmd->fd->curr_out)
+	if (cmd->fd->curr_out > 0)
 	{
 		status = apply_output_redirection(cmd);
 		if (status != SUCCESS)
@@ -42,21 +42,29 @@ int	handle_redirections(t_cmd *cmd)
 ** @param cmd: structure de commande
 ** Met à jour curr_in et curr_out avec les dernières redirections valides
 */
-void	find_final_redirections(t_cmd *cmd)
+void    find_final_redirections(t_cmd *cmd)
 {
-	t_redirection	*current;
+    t_redirection    *current;
 
-	cmd->fd->curr_in = -1;
-	cmd->fd->curr_out = -1;
-	current = cmd->redirections;
-	while (current)
-	{
-		if (current->type == T_REDIRIN || current->type == T_HEREDOC)
-			cmd->fd->curr_in = -1;
-		else if (current->type == T_REDIROUT || current->type == T_APPEND)
-			cmd->fd->curr_out = -1;
-		current = current->next;
-	}
+    cmd->fd->curr_in = -1;
+    cmd->fd->curr_out = -1;
+    cmd->fd->last_in = NULL;
+    cmd->fd->last_out = NULL;
+    current = cmd->redirections;
+    while (current)
+    {
+        if (current->type == T_REDIRIN || current->type == T_HEREDOC)
+        {
+            cmd->fd->curr_in = 1;
+            cmd->fd->last_in = current;
+        }
+        else if (current->type == T_REDIROUT || current->type == T_APPEND)
+        {
+            cmd->fd->curr_out = 1;
+            cmd->fd->last_out = current;
+        }
+        current = current->next;
+    }
 }
 
 /*
@@ -107,19 +115,22 @@ int	save_fd(t_cmd *cmd)
 ** @param cmd: structure de commande
 ** @return: SUCCESS si ok, code d'erreur sinon
 */
-int	setup_redirections(t_cmd *cmd)
+int setup_redirections(t_cmd *cmd)
 {
-	int				status;
+    int status;
 
-	status = save_fd(cmd);
-	if (status != SUCCESS)
-		return (status);
-	find_final_redirections(cmd);
-	status = handle_redirections(cmd);
-	if (status != SUCCESS)
-	{
-		cleanup_fds(cmd);
-		return (status);
-	}
-	return (SUCCESS);
+    if (!cmd->fd)
+        return (ERROR);
+    status = save_fd(cmd);
+    if (status != SUCCESS)
+        return (status);
+    find_final_redirections(cmd);
+    status = handle_redirections(cmd);
+    if (status != SUCCESS)
+    {
+        cleanup_fds(cmd);
+        return (status);
+    }
+
+    return (SUCCESS);
 }

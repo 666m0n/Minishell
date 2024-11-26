@@ -3,25 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/18 18:03:36 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:50:45 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void cleanup_heredoc_files(t_cmd *cmd)
+{
+    t_redirection *redir;
+
+    redir = cmd->redirections;
+    while (redir)
+    {
+        if (redir->type == T_HEREDOC && redir->file)
+        {
+            // Le fichier commence par .heredoc_ donc c'est un fichier temporaire
+            if (!strncmp(redir->file, ".heredoc_", 9))
+            {
+                unlink(redir->file);
+            }
+        }
+        redir = redir->next;
+    }
+}
+
 /*
 ** Ferme tous les descripteurs de fichiers ouverts d'une commande
+** et nettoie les fichiers temporaires des heredocs
 ** @param cmd: structure de commande
-** Note: gère les backups stdin/stdout et les pipes de heredoc
 */
 void	cleanup_fds(t_cmd *cmd)
 {
 	if (!cmd || !cmd->fd)
 		return ;
-
 	if (cmd->fd->stdin_backup > 2)
 		close(cmd->fd->stdin_backup);
 	if (cmd->fd->stdout_backup > 2)
