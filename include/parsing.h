@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/23 15:43:46 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:48:05 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ void		skip_consecutive_quotes(char **str, char *quote_type,
 				int *effective_q);
 t_token		get_quote_type(char quote);
 char		*get_quote_content(char **str, char quote, char changed);
+t_return	syntax_tokens(t_lexer *tokens);
+t_syntax	*create_syntax_list(t_lexer *tokens);
+void		free_syntax_list(t_syntax *list);
+
 
 //parser
 t_cmd		*parser(t_lexer *tokens, t_ctx *data);
