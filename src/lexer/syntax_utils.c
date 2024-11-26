@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 13:12:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 13:20:30 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/26 14:10:14 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	free_syntax_list(t_syntax *list)
 			free(tmp->content);
 		free(tmp);
 	}
+	free(list);
 }
 
 t_syntax	*create_syntax_list(t_lexer *tokens)

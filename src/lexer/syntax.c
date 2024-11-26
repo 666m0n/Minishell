@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:58:12 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 14:04:28 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:22:15 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,21 @@ static int	check_pipe(t_syntax *tokens)
 
 static int	check_syntax_rules(t_syntax *curr)
 {
+	if (!curr || !curr->content)
+		return (SUCCESS);
 	if (is_redir(curr->type))
 		return (check_redirection(curr));
 	if (curr->type == T_PIPE)
 		return (check_pipe(curr));
+	if (is_directory(curr->content))
+		return (handle_misc(curr));
+	if (curr->content[0] == '#' || curr->content[0] == '!'
+		|| curr->content[0] == ':')
+		return (handle_misc(curr));
 	return (SUCCESS);
 }
 
-t_return	syntax_tokens(t_lexer *tokens)
+t_return	syntax_tokens(t_lexer *tokens, t_ctx *data)
 {
 	t_syntax	*curr;
 	t_syntax	*syntax_list;
@@ -66,6 +73,7 @@ t_return	syntax_tokens(t_lexer *tokens)
 		status = check_syntax_rules(curr);
 		if (status != SUCCESS)
 		{
+			data->exit_code = status;
 			free_syntax_list(syntax_list);
 			return (status);
 		}

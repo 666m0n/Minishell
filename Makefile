@@ -6,7 +6,7 @@
 #    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/26 13:25:35 by sviallon         ###   ########.fr        #
+#    Updated: 2024/11/26 14:47:13 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ C10 = \033[38;5;75m # Bleu brillant
 
 # Sources
 LEXER_DIR	= lexer/
-LXR			= lexer_handler lexer lexer_utils lexer_utils_2 syntax syntax_utils
+LXR			= lexer_handler lexer lexer_utils lexer_utils_2 syntax syntax_utils \
+			syntax_2
 
 UTILS_DIR	= utils/
 UTLS		= utils utils2 utils3
