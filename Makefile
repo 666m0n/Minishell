@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+         #
+#    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/26 17:35:31 by sviallon         ###   ########.fr        #
+#    Updated: 2024/11/27 10:30:16 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,17 +83,17 @@ OBJ = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 
 OBJSF	= .cache_exists
 define full_line_background
-    @printf '\033[41m\033[30m%-*s\033[0m\n' "$$(tput cols)" " ";
+	@printf '\033[41m\033[30m%-80s\033[0m\n' " ";
 endef
 export full_line_background
 
 define MINISHELL_LOGO
-$(BG)
-$(BG)                                ██████  ██        ████████  ██        ██
-$(BG)                              ██        ██████    ██    ██  ██        ██
-$(BG)              ██          ██  ████████  ██    ██  ████████  ██        ██
-$(BG)    ██  ██          ██              ██  ██    ██  ██        ██        ██
-$(BG)  ██  ██  ██  ██  ██  ██  ██  ████████  ██    ██    ██████    ██████    ██████
+$(BG)                                                                                
+$(BG)                                ██████  ██        ████████  ██        ██        
+$(BG)                              ██        ██████    ██    ██  ██        ██        
+$(BG)              ██          ██  ████████  ██    ██  ████████  ██        ██        
+$(BG)    ██  ██          ██              ██  ██    ██  ██        ██        ██        
+$(BG)  ██  ██  ██  ██  ██  ██  ██  ████████  ██    ██    ██████    ██████    ██████  
 $(BG)                                                                                $(DEF_COLOR)
 endef
 export MINISHELL_LOGO
@@ -101,22 +101,19 @@ export MINISHELL_LOGO
 all:
 	@clear
 	@printf '\e[8;30;80t'
-	@$(MAKE) base
+	@$(call full_line_background)
+	@echo "$$MINISHELL_LOGO"
+	@$(call full_line_background)
+	@echo "$(DARK)Run by sviallon & emmmarti$(DEF_COLOR)"
+	@echo
+	@$(MAKE) base --no-print-directory
 
 base: $(NAME)
 
 $(NAME): $(OBJ)
-
 	@make -C $(LIBFT) --no-print-directory
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBCOMP) $(LDFLAGS) -o $(NAME)
-#	@echo "$(DARK)Minishell compiled ✓$(DEF_COLOR)"
-	@clear
-	@$(call full_line_background)  # Ligne rouge vif
-	@echo "$$MINISHELL_LOGO"
-	@$(call full_line_background)  # Ligne rouge vif
-	@echo "$(DARK)Run by sviallon & emmmarti$(DEF_COLOR)"
-	@echo
-	@printf "\033[?25h"  # Réaffiche le curseur
+	@printf "\033[?25h"
 
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJSF)
