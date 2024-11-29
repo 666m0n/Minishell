@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:47:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/27 15:55:59 by Simon            ###   ########.fr       */
+/*   Updated: 2024/11/29 18:16:06 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	is_directory(const char *content)
 
 int	handle_misc(t_syntax *token)
 {
+    printf("DEBUG MANU pour builtin cd : On est dans handle misc\n");
 	if (is_directory(token->content))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 11:05:03 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/29 11:55:55 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:41:08 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ t_env    *update_env_variable(t_ctx *ctx, const char *arg)
 */
 int    is_valid_identifier(const char *str)
 {
-    printf("DEBUG is_valid_identifier: str='%s'\n", str ? str : "NULL");
     if (!str || !*str)
         return (FALSE);
     if (!ft_isalpha(*str) && *str != '_')

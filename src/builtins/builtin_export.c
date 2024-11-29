@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 10:28:54 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/29 14:03:30 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:40:43 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,15 @@
 ** @return: SUCCESS si ok, ERROR si échec
 */
 static int handle_export_arg(const char *arg, t_ctx *ctx)
-{
-   printf("DEBUG handle_export_arg: arg='%s'\n", arg ? arg : "NULL");
-    
+{  
     if (!arg)
-    {
-        printf("DEBUG: arg est NULL\n");
         return (handle_builtin_error("export", "", "not a valid identifier"));
-    }
     if (!*arg || arg[0] == '=')
-    {
-        printf("DEBUG: arg est vide ou commence par =\n");
         return (handle_builtin_error("export", "", "not a valid identifier"));
-    }
     if (!is_valid_identifier(arg))
         return (handle_builtin_error("export", arg, "not a valid identifier"));
-    
     if (!update_env_variable(ctx, arg))
         return (ERROR);
-    
     return (SUCCESS);
 }
 
@@ -146,5 +136,3 @@ int    builtin_export(t_cmd *cmd, t_ctx *ctx)
    }
    return (status);
 }
-
-
