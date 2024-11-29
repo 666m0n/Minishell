@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:47:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/29 18:16:06 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/11/29 19:48:30 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	change_exit_code(int status, t_ctx *data)
 	}
 }
 
-int	is_directory(const char *content)
+/* int	is_directory(const char *content)
 {
 	int	i;
 	int	found_char;
@@ -44,11 +44,10 @@ int	is_directory(const char *content)
 		i++;
 	}
 	return (found_char);
-}
+} */
 
 int	handle_misc(t_syntax *token)
 {
-    printf("DEBUG MANU pour builtin cd : On est dans handle misc\n");
 	if (is_directory(token->content))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
