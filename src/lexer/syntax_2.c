@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:47:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/27 15:55:59 by Simon            ###   ########.fr       */
+/*   Updated: 2024/11/29 18:48:03 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	change_exit_code(int status, t_ctx *data)
 	}
 }
 
-int	is_directory(const char *content)
+/* int	is_directory(const char *content)
 {
 	int	i;
 	int	found_char;
@@ -44,18 +44,11 @@ int	is_directory(const char *content)
 		i++;
 	}
 	return (found_char);
-}
+} */
 
 int	handle_misc(t_syntax *token)
 {
-	if (is_directory(token->content))
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(token->content, STDERR_FILENO);
-		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
-		return (126);
-	}
-	else if ((token->content[0] == '#' || token->content[0] == '!'
+	if ((token->content[0] == '#' || token->content[0] == '!'
 			|| token->content[0] == ':') && token->content[1] == '\0')
 	{
 		if (token->content[0] == '!')
