@@ -6,7 +6,7 @@
 #    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/27 10:30:16 by emmanuel         ###   ########.fr        #
+#    Updated: 2024/11/29 14:38:38 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ DEP = $(addprefix $(OBJ_DIR), $(OBJ .o=.d))
 
 DEF_COLOR = \033[0;39m
 GRAY = \033[0;90m
-RED = \033[0;91m
+RED = \033[31m\033[48;2;0;0;0m
 GREEN = \033[0;92m
 YELLOW = \033[0;93m
 BLUE = \033[0;94m
@@ -35,6 +35,7 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 NEON_GREEN = \033[38;2;0;255;34m
 BG =	     \033[30m\033[48;2;255;255;255m
+BLYE = \033[30m\033[48;2;255;255;0m
 
 DARK = \033[38;2;65;65;65m
 C1 = \033[38;5;198m # Rose vif
@@ -87,6 +88,42 @@ define full_line_background
 endef
 export full_line_background
 
+define SHELL_LOGO
+$(RED)
+$(RED)                                  ██████████████
+$(RED)                            ██████████████████████████
+$(RED)                        ██████████████████████████████████
+$(RED)                      ██████████$(BLYE)        $(RED)██$(BLYE)        $(RED)██████████
+$(RED)                    ████████$(BLYE)  $(RED)██$(BLYE)        $(RED)██$(BLYE)        $(RED)██$(BLYE)  $(RED)████████
+$(RED)                  ████████$(BLYE)    $(RED)████$(BLYE)      $(RED)██$(BLYE)      $(RED)████$(BLYE)    $(RED)████████
+$(RED)                ████████$(BLYE)      $(RED)████$(BLYE)      $(RED)██$(BLYE)      $(RED)████$(BLYE)      $(RED)████████             
+$(RED)              ██████████$(BLYE)        $(RED)██$(BLYE)      $(RED)██$(BLYE)      $(RED)██$(BLYE)        $(RED)██████████
+$(RED)              ████████████$(BLYE)      $(RED)██$(BLYE)      $(RED)██$(BLYE)      $(RED)██$(BLYE)      $(RED)████████████
+$(RED)            ████████$(BLYE)    $(RED)██$(BLYE)      $(RED)██$(BLYE)      $(RED)██$(BLYE)      $(RED)██$(BLYE)      $(RED)██$(BLYE)    $(RED)████████
+$(RED)            ██████$(BLYE)        $(RED)██$(BLYE)    $(RED)████$(BLYE)    $(RED)██$(BLYE)    $(RED)████$(BLYE)    $(RED)██$(BLYE)        $(RED)██████
+$(RED)            ████████$(BLYE)      $(RED)██$(BLYE)      $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)      $(RED)██$(BLYE)      $(RED)████████
+$(RED)            ██████████$(BLYE)      $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)      $(RED)██████████
+$(RED)            ████$(BLYE)    $(RED)████$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)████$(BLYE)    $(RED)████
+$(RED)            ████$(BLYE)      $(RED)██$(BLYE)      $(RED)██$(BLYE)  $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)  $(RED)██$(BLYE)      $(RED)██$(BLYE)      $(RED)████
+$(RED)            ████$(BLYE)        $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)    $(RED)██$(BLYE)    $(RED)██$(BLYE)        $(RED)████
+$(RED)            ████$(BLYE)          $(RED)██$(BLYE)    $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)    $(RED)██$(BLYE)          $(RED)████
+$(RED)            ██████$(BLYE)          $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)  $(RED)██$(BLYE)          $(RED)██████
+$(RED)              ██████$(BLYE)          $(RED)██$(BLYE)  $(RED)██$(BLYE)          $(RED)██$(BLYE)  $(RED)██$(BLYE)          $(RED)██████
+$(RED)                ████████$(BLYE)                                  $(RED)████████
+$(RED)                  ████████$(BLYE)                              $(RED)████████
+$(RED)                    ██████$(BLYE)                              $(RED)██████
+$(RED)                    ██████$(BLYE)                              $(RED)██████
+$(RED)                      ████$(BLYE)                              $(RED)████ 
+$(RED)                      ████$(BLYE)                              $(RED)████ 
+$(RED)                      ████████████████$(BLYE)      $(RED)████████████████
+$(RED)                      ██████████████████████████████████████
+$(RED)                                      ██████$(DEF_COLOR)
+endef
+export SHELL_LOGO
+
+
+
+
 define MINISHELL_LOGO
 $(BG)                                                                                
 $(BG)                                ██████  ██        ████████  ██        ██        
@@ -101,7 +138,10 @@ export MINISHELL_LOGO
 all:
 	@clear
 	@printf '\e[8;30;80t'
-	@$(call full_line_background)
+	@echo "$$SHELL_LOGO"
+	@sleep 1
+	@clear
+	@$(call full_line_background) 
 	@echo "$$MINISHELL_LOGO"
 	@$(call full_line_background)
 	@echo "$(DARK)Run by sviallon & emmmarti$(DEF_COLOR)"

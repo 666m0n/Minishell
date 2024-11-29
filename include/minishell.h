@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 17:58:39 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:33:40 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ t_bool			is_valid_command(t_cmd *cmd);
 /* a trier */
 char			*extract_value(const char *arg);
 t_env			*create_var(const char *arg, char *value);
-t_env			*update_env_variable(t_ctx *ctx, char *arg);
+t_env           *update_env_variable(t_ctx *ctx, const char *arg);
 int				is_valid_identifier(const char *str);
 int				handle_redirections(t_cmd *cmd);
 void			find_final_redirections(t_cmd *cmd);
