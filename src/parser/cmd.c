@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/16 14:40:11 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:10:01 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ void	process_pars(t_cmd *cmd, t_lexer *tokens, t_ctx *data)
 	{
 		if (is_cmd(tokens->type))
 		{
-			if (!tokens->content || tokens->content[0] == '\0')
+			if ((!tokens->content && tokens->type != T_DQUOTE)
+				|| (tokens->content[0] == '\0' && tokens->type != T_DQUOTE))
 			{
 				tokens = tokens->next;
 				continue ;
 			}
-			tmp = NULL;
 			tmp = copy_str(tmp, &tokens);
 			if (tmp)
 			{

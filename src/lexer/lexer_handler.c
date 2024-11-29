@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/23 16:01:19 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:09:27 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,12 @@ void	quotes_handler(t_lexer **tokens, char **str)
 	quote = **str;
 	changed = quote;
 	skip_consecutive_quotes(str, &quote, &effective_q);
+	if (**str == '\0')
+	{
+		content = (char *)malloc(1);
+		content = '\0';
+		create_token(get_quote_type(quote), "", tokens);
+	}
 	if (**str == '\'' || **str == '"')
 		(*str)++;
 	content = get_quote_content(str, quote, changed);

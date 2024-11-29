@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:47:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 15:08:37 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:55:59 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	change_exit_code(int status, t_ctx *data)
+{
+	if (status == 69)
+	{
+		data->exit_code = 0;
+		return ;
+	}
+	else
+	{
+		data->exit_code = status;
+		return ;
+	}
+}
 
 int	is_directory(const char *content)
 {
@@ -47,7 +61,7 @@ int	handle_misc(t_syntax *token)
 		if (token->content[0] == '!')
 			return (ERROR);
 		else
-			return (666);
+			return (69);
 	}
 	return (SUCCESS);
 }

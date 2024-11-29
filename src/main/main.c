@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 17:57:07 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:51:48 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ static void	process_line(char *line, t_ctx *ctx)
 	tokens = lexer(line);
 	if (tokens)
 	{
-/* 		print_tokens(tokens); */
+		print_tokens(tokens);
 		if (syntax_tokens(tokens, ctx) == SUCCESS)
 		{
 			cmd = parser(tokens, ctx);
 			if (cmd)
 			{
-				/* print_command(cmd); */
+				print_command(cmd);
 				execute_command(cmd, ctx);
 				free_cmd(cmd);
 			}

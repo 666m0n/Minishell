@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:58:12 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 15:22:15 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:54:05 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_return	syntax_tokens(t_lexer *tokens, t_ctx *data)
 		status = check_syntax_rules(curr);
 		if (status != SUCCESS)
 		{
-			data->exit_code = status;
+			change_exit_code(status, data);
 			free_syntax_list(syntax_list);
 			return (status);
 		}

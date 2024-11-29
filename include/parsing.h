@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 15:21:47 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:51:55 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ t_syntax	*create_syntax_list(t_lexer *tokens);
 void		free_syntax_list(t_syntax *list);
 int			is_directory(const char *content);
 int			handle_misc(t_syntax *token);
+void		change_exit_code(int status, t_ctx *data);
+
 
 //parser
 t_cmd		*parser(t_lexer *tokens, t_ctx *data);
