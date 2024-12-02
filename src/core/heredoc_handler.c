@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:37:26 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/23 19:00:51 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:27:33 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,20 @@ static int	heredoc_to_file(int fd, const char *delimiter)
 	char	*line;
 	int		status;
 
+	setup_heredoc_signals();
 	status = SUCCESS;
-	while (status == SUCCESS)
+	while (status == SUCCESS && g_sig_status == 0)
 	{
 		line = read_heredoc_line(delimiter);
+		if (!line || g_sig_status == SIGINT)
+			status = ERROR;
+		else if (line)
+			status = write_heredoc_line(fd, line);
+		free(line);
 		if (!line)
 			break ;
-		status = write_heredoc_line(fd, line);
-		free(line);
 	}
+	setup_interactive_signals();
 	return (status);
 }
 
@@ -76,8 +81,8 @@ static int	heredoc_to_file(int fd, const char *delimiter)
 */
 int	handle_single_heredoc(const char *delimiter, const char *file)
 {
-	int	fd;
-	int	status;
+	int		fd;
+	int		status;
 
 	fd = open(file, O_WRONLY);
 	if (fd == -1)

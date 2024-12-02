@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 12:53:21 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:36:44 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 	pid_t	*pid_array;
 	int		position;
 	int		status;
-    
+
 	if (init_pipeline(nb_of_pipes, &pid_array) != SUCCESS)
 		return (ERROR);
 	current = cmd;
@@ -68,7 +68,7 @@ int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
 		return (PIPE_ERROR);
 	status = run_pipeline(cmd, pipe_array, nb_of_pipes, ctx);
 	free(pipe_array);
-    cleanup_fds(cmd);
+	cleanup_fds(cmd);
 	return (status);
 }
 
@@ -97,7 +97,7 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 		exec_in_child(cmd, ctx);
 	if (waitpid(pid, &status, 0) == SYSCALL_ERROR)
 		return (handle_system_error("waitpid"));
-    cleanup_fds(cmd);
+	cleanup_fds(cmd);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
@@ -143,27 +143,26 @@ int	exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections)
 ** @param ctx: contexte du shell
 ** @return: code de sortie de la commande
 ** Note: détecte le type (builtin/simple/pipe) et redirige
+** divise en 2 pour la gestion des signaux
 */
-int execute_command(t_cmd *cmd, t_ctx *ctx)
+int	execute_command(t_cmd *cmd, t_ctx *ctx)
 {
-    const char  *cmd_name;
-    int         status;
+	const char	*cmd_name;
+	int			status;
 
-    if (!cmd || !ctx)
-        return (ERROR);
-    cmd_name = get_cmd_name(cmd);
-    if (!cmd_name)
-        return (CMD_NOT_FOUND);
-    status = process_heredocs(cmd);
-    if (status != SUCCESS)
-        return (status);
-    if (is_simple_command(cmd) == FALSE)
-        status = exec_pipe(cmd, ctx);
-    else if (is_builtin(cmd_name) == TRUE)
-        status = exec_builtin(cmd, ctx, FALSE);
-    else
-        status = exec_simple(cmd, ctx);
-    set_exit_status(cmd, status);
-    cleanup_heredoc_files(cmd);
-    return (status);
+	if (!cmd || !ctx)
+		return (ERROR);
+	if (g_sig_status)
+	{
+		status = g_sig_status + 128;
+		g_sig_status = 0;
+		return (status);
+	}
+	cmd_name = get_cmd_name(cmd);
+	if (!cmd_name)
+		return (CMD_NOT_FOUND);
+	status = process_heredocs(cmd);
+	if (status != SUCCESS)
+		return (status);
+	return (execute_cmd_type(cmd, ctx, cmd_name));
 }

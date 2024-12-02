@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 12:50:45 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 10:34:12 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 void cleanup_heredoc_files(t_cmd *cmd)
 {
-    t_redirection *redir;
+	t_redirection *redir;
 
-    redir = cmd->redirections;
-    while (redir)
-    {
-        if (redir->type == T_HEREDOC && redir->file)
-        {
-            // Le fichier commence par .heredoc_ donc c'est un fichier temporaire
-            if (!strncmp(redir->file, ".heredoc_", 9))
-            {
-                unlink(redir->file);
-            }
-        }
-        redir = redir->next;
-    }
+	redir = cmd->redirections;
+	while (redir)
+	{
+		if (redir->type == T_HEREDOC && redir->file)
+		{
+			// Le fichier commence par .heredoc_ donc c'est un fichier temporaire
+			if (!strncmp(redir->file, ".heredoc_", 9))
+			{
+				unlink(redir->file);
+			}
+		}
+		redir = redir->next;
+	}
 }
 
 /*
