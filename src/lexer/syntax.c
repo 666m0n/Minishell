@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:58:12 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/29 18:48:22 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/02 09:07:08 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ static int	check_syntax_rules(t_syntax *curr)
 		return (check_redirection(curr));
 	if (curr->type == T_PIPE)
 		return (check_pipe(curr));
-/* 	if (is_directory(curr->content))
-		return (handle_misc(curr)); */
+	if (is_directory(curr->content) && (curr->next == NULL
+			&& curr->prev == NULL))
+		return (handle_misc(curr));
 	if (curr->content[0] == '#' || curr->content[0] == '!'
 		|| curr->content[0] == ':')
 		return (handle_misc(curr));

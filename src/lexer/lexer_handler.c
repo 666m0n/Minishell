@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/29 15:09:27 by Simon            ###   ########.fr       */
+/*   Updated: 2024/12/02 09:00:41 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	space_handler(t_lexer **tokens, char **str)
 	free(new);
 }
 
-
 // le probleme ici est surement lie a une incrementation en trop
 void	quotes_handler(t_lexer **tokens, char **str)
 {
@@ -107,7 +106,7 @@ void	quotes_handler(t_lexer **tokens, char **str)
 	if (**str == '\0')
 	{
 		content = (char *)malloc(1);
-		content = '\0';
+		*content = '\0';
 		create_token(get_quote_type(quote), "", tokens);
 	}
 	if (**str == '\'' || **str == '"')

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:47:18 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/29 18:48:03 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/02 09:21:29 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	change_exit_code(int status, t_ctx *data)
 	}
 }
 
-/* int	is_directory(const char *content)
+int	is_directory(const char *content)
 {
 	int	i;
 	int	found_char;
@@ -44,7 +44,7 @@ void	change_exit_code(int status, t_ctx *data)
 		i++;
 	}
 	return (found_char);
-} */
+}
 
 int	handle_misc(t_syntax *token)
 {
@@ -55,6 +55,13 @@ int	handle_misc(t_syntax *token)
 			return (ERROR);
 		else
 			return (69);
+	}
+	else
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(token->content, STDERR_FILENO);
+		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		return (IS_DIR);
 	}
 	return (SUCCESS);
 }
