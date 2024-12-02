@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/29 17:49:22 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/01 11:18:51 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,23 +68,45 @@ void	free_all(t_ctx *ctx)
 	free(ctx);
 }
 
-int	main(int ac, char **av, char **envp)
+int main(int ac, char **av, char **envp)
 {
-	t_ctx		*ctx;
-	t_return	status;
+    t_ctx *ctx;
+    t_return status;
+    
+    ctx = init_ctx(envp);
+    if (!ctx)
+        return (EXIT_FAILURE);
 
-	(void) av;
-	(void) ac;
-	ctx = init_ctx(envp);
-	if (!ctx)
-		return (EXIT_FAILURE);
-	status = handle_loop(ctx);
-	free_all(ctx);
-	if (status == SUCCESS)
-	{
-		ft_putstr_fd("ciao !\n", 2);
-		return (EXIT_SUCCESS);
-	}
-	ft_putstr_fd("c cassé\n", 2);
-	return (EXIT_FAILURE);
+
+    if (ac == 3 && ft_strcmp(av[1], "-c") == 0)
+    {
+    t_lexer *tokens = lexer(av[2]);
+    if (tokens)
+    {
+        t_cmd *cmd = parser(tokens, ctx);
+        if (cmd)
+        {
+            status = execute_command(cmd, ctx);
+            free_cmd(cmd);
+        }
+        free_token(tokens);
+        free_all(ctx);
+        if (status == SUCCESS)
+            return (EXIT_SUCCESS);
+        return (EXIT_FAILURE);
+    }
+    free_all(ctx);
+    return (EXIT_FAILURE);
+    }
+    
+    // Mode interactif normal
+    status = handle_loop(ctx);
+    free_all(ctx);
+    if (status == SUCCESS)
+    {
+        ft_putstr_fd("ciao !\n", 2);
+        return (EXIT_SUCCESS);
+    }
+    ft_putstr_fd("c cassé\n", 2);
+    return (EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:58:45 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/10 11:37:45 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:04:55 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 /* Valeurs de retour système standards */
 # define SYSCALL_ERROR			-1		// Valeur de retour d'erreur standard des appels système
 # define SYSCALL_SUCCESS		0
+
+// Erreur pour la built in exit
+# define INVALID_NUMERIC_ARG -1
 
 /* Guide des codes d'erreur principaux */
 // Succès

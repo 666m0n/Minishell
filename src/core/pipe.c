@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:51:59 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/21 12:49:08 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/01 20:08:46 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ int	wait_for_processes(pid_t *pids, int count)
 	last_status = ERROR;
 	while (i < count)
 	{
+        
 		if (waitpid(pids[i], &status, 0) == SYSCALL_ERROR)
 		{
 			free(pids);
 			return (handle_system_error("waitpid"));
 		}
+        
 		if (i == count - 1)
 		{
 			if (WIFEXITED(status))
@@ -55,11 +57,10 @@ int	wait_for_processes(pid_t *pids, int count)
 void close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
 {
     int i;
-
     i = 0;
     while (i < nb_of_pipes)
     {
-        if (cmd_position == 0)
+        if (cmd_position == 0)  // Première commande (ls)
         {
             if (i == 0)
                 close(pipe_array[i][0]);
@@ -69,7 +70,7 @@ void close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
                 close(pipe_array[i][1]);
             }
         }
-        else if (cmd_position == nb_of_pipes)
+        else if (cmd_position == nb_of_pipes)  // Dernière commande (sort)
         {
             if (i == cmd_position - 1)
                 close(pipe_array[i][1]);
@@ -79,7 +80,7 @@ void close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
                 close(pipe_array[i][1]);
             }
         }
-        else
+        else  // Commandes du milieu
         {
             if (i == cmd_position - 1)
                 close(pipe_array[i][1]);
@@ -93,6 +94,7 @@ void close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
         }
         i++;
     }
+  
 }
 
 /*

@@ -6,7 +6,7 @@
 #    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/29 14:38:38 by emmanuel         ###   ########.fr        #
+#    Updated: 2024/12/02 15:17:18 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ WHITE = \033[0;97m
 NEON_GREEN = \033[38;2;0;255;34m
 BG =	     \033[30m\033[48;2;255;255;255m
 BLYE = \033[30m\033[48;2;255;255;0m
+TEST = \033[38;2;153;255;204m
 
 DARK = \033[38;2;65;65;65m
 C1 = \033[38;5;198m # Rose vif
@@ -47,6 +48,9 @@ C7 = \033[38;5;93m  # Violet bleu
 C8 = \033[38;5;63m  # Bleu violet
 C9 = \033[38;5;69m  # Bleu clair
 C10 = \033[38;5;75m # Bleu brillant
+
+NC = \033[0m
+SEPARATOR = \033[38;2;153;255;204m----------------------------------------$(NC)
 
 
 
@@ -63,7 +67,7 @@ PRS			= cmd parser_utils parser redir var var2
 
 BUILTINS	= builtins/
 BLTN		= env builtinstest builtin_unset builtin_pwd builtin_export builtin_export_utils \
-			builtin_exit builtin_env builtin_echo builtin_cd
+			builtin_exit builtin_exit_utils builtin_env builtin_echo builtin_cd
 
 CORE_DIR	= core/
 CORE		= cleanup error execute external find get has is pipe_executor pipe redirections \
@@ -71,6 +75,10 @@ CORE		= cleanup error execute external find get has is pipe_executor pipe redire
 
 MAIN_DIR	= main/
 MAIN		= main test
+
+
+# Fichier contenant les tests
+TEST_FILE = tests/commands.txt
 
 SRC_FILES+=$(addprefix $(CORE_DIR),$(CORE))
 SRC_FILES+=$(addprefix $(PARSER_DIR),$(PRS))
@@ -183,6 +191,47 @@ fclean: clean
 re: fclean all
 	@echo "$(GREEN)Cleaned and rebuilt everything for Minishell !$(DEF_COLOR)"
 	@printf "\033[?25h"  # Réaffiche le curseur
+
+# Règle pour comparer les sorties
+compare: $(NAME)
+	@clear
+	@printf "\033[38;2;153;255;204mBash vs Minishell\033[0m\n\n"
+	@count=0; success=0; \
+	while read -r test || [ -n "$$test" ]; do \
+		[ -z "$$test" ] || [ "$${test#\#}" != "$$test" ] && continue; \
+		count=$$((count + 1)); \
+		echo "$(SEPARATOR)"; \
+		echo "$$test"; \
+		echo "$(SEPARATOR)"; \
+		if echo "$$test" | grep -q "<<"; then \
+			eval "$$test" > /tmp/bash_output.tmp 2>&1; \
+			eval "$$test" | ./$(NAME) > /tmp/minishell_output.tmp 2>&1; \
+		else \
+			bash -c "$$test" > /tmp/bash_output.tmp 2>&1; \
+			./$(NAME) -c "$$test" > /tmp/minishell_output.tmp 2>&1; \
+		fi; \
+		if diff -q /tmp/bash_output.tmp /tmp/minishell_output.tmp >/dev/null; then \
+			echo "\033[30m\033[48;2;0;255;0m OK $(NC)"; \
+			success=$$((success + 1)); \
+		else \
+			echo "\033[38;2;255;16;0m\033[48;2;57;4;0m KO $(NC)"; \
+		fi; \
+		rm -f /tmp/bash_output.tmp /tmp/minishell_output.tmp; \
+		echo; \
+	done < $(TEST_FILE);
+
+
+# Règle pour comparer une commande spécifique
+compare-cmd: $(NAME)
+	@read -p "🔍 Entrez la commande à tester : " cmd; \
+	echo "\n$(BLUE)Test de la commande : $$cmd$(NC)"; \
+	echo "$(SEPARATOR)"; \
+	echo "Bash :"; \
+	bash -c "$$cmd" 2>&1; \
+	echo "\nMinishell :"; \
+	./$(NAME) -c "$$cmd" 2>&1; \
+	echo "$(SEPARATOR)"
+
 
 -include $(DEP)
 .PHONY: clean fclean re all base bonus

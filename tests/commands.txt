@@ -1,0 +1,59 @@
+# Tests basiques
+ls | sort -f
+echo 'Hello World'
+export TEST=42
+echo $TEST
+
+# Tests des variables d'environnement
+echo $HOME
+
+# Tests des redirections
+echo test > tmp_file
+cat < tmp_file
+
+# Tests de pipes simples
+ls | wc -l
+cat Makefile | grep NAME | wc -l
+echo hello | cat -e
+echo hello | cat -e | cat -e
+
+# Tests des builtins
+pwd | cat
+pwd | echo hello
+echo hello | pwd
+
+# Tests d'erreurs et commandes invalides
+ls | invalidcommand | wc -l
+doesnotexist | ls | wc -l
+ls | commanddoesntexist
+
+# Tests de pipes multiples avec ls et cat
+cat | cat | cat | ls
+ls | ls | ls | ls
+
+# Tests de pipes avec builtins
+echo hello | cd . | pwd
+pwd | export TEST=42 | env
+env | grep PATH | wc -l
+
+# Tests avec espaces excessifs
+ls    |    wc    -l
+echo    hello    |    cat    -e
+
+# Tests de multiples pipes avec grep
+ls | grep Makefile | grep Make
+echo test | cat -e | cat -e | cat -e
+
+# Tests exit code avec commandes invalides
+ls filedoesntexist | echo $?
+invalidcommand | echo $?
+
+# Tests redirections avec pipes
+echo hello > /tmp/test_pipe | cat /tmp/test_pipe
+cat < /tmp/test_pipe | wc -l
+
+# Tests echo avec options
+echo -n hello | cat -e
+echo -nnnn hello | cat -e
+echo "-n" hello | cat -e
+

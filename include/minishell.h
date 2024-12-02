@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/29 11:33:40 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:16:28 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int				handle_redirections(t_cmd *cmd);
 void			find_final_redirections(t_cmd *cmd);
 int				save_fd(t_cmd *cmd);
 void            cleanup_heredoc_files(t_cmd *cmd);
+int	            handle_numeric_arg(const char *arg);
 
 
 //Simon
