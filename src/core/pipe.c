@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:51:59 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/21 12:49:08 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:31:57 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,47 +52,47 @@ int	wait_for_processes(pid_t *pids, int count)
 ** @param cmd_position: position de la commande dans le pipeline
 ** @param nb_of_pipes: nombre total de pipes
 */
-void close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
+void	close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (i < nb_of_pipes)
-    {
-        if (cmd_position == 0)
-        {
-            if (i == 0)
-                close(pipe_array[i][0]);
-            else
-            {
-                close(pipe_array[i][0]);
-                close(pipe_array[i][1]);
-            }
-        }
-        else if (cmd_position == nb_of_pipes)
-        {
-            if (i == cmd_position - 1)
-                close(pipe_array[i][1]);
-            else
-            {
-                close(pipe_array[i][0]);
-                close(pipe_array[i][1]);
-            }
-        }
-        else
-        {
-            if (i == cmd_position - 1)
-                close(pipe_array[i][1]);
-            else if (i == cmd_position)
-                close(pipe_array[i][0]);
-            else
-            {
-                close(pipe_array[i][0]);
-                close(pipe_array[i][1]);
-            }
-        }
-        i++;
-    }
+	i = 0;
+	while (i < nb_of_pipes)
+	{
+		if (cmd_position == 0)
+		{
+			if (i == 0)
+				close(pipe_array[i][0]);
+			else
+			{
+				close(pipe_array[i][0]);
+				close(pipe_array[i][1]);
+			}
+		}
+		else if (cmd_position == nb_of_pipes)
+		{
+			if (i == cmd_position - 1)
+				close(pipe_array[i][1]);
+			else
+			{
+				close(pipe_array[i][0]);
+				close(pipe_array[i][1]);
+			}
+		}
+		else
+		{
+			if (i == cmd_position - 1)
+				close(pipe_array[i][1]);
+			else if (i == cmd_position)
+				close(pipe_array[i][0]);
+			else
+			{
+				close(pipe_array[i][0]);
+				close(pipe_array[i][1]);
+			}
+		}
+		i++;
+	}
 }
 
 /*

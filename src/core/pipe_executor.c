@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_executor.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 15:20:29 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:53:56 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,34 +21,34 @@
 ** @param ctx: contexte du shell
 ** Note: ne retourne jamais, termine le processus
 */
-void    execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array, 
-                            int position, int nb_of_pipes, t_ctx *ctx)
+void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
+						int position, int nb_of_pipes, t_ctx *ctx)
 {
-    int status;
+	int	status;
 
-    configure_pipe_fds(pipe_array, position, nb_of_pipes);
-    close_unused_pipes(pipe_array, position, nb_of_pipes);
-    if (has_redirection(cmd))
-    {
-        status = setup_redirections(cmd);
-        if (status != SUCCESS)
-        {
-            cleanup_fds(cmd);
-            exit(status);
-        }
-    }
-    if (is_builtin(cmd->args[0]))
-        exit(exec_builtin(cmd, ctx, TRUE));
-    status = prepare_exec(cmd);
-    if (status != SUCCESS)
-    {
-        handle_command_error(cmd, status);
-        cleanup_fds(cmd);
-        exit(CMD_NOT_FOUND);
-    }
-    execve(cmd->path, cmd->args, NULL);
-    cleanup_fds(cmd);
-    exit(handle_system_error("execve"));
+	configure_pipe_fds(pipe_array, position, nb_of_pipes);
+	close_unused_pipes(pipe_array, position, nb_of_pipes);
+	if (has_redirection(cmd))
+	{
+		status = setup_redirections(cmd);
+		if (status != SUCCESS)
+		{
+			cleanup_fds(cmd);
+			exit(status);
+		}
+	}
+	if (is_builtin(cmd->args[0]))
+		exit(exec_builtin(cmd, ctx, TRUE));
+	status = prepare_exec(cmd);
+	if (status != SUCCESS)
+	{
+		handle_command_error(cmd, status);
+		cleanup_fds(cmd);
+		exit(CMD_NOT_FOUND);
+	}
+	execve(cmd->path, cmd->args, NULL);
+	cleanup_fds(cmd);
+	exit(handle_system_error("execve"));
 }
 
 /*

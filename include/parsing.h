@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/27 15:51:55 by Simon            ###   ########.fr       */
+/*   Updated: 2024/12/02 15:03:53 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		free_syntax_list(t_syntax *list);
 int			is_directory(const char *content);
 int			handle_misc(t_syntax *token);
 void		change_exit_code(int status, t_ctx *data);
-
+void		check_cmd_quotes(t_lexer *tokens);
 
 //parser
 t_cmd		*parser(t_lexer *tokens, t_ctx *data);
