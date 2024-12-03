@@ -1,59 +1,122 @@
 # Tests basiques
-ls | sort -f
-echo 'Hello World'
-export TEST=42
-echo $TEST
+""
+''
+" "
+' '
+/
+//
+///
+echo
+echo hello
+echo -n hello
+echo -n -n hello
+echo -nnnnnn hello
+echo hello world
+echo "hello world"
+echo 'hello world'
+echo 'hello' "world"
+cat Makefile
+pwd
+cd ..
+cd .
+cd /
+cd /tmp
+cd .././../
+cat test
+cat doesnotexist
 
-# Tests des variables d'environnement
-echo $HOME
+# Tests sur les erreurs
+notexist
+./notexist
+../notexist
+cat notexist
+inexistant arg1 arg2
+./Makefile
+hello
 
-# Tests des redirections
-echo test > tmp_file
-cat < tmp_file
+# Tests sur les quotes
+echo "hello'world"
+echo 'hello"world'
+echo "'hello'"
+echo '"world"'
+echo "'''"
+echo '"""'
+echo "'hello'world'"
+echo "hi"'hey'"hello"
+echo 'hi'"hey"'hello'
 
-# Tests de pipes simples
-ls | wc -l
-cat Makefile | grep NAME | wc -l
-echo hello | cat -e
-echo hello | cat -e | cat -e
+# Tests redirections simples
+echo hello > file1
+cat < file1
+echo world >> file1
+echo hello > file1 > file2
+echo hello > file1 >> file2
+cat < file1 > file2
+cat < file1 >> file2
+echo test > file1 > file2 > file3
 
-# Tests des builtins
+# Tests pipes simples
+echo hello | cat
+echo hello | cat | cat
 pwd | cat
-pwd | echo hello
-echo hello | pwd
+cat Makefile | cat
+cat Makefile | grep make
+echo hello | grep hello
+echo hello | grep world
+cat | cat
+cat Makefile | grep make | wc
+cat | cat | cat | cat | cat
 
-# Tests d'erreurs et commandes invalides
-ls | invalidcommand | wc -l
-doesnotexist | ls | wc -l
-ls | commanddoesntexist
+# Tests pipes et redirections
+echo hello > file1 | cat
+cat < file1 | grep hello
+echo test > file1 | cat > file2
+cat Makefile | grep make > file
+cat < file1 | grep hello > file2
+echo test > file1 | cat > file2 | wc -l
+cat Makefile | grep make > file1 | cat < file1
 
-# Tests de pipes multiples avec ls et cat
-cat | cat | cat | ls
-ls | ls | ls | ls
+# Tests avancés
+cat < file1 | grep hello | wc -l > file2
+echo test > file1 | cat < file1 | grep test > file2
+echo hello > f1 | echo world > f2 | echo hey > f3
+cat < file1 | grep test | wc -l > file2 | cat < file2
+pwd | cat | wc | cat | wc | cat
+echo hello | grep hello | wc | cat > file | wc -l
+cd .. | pwd | cat | wc
 
-# Tests de pipes avec builtins
-echo hello | cd . | pwd
-pwd | export TEST=42 | env
-env | grep PATH | wc -l
+# Tests erreurs complexes
+notexist | cat
+cat | notexist
+echo hello | notexist | cat
+cat < nonexist | grep test
+cat < nonexist > file1
+notexist < file1 | cat
+cat < nonexist | notexist > file1
+./Makefile | cat
+cat | ./Makefile
 
 # Tests avec espaces excessifs
 ls    |    wc    -l
 echo    hello    |    cat    -e
 
-# Tests de multiples pipes avec grep
-ls | grep Makefile | grep Make
-echo test | cat -e | cat -e | cat -e
+# Tests limites
+echo hello ||| cat
+echo hello |||| cat
+echo hello | | cat
+cat ||
+cat |||
+>
+>>
+
+echo >
+echo >>
+cat 
+| cat
+cat |
 
 # Tests exit code avec commandes invalides
 ls filedoesntexist | echo $?
 invalidcommand | echo $?
 
-# Tests redirections avec pipes
-echo hello > /tmp/test_pipe | cat /tmp/test_pipe
-cat < /tmp/test_pipe | wc -l
-
-# Tests echo avec options
-echo -n hello | cat -e
-echo -nnnn hello | cat -e
-echo "-n" hello | cat -e
 

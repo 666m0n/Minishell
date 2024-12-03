@@ -6,7 +6,7 @@
 #    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/12/02 15:17:18 by emmanuel         ###   ########.fr        #
+#    Updated: 2024/12/03 10:49:44 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -198,26 +198,28 @@ compare: $(NAME)
 	@printf "\033[38;2;153;255;204mBash vs Minishell\033[0m\n\n"
 	@count=0; success=0; \
 	while read -r test || [ -n "$$test" ]; do \
-		[ -z "$$test" ] || [ "$${test#\#}" != "$$test" ] && continue; \
-		count=$$((count + 1)); \
-		echo "$(SEPARATOR)"; \
-		echo "$$test"; \
-		echo "$(SEPARATOR)"; \
-		if echo "$$test" | grep -q "<<"; then \
-			eval "$$test" > /tmp/bash_output.tmp 2>&1; \
-			eval "$$test" | ./$(NAME) > /tmp/minishell_output.tmp 2>&1; \
-		else \
-			bash -c "$$test" > /tmp/bash_output.tmp 2>&1; \
-			./$(NAME) -c "$$test" > /tmp/minishell_output.tmp 2>&1; \
-		fi; \
-		if diff -q /tmp/bash_output.tmp /tmp/minishell_output.tmp >/dev/null; then \
-			echo "\033[30m\033[48;2;0;255;0m OK $(NC)"; \
-			success=$$((success + 1)); \
-		else \
-			echo "\033[38;2;255;16;0m\033[48;2;57;4;0m KO $(NC)"; \
-		fi; \
-		rm -f /tmp/bash_output.tmp /tmp/minishell_output.tmp; \
-		echo; \
+	[ -z "$$test" ] || [ "$${test#\#}" != "$$test" ] && continue; \
+	count=$$((count + 1)); \
+	echo "$(SEPARATOR)"; \
+	echo "$$test"; \
+	echo "$(SEPARATOR)"; \
+	if echo "$$test" | grep -q "<<"; then \
+	eval "$$test" > /tmp/bash_output.tmp 2>&1; \
+	eval "$$test" | ./$(NAME) > /tmp/minishell_output.tmp 2>&1; \
+	else \
+	bash -c "$$test" > /tmp/bash_output.tmp 2>&1; \
+	./$(NAME) -c "$$test" > /tmp/minishell_output.tmp 2>&1; \
+	fi; \
+	sed 's/^minishell: //' /tmp/minishell_output.tmp | sed 's/^bash: //' | sed 's/^line [0-9]*: //' > /tmp/minishell_cleaned.tmp; \
+	sed 's/^minishell: //' /tmp/bash_output.tmp | sed 's/^bash: //' | sed 's/^line [0-9]*: //' > /tmp/bash_cleaned.tmp; \
+	if diff -q /tmp/bash_cleaned.tmp /tmp/minishell_cleaned.tmp >/dev/null; then \
+	echo "\033[30m\033[48;2;0;255;0m OK $(NC)"; \
+	success=$$((success + 1)); \
+	else \
+	echo "\033[38;2;255;16;0m\033[48;2;57;4;0m KO $(NC)"; \
+	fi; \
+	rm -f /tmp/bash_output.tmp /tmp/minishell_output.tmp /tmp/bash_cleaned.tmp /tmp/minishell_cleaned.tmp; \
+	echo; \
 	done < $(TEST_FILE);
 
 
