@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/29 14:51:48 by Simon            ###   ########.fr       */
+/*   Updated: 2024/12/02 10:22:22 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,14 @@ t_return	handle_loop(t_ctx *ctx)
 	printf("\033[2J\033[H");
 	while (1)
 	{
+		setup_interactive_signals();
+		g_sig_status = 0;
 		line = readline(PROMPT);
 		if (!line)
-			return (-1);
+		{
+			ft_putendl_fd("exit", STDERR_FILENO);
+			return (ctx->exit_code);
+		}
 		if (!check_line(line))
 		{
 			add_history(line);
@@ -75,16 +80,18 @@ int	main(int ac, char **av, char **envp)
 
 	(void) av;
 	(void) ac;
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	ctx = init_ctx(envp);
 	if (!ctx)
 		return (EXIT_FAILURE);
 	status = handle_loop(ctx);
-	free_all(ctx);
-	if (status == SUCCESS)
+	if (status != SUCCESS)
 	{
-		ft_putstr_fd("ciao !\n", 2);
-		return (EXIT_SUCCESS);
+		status = ctx->exit_code;
+		free_all(ctx);
+		exit(status);
 	}
-	ft_putstr_fd("c cassé\n", 2);
-	return (EXIT_FAILURE);
+	free_all(ctx);
+	return (0);
 }

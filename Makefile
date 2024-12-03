@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+         #
+#    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 15:04:34 by sviallon          #+#    #+#              #
-#    Updated: 2024/11/26 17:35:31 by sviallon         ###   ########.fr        #
+#    Updated: 2024/12/02 10:19:52 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,7 @@ CORE		= cleanup error execute external find get has is pipe_executor pipe redire
 			redirections_2 set heredoc heredoc_handler
 
 MAIN_DIR	= main/
-MAIN		= main test
+MAIN		= main test signal
 
 SRC_FILES+=$(addprefix $(CORE_DIR),$(CORE))
 SRC_FILES+=$(addprefix $(PARSER_DIR),$(PRS))

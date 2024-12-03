@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 10:17:00 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 12:52:04 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:14:49 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*generate_temp_filename(void)
 char	*create_temp_file(void)
 {
 	char	*temp_name;
-	int	    fd;
+	int		fd;
 
 	temp_name = generate_temp_filename();
 	if (!temp_name)
@@ -110,4 +110,3 @@ int	process_heredocs(t_cmd *cmd)
 	}
 	return (SUCCESS);
 }
-

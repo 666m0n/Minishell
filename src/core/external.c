@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 12:53:49 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:33:14 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
 	char	**env_array;
 	int		status;
 
+	setup_child_signals();
 	env_array = NULL;
 	if (has_redirection(cmd))
 	{

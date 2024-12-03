@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:48:17 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 17:54:18 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:57:55 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void	free_cmd(t_cmd *cmd)
 			free_double(tmp->args);
 		if (tmp->redirections)
 			free_redirections(tmp->redirections);
+		if (tmp->path)
+			free(tmp->path);
+		if (tmp->fd)
+			free(tmp->fd);
 		free(tmp);
 	}
 }

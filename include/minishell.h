@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 17:58:39 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:15:39 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef int	(*builtin_func)(t_cmd *, t_ctx *);
 //Manu
 /* Core Functions */
 int				execute_command(t_cmd *cmd, t_ctx *ctx);
+int				execute_cmd_type(t_cmd *cmd, t_ctx *ctx, const char *cmd_name);
 
 /* Command Execution */
 int				exec_simple(t_cmd *cmd, t_ctx *ctx);
@@ -94,10 +95,10 @@ int				apply_input_redirection(t_cmd *cmd);
 int				apply_output_redirection(t_cmd *cmd);
 
 /* Heredoc Management */
-int	            process_heredocs(t_cmd *cmd);
-char	        *create_temp_file(void);
-int             handle_single_heredoc(const char *delimiter, const char *file);
-int             write_heredoc_line(int fd, const char *line);
+int				process_heredocs(t_cmd *cmd);
+char			*create_temp_file(void);
+int				handle_single_heredoc(const char *delimiter, const char *file);
+int				write_heredoc_line(int fd, const char *line);
 
 /* Environment Management */
 t_env			*find_existing_var(t_env *env, const char *name);
@@ -139,26 +140,30 @@ int				is_valid_identifier(const char *str);
 int				handle_redirections(t_cmd *cmd);
 void			find_final_redirections(t_cmd *cmd);
 int				save_fd(t_cmd *cmd);
-void            cleanup_heredoc_files(t_cmd *cmd);
-
+void			cleanup_heredoc_files(t_cmd *cmd);
 
 //Simon
 // Main functions
-int			main(int ac, char **av, char **envp);
-void		free_all(t_ctx *ctx);
-void		free_double(char **tab);
-void		exit_error(const char *s);
-int			check_line(char *line);
-t_ctx		*init_ctx(char **envp);
+int				main(int ac, char **av, char **envp);
+void			free_all(t_ctx *ctx);
+void			free_double(char **tab);
+void			exit_error(const char *s);
+int				check_line(char *line);
+t_ctx			*init_ctx(char **envp);
+void			signal_handler(int signum);
+void			setup_interactive_signals(void);
+void			setup_child_signals(void);
+void			setup_heredoc_signals(void);
+void			restore_default_signals(void);
 
 // Utils
-char		*ft_realloc(void *s, int old_size, int new_size);
-char		*ft_strjoin_free(char *s1, char *s2);
-size_t		ft_strcpy(char *dest, const char *src);
-size_t		ft_strcat(char *dest, char *src);
+char			*ft_realloc(void *s, int old_size, int new_size);
+char			*ft_strjoin_free(char *s1, char *s2);
+size_t			ft_strcpy(char *dest, const char *src);
+size_t			ft_strcat(char *dest, char *src);
 
 // Debug functions
-void		print_tokens(t_lexer *tokens);
-void		print_command(t_cmd *cmd);
+void			print_tokens(t_lexer *tokens);
+void			print_command(t_cmd *cmd);
 
 #endif
