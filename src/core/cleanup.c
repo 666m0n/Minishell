@@ -6,15 +6,15 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/03 15:58:33 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:30:56 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void cleanup_heredoc_files(t_cmd *cmd)
+void	cleanup_heredoc_files(t_cmd *cmd)
 {
-	t_redirection *redir;
+	t_redirection	*redir;
 
 	redir = cmd->redirections;
 	while (redir)
