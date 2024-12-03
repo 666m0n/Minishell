@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/02 10:34:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:58:33 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	cleanup_fds(t_cmd *cmd)
 	cmd->fd->stdout_backup = -1;
 	cmd->fd->pipe_read = -1;
 	cmd->fd->pipe_write = -1;
+	cmd->fd->last_in = NULL;
+	cmd->fd->last_out = NULL;
 }
 
 /*
