@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:58:45 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/02 15:04:55 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/03 11:32:02 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@
 
 // Erreurs d'exécution (126-127)
 # define PERMISSION_DENIED		126		// Fichier existe mais pas les droits
-# define IS_DIR					126		// Tentative d'exécuter un dossier
-# define CANT_EXECUTE			126		// Fichier non exécutable
+# define IS_DIR					8		// Tentative d'exécuter un dossier
+# define CANT_EXECUTE			9		// Fichier non exécutable
 # define CMD_NOT_FOUND			127		// Commande introuvable
 
 // Erreurs de signal (128+)
