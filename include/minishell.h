@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 13:21:37 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/02 11:15:39 by sviallon         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/12/03 16:40:58 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -135,12 +136,14 @@ t_bool			is_valid_command(t_cmd *cmd);
 /* a trier */
 char			*extract_value(const char *arg);
 t_env			*create_var(const char *arg, char *value);
-t_env			*update_env_variable(t_ctx *ctx, char *arg);
+t_env           *update_env_variable(t_ctx *ctx, const char *arg);
 int				is_valid_identifier(const char *str);
 int				handle_redirections(t_cmd *cmd);
 void			find_final_redirections(t_cmd *cmd);
 int				save_fd(t_cmd *cmd);
-void			cleanup_heredoc_files(t_cmd *cmd);
+void            cleanup_heredoc_files(t_cmd *cmd);
+int	            handle_numeric_arg(const char *arg);
+
 
 //Simon
 // Main functions

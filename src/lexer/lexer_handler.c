@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/02 09:00:41 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:23:12 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	quotes_handler(t_lexer **tokens, char **str)
 	if (content[0] == '\0')
 		return (free(content));
 	create_token(get_quote_type(quote), content, tokens);
-	(*str)++;
+	if (**str)
+		(*str)++;
 	free(content);
 }

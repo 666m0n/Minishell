@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/02 11:33:14 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:39:01 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ int	prepare_exec(t_cmd *cmd)
 	char		*path;
 
 	cmd_name = get_cmd_name(cmd);
-	if (cmd_name == NULL)
+	if (!cmd_name || !*cmd_name)
 		return (CMD_NOT_FOUND);
-	if (is_dir(cmd_name) == TRUE)
-		return (IS_DIR);
+/* 	if (is_dir(cmd_name) == TRUE)
+		return (IS_DIR); */
 	path = find_command_path(cmd_name);
 	if (path == NULL)
 		return (CMD_NOT_FOUND);

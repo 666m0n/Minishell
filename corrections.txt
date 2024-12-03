@@ -1,0 +1,150 @@
+1 - Simon qund ctrl C pendant cat : message d'erreur :
+minishell >$ minishell: waitpid: Interrupted system call
+et aussi bash-5.1$ cat
+^\Quit (core dumped)
+bash-5.1$
+alors que
+minishell >$ cat
+^\minishell: waitpid: Interrupted system call
+minishell >$
+
+
+2 - MAnu minishell >$  cat << eof1 << eof2
+  › hello
+  › eof1
+mauvais delimiteur pour sortir
+
+3 - Manu leaks provenant de export / builtin ? export TEST=2
+par contre plus de leaks si la var est unset
+par contre bugs quand on unset des var de env de base (voir PATH notamment)
+
+4 - Simon minishell >$ echo ''"hello"''
+-> hello" incrementation prblm in skip_quotes
+autre prompt minishell >$ echo ""''
+retour = '
+au lieu de ligne vide
++ exit
+==2403733==
+==2403733== HEAP SUMMARY:
+==2403733==     in use at exit: 208,474 bytes in 227 blocks
+==2403733==   total heap usage: 814 allocs, 587 frees, 238,540 bytes allocated
+==2403733==
+==2403733== 2 bytes in 2 blocks are definitely lost in loss record 1 of 67
+==2403733==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2403733==    by 0x4069DD: quotes_handler (lexer_handler.c:108)
+==2403733==    by 0x40704A: check_tokens (lexer.c:60)
+==2403733==    by 0x406E4F: lexer (lexer.c:136)
+==2403733==    by 0x4087A8: process_line (main.c:22)
+==2403733==    by 0x40877C: handle_loop (main.c:59)
+==2403733==    by 0x4088D4: main (main.c:88)
+==2403733==
+==2403733== LEAK SUMMARY:
+==2403733==    definitely lost: 2 bytes in 2 blocks
+==2403733==    indirectly lost: 0 bytes in 0 blocks
+==2403733==      possibly lost: 0 bytes in 0 blocks
+==2403733==    still reachable: 0 bytes in 0 blocks
+==2403733==         suppressed: 208,472 bytes in 225 blocks
+==2403733==
+==2403733== For lists of detected and suppressed errors, rerun with: -s
+==2403733== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+
+
+5 - SIMON echo ""wgger''fwger""ef'ege 'er t'3ret3t3t3'
+probleme de leaks dans copy str de cmd.c
+viens surement de la modif aui reperre les doubles quotes useless
+pour transformer en pointeur sur NULL
+
+6 - MAnuchanger la gestion de PATH, enleve  le define pour le PATH
+probleme CLAUDE reponse : Le problème vient de la gestion des variables d'environnement dans la fonction remove_env_var. Voici l'erreur :
+
+Dans create_env_list, on crée une structure où raw est alloué et id pointe vers le début de raw. On ne fait pas d'allocation séparée pour id.
+Dans remove_env_var, on essaie de libérer raw et id séparément, ce qui cause un double free puisque id pointe vers la même zone mémoire que raw.
+
+Voici la correction pour remove_env_var :
+static int	remove_env_var(t_ctx *ctx, const char *var_name)
+{
+	t_env	*current;
+	t_env	*prev;
+
+	current = ctx->envp;
+	prev = NULL;
+	while (current)
+	{
+		if (ft_strcmp(current->id, var_name) == 0)
+		{
+			if (prev == NULL)
+				ctx->envp = current->next;
+			else
+				prev->next = current->next;
+			free(current->raw);
+			free(current);
+			return (SUCCESS);
+		}
+		prev = current;
+		current = current->next;
+	}
+	return (SUCCESS);
+}
+Changements clés :
+
+Suppression du free(current->id) car id pointe vers une partie de raw
+Suppression du free(current->value) car value pointe aussi vers une partie de raw
+On ne libère que raw et la structure elle-même
+
+7 - SImon Token 12:
+  Content:  >file.txt | cat file.txt
+  Type: DQUOTE
+ commande = echo -n -n "Huwgfwhgfwfuyfvwfywvf" 'dhbwuvwbfhgwefwe' ""hwuyfwywfgvfw"" >file.txt | cat file.txt
++ leak de copy str surmenent meme probleme que plus haut
+
+ 8 - A VERIFIER correction ensemble Simon / Manu
+ Ce rapport Valgrind montre des "still reachable" mais pas de fuites de mémoire réelles. Voici l'analyse:
+
+Tous les blocs sont marqués "still reachable", pas "definitely lost" - ce ne sont pas de vraies fuites
+Les allocations non libérées proviennent principalement de:
+
+
+Structures de commande (cmd.c)
+Variables d'environnement (env.c)
+Tokens du lexer (lexer_utils.c)
+Contexte initial (init_ctx)
+
+
+Ces allocations restent accessibles à la fin car:
+
+
+Le programme se termine avec exit()
+Le système d'exploitation récupère la mémoire
+La libération n'est pas strictement nécessaire
+
+Pour une propreté optimale, vous pourriez:
+
+Appeler free_all() avant tout appel à exit()
+Vérifier que chaque free_*() libère complètement ses structures
+Ajouter des appels à free() manquants dans les fonctions de nettoyage
+
+Mais techniquement, votre programme ne fuit pas de mémoire puisque tout est marqué "still reachable".
+
+9- Manu bash-5.1$ exit lol
+exit
+bash: exit: lol: numeric argument required
+on a pas le message d'erreur
+
+10 - MAnu cat Makefile | grep -v "#" | grep "=" | sort > rules.txt
+le rules.txt n'est pas creer
+
+11 - SImon CTR + \ muavais comportement en empty line
+et aussi avec prompt
+
+12 - Manu mauvais retour erreur :
+minishell: gergeerg: command not found
+minishell >$ echo $?
+0
+-
+minishell >$ /bin/ls fereferger
+/bin/ls: cannot access 'fereferger': No such file or directory
+minishell >$ echo $?
+0
+
+13 - Simon quand commande genre echo / expr fonctionne le code de retour
+n'st plus valide ( reste 126 et ne pase pas a 0 apres echo du $?)

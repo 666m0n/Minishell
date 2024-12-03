@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:58:45 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/10 11:37:45 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:39:39 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 /* Valeurs de retour système standards */
 # define SYSCALL_ERROR			-1		// Valeur de retour d'erreur standard des appels système
 # define SYSCALL_SUCCESS		0
+
+// Erreur pour la built in exit
+# define INVALID_NUMERIC_ARG -1
 
 /* Guide des codes d'erreur principaux */
 // Succès
@@ -35,7 +38,7 @@
 // Erreurs d'exécution (126-127)
 # define PERMISSION_DENIED		126		// Fichier existe mais pas les droits
 # define IS_DIR					126		// Tentative d'exécuter un dossier
-# define CANT_EXECUTE			126		// Fichier non exécutable
+# define CANT_EXECUTE			9		// Fichier non exécutable
 # define CMD_NOT_FOUND			127		// Commande introuvable
 
 // Erreurs de signal (128+)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/26 14:18:21 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/03 11:32:40 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,31 +47,35 @@ static int	print_error(const char *cmd_name, const char *arg, const char *msg)
 ** @param error_code: code d'erreur
 ** @return: code d'erreur approprié
 */
-int	handle_command_error(t_cmd *cmd, int error_code)
+int handle_command_error(t_cmd *cmd, int error_code)
 {
-	const char	*cmd_name;
+    const char *cmd_name;
 
-	cmd_name = get_cmd_name(cmd);
-	if (cmd_name == NULL)
-		return (print_error(NULL, NULL, "command not found"));
-	if (error_code == CMD_NOT_FOUND)
-	{
-		print_error(NULL, NULL, "command not found");
-		return (CMD_NOT_FOUND);
-	}
-	if (error_code == PERMISSION_DENIED)
-	{
-		print_error(cmd_name, NULL, "Permission denied");
-		return (PERMISSION_DENIED);
-	}
-	if (error_code == IS_DIR)
-	{
-		print_error(cmd_name, NULL, "Is a directory");
-		return (IS_DIR);
-	}
-	if (errno)
-		print_error(cmd_name, NULL, strerror(errno));
-	return (ERROR);
+    cmd_name = get_cmd_name(cmd);
+    if (cmd_name == NULL)
+        cmd_name = "";  // Pour le cas ""
+
+    if (error_code == CMD_NOT_FOUND)
+    {
+        print_error(NULL, cmd_name, "command not found");
+        return (CMD_NOT_FOUND);
+    }
+
+    if (error_code == PERMISSION_DENIED)
+    {
+        print_error(cmd_name, NULL, "Permission denied");
+        return (PERMISSION_DENIED);
+    }
+
+    if (error_code == IS_DIR)
+    {
+        print_error(cmd_name, NULL, "Is a directory");
+        return (IS_DIR);
+    }
+
+    if (errno)
+        print_error(cmd_name, NULL, strerror(errno));
+    return (ERROR);
 }
 
 /*

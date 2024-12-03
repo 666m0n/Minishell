@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 17:35:30 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/12 11:45:46 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:02:41 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	handle_less(t_lexer **token, char **str, char *new)
 		create_token(T_REDIRIN, new, token);
 		(*str)++;
 	}
+	free(new);
 }
 
 int	ft_isspace(char c)

@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/02 11:36:44 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:44:12 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 	position = 0;
 	while (current)
 	{
-		pid_array[position] = fork_pipeline_process(current, pipe_array,
-				position, nb_of_pipes, ctx);
+        pid_array[position] = fork_pipeline_process(current, pipe_array, position, nb_of_pipes, ctx);
 		if (pid_array[position] == SYSCALL_ERROR)
 		{
 			cleanup_remaining_pipes(pipe_array, nb_of_pipes);
