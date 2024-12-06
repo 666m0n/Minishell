@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 11:05:03 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/03 17:15:34 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:02:40 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_env    *find_existing_var(t_env *env, const char *name)
 
     if (!name || (name[0] == '_' && name[1] == '\0'))
         return (NULL);
-
+    
     // Calcule la longueur jusqu'au '=' ou fin
     len = 0;
     while (name[len] && name[len] != '=')
@@ -34,11 +34,11 @@ t_env    *find_existing_var(t_env *env, const char *name)
 
     current = env;
     while (current)
-    {
-        if (!ft_strncmp(current->id, name, len) && !current->id[len])
-            return (current);
-        current = current->next;
-    }
+{
+    if (current->id && !ft_strncmp(current->id, name, len) && !current->id[len])
+        return (current);
+    current = current->next;
+}
     return (NULL);
 }
 
@@ -48,27 +48,34 @@ t_env    *find_existing_var(t_env *env, const char *name)
 ** @param value: valeur déjà extraite (peut être NULL)
 ** @return: nouvelle variable allouée, NULL si erreur
 */
-t_env    *create_var(const char *arg, char *value)
+t_env *create_var(const char *arg, char *value)
 {
-    t_env   *new;
-    int     len;
+    t_env *new;
+    char *equals;
 
-    len = 0;
-    while (arg[len] && arg[len] != '=')
-        len++;
-    new = malloc(sizeof(t_env));
+    (void)value;
+    new = ft_calloc(1, sizeof(t_env));
     if (!new)
         return (NULL);
-
-    new->id = ft_strndup(arg, len);
-    new->value = value;
     new->raw = ft_strdup(arg);
-    new->next = NULL;
-    if (!new->id || !new->raw)
+    if (!new->raw)
     {
-        free_env_var(new);
-        return (NULL);
+        free(new);
+        return (NULL); 
     }
+    equals = ft_strchr(new->raw, '=');
+    if (equals)
+    {
+        *equals = '\0';
+        new->id = new->raw;
+        new->value = equals + 1;
+    }
+    else
+    {
+        new->id = new->raw;
+        new->value = NULL;
+    }
+    new->next = NULL;
     return (new);
 }
 
@@ -78,14 +85,17 @@ t_env    *create_var(const char *arg, char *value)
 ** @return: valeur allouée ou NULL si pas de '='
 ** Note: retourne une chaîne vide si rien après le '='
 */
-char    *extract_value(const char *arg)
+char *extract_value(const char *arg)
 {
-    char    *eq;
+   char *eq;
+   char *tmp;
 
-    eq = ft_strchr(arg, '=');
-    if (!eq)
-        return (NULL);
-    return (ft_strdup(eq + 1));
+   eq = ft_strchr(arg, '=');
+   if (!eq)
+       return (NULL);
+   tmp = ft_strdup(eq + 1); 
+   printf("ALLOC extract_value: %p\n", tmp);
+   return (tmp);
 }
 
 /*
@@ -96,22 +106,24 @@ char    *extract_value(const char *arg)
 ** @param arg: argument complet (VAR=value ou VAR)
 ** @return: pointeur sur la variable mise à jour/créée, NULL si erreur
 */
-t_env    *update_env_variable(t_ctx *ctx, const char *arg)
+t_env *update_env_variable(t_ctx *ctx, const char *arg)
 {
-    t_env    *var;
-    char    *value;
-
+    t_env *var;
+    char *equals;
+    char *value;
+    
     value = extract_value(arg);
     var = find_existing_var(ctx->envp, arg);
     if (var)
     {
-        if (var->value)
-            free(var->value);
         free(var->raw);
-        var->value = value;
         var->raw = ft_strdup(arg);
-        if (!var->raw)
-            return (NULL);
+        if ((equals = strchr(var->raw, '=')))
+        {
+            *equals = '\0';
+            var->id = var->raw;
+            var->value = equals + 1;
+        }
     }
     else
     {
@@ -121,6 +133,8 @@ t_env    *update_env_variable(t_ctx *ctx, const char *arg)
         var->next = ctx->envp;
         ctx->envp = var;
     }
+    if (value)
+        free(value);
     return (var);
 }
 

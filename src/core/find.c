@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:22:44 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/20 12:15:57 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/06 11:14:16 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*find_command_path(const char *cmd_name)
 	}
 	path = getenv("PATH");
 	if (path == NULL)
-		path = DEFAULT_PATH;
+		return (NULL);
 	directories = ft_split(path, ':');
 	if (directories == NULL)
 		return (NULL);

@@ -6,14 +6,11 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:28:37 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/29 19:57:21 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:22:03 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include  "minishell.h"
-
-
-#include "minishell.h"
 
 /*
 ** Vérifie si le chemin est relatif spécial (., .., ./ ou ../)

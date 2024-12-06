@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/03 16:40:58 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/06 11:14:30 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef int	(*builtin_func)(t_cmd *, t_ctx *);
 
 # define PROMPT "\001\033[1;93m\002minishell >$ \001\033[0m\002"
 # define HEREDOC_PROMPT "\001\033[38;2;0;255;34m\002  › \001\033[38;2;255;255;255m\002"
-# define DEFAULT_PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 /* Masque pour isoler les 8 bits de poids fort du statut */
 /* 0xff00 = 1111 1111 0000 0000 en binaire */

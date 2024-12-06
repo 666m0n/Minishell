@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/03 17:48:26 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/06 11:12:37 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_return	handle_loop(t_ctx *ctx)
 		line = readline(PROMPT);
 		if (!line)
 		{
+            // JE PENSE QU'il FAUDRAIT APPELER FONCTION DE CLEAN DE LA MEMOIRE ICI
 			ft_putendl_fd("exit", STDERR_FILENO);
 			return (ctx->exit_code);
 		}
