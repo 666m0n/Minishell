@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/03 16:40:58 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/08 23:20:26 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ void			setup_interactive_signals(void);
 void			setup_child_signals(void);
 void			setup_heredoc_signals(void);
 void			restore_default_signals(void);
+void			quit_handler(int signum);
 
 // Utils
 char			*ft_realloc(void *s, int old_size, int new_size);

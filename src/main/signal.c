@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:03:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/02 10:42:09 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/08 23:35:57 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	signal_handler(int signum)
 	}
 }
 
-void	setup_interactive_signals(void)
+void setup_interactive_signals(void)
 {
 	struct sigaction	sa;
 
@@ -33,14 +33,19 @@ void	setup_interactive_signals(void)
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		exit_error("sigaction failed");
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		exit_error("sigaction failed");
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	setup_child_signals(void)
 {
+	struct sigaction	sa;
+
+	sa.sa_handler = quit_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
 	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		exit_error("sigaction failed");
 }
 
 void	setup_heredoc_signals(void)
