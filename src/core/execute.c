@@ -6,7 +6,7 @@
 /*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 09:58:41 by Simon            ###   ########.fr       */
+/*   Updated: 2024/12/09 10:14:45 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,20 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 		signal(SIGQUIT, SIG_DFL);
 		exec_in_child(cmd, ctx);
 	}
-	if (waitpid(pid, &status, 0) == SYSCALL_ERROR)
-		return (handle_system_error("waitpid"));
+	while (waitpid(pid, &status, 0) == -1)
+	{
+		if (errno != EINTR)
+			return (handle_system_error("waitpid"));
+	}
 	cleanup_fds(cmd);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			write(STDERR_FILENO, "Quit (core dumped)\n\n", 19);
 		return (128 + WTERMSIG(status));
+	}
 	return (ERROR);
 }
 

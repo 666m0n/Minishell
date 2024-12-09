@@ -6,7 +6,7 @@
 /*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:03:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/09 09:10:42 by Simon            ###   ########.fr       */
+/*   Updated: 2024/12/09 10:23:32 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	signal_handler(int signum)
 {
-	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
 	g_sig_status = signum;
+	if (signum == SIGINT)
+	{
+		write(STDERR_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 void	setup_interactive_signals(void)
