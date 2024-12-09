@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/03 16:44:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 09:58:41 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,11 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 	if (pid == SYSCALL_ERROR)
 		return (handle_system_error("fork"));
 	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		exec_in_child(cmd, ctx);
+	}
 	if (waitpid(pid, &status, 0) == SYSCALL_ERROR)
 		return (handle_system_error("waitpid"));
 	cleanup_fds(cmd);
@@ -151,12 +155,6 @@ int	execute_command(t_cmd *cmd, t_ctx *ctx)
 
 	if (!cmd || !ctx)
 		return (ERROR);
-	if (g_sig_status)
-	{
-		status = g_sig_status + 128;
-		g_sig_status = 0;
-		return (status);
-	}
 	cmd_name = get_cmd_name(cmd);
 	if (!cmd_name)
 		return (CMD_NOT_FOUND);

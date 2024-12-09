@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Simon <Simon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/03 17:48:26 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 09:40:06 by Simon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static void	process_line(char *line, t_ctx *ctx)
 			cmd = parser(tokens, ctx);
 			if (cmd)
 			{
-/* 				print_command(cmd);
- */				execute_command(cmd, ctx);
+/* 				print_command(cmd);*/
+				execute_command(cmd, ctx);
 				free_cmd(cmd);
 			}
 		}
@@ -42,11 +42,12 @@ t_return	handle_loop(t_ctx *ctx)
 	char	*line;
 
 	line = NULL;
+	setup_interactive_signals();
 	printf("\033[2J\033[H");
 	while (1)
 	{
-		setup_interactive_signals();
-		g_sig_status = 0;
+		if (g_sig_status == SIGINT)
+			ctx->exit_code = 130;
 		line = readline(PROMPT);
 		if (!line)
 		{
@@ -58,6 +59,7 @@ t_return	handle_loop(t_ctx *ctx)
 			add_history(line);
 			process_line(line, ctx);
 		}
+/* 		g_sig_status = 0; */
 		free(line);
 	}
 	return (SUCCESS);
