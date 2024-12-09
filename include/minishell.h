@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/06 11:14:30 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:17:18 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef int	t_pipe[2];
 typedef int	(*builtin_func)(t_cmd *, t_ctx *);
 
 # define PROMPT "\001\033[1;93m\002minishell >$ \001\033[0m\002"
-# define HEREDOC_PROMPT "\001\033[38;2;0;255;34m\002  › \001\033[38;2;255;255;255m\002"
+# define HEREDOC_PROMPT "\001\033[0;93m\002  › \001\033[38;2;255;255;255m\002"
 
 /* Masque pour isoler les 8 bits de poids fort du statut */
 /* 0xff00 = 1111 1111 0000 0000 en binaire */
@@ -69,7 +69,7 @@ int				builtin_env(t_cmd *cmd, t_ctx *ctx);
 int				builtin_exit(t_cmd *cmd, t_ctx *ctx);
 
 /* Path Management */
-char			*find_command_path(const char *cmd_name);
+char	*find_command_path(const char *cmd_name, t_ctx *ctx);
 char			*search_in_directory(char **directories, const char *cmd_name);
 
 /* Pipeline Management */

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 15:09:21 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/06 16:05:23 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:31:25 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static int remove_env_var(t_ctx *ctx, const char *var_name)
                 ctx->envp = current->next;
             else 
                 prev->next = current->next;
-            free(current->raw);  // Libère uniquement raw
-            free(current);       // Libère la structure
+            free(current->raw);
+            free(current);
             return (SUCCESS);
         }
         prev = current;  

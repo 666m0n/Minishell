@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:48:17 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/03 15:57:55 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:29:02 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static t_cmd	*create_node(t_ctx *data)
 	if (!new)
 		return (NULL);
 	ft_memset(new, 0, sizeof(t_cmd));
+    new->ctx = data; // ajout manu
 	new->args = NULL;
 	new->next = NULL;
 	new->prev = NULL;

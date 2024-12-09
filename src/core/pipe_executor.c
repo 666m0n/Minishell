@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/07 09:04:24 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:15:26 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
 {
 	int	status;
 
-    printf("DEBUG: Executing command at position %d of %d\n", position, nb_of_pipes);
 	configure_pipe_fds(pipe_array, position, nb_of_pipes);
 	close_unused_pipes(pipe_array, position, nb_of_pipes);
 	if (has_redirection(cmd))

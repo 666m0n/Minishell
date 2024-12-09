@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 13:25:59 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:32:39 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 {
 	pid_t	pid;
 	int		status;
-
+    /* printf("DEBUG execute_simple : start\n"); */
 	status = prepare_exec(cmd);
 	if (status != SUCCESS)
 		return (handle_command_error(cmd, status));
@@ -146,7 +146,7 @@ int	exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections)
 */
 int	execute_command(t_cmd *cmd, t_ctx *ctx)
 {
-	const char	*cmd_name;
+    const char	*cmd_name;
 	int			status;
 
 	if (!cmd || !ctx)

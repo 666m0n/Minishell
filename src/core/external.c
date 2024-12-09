@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 13:13:32 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:31:08 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	prepare_exec(t_cmd *cmd)
 		return (CMD_NOT_FOUND);
 /* 	if (is_dir(cmd_name) == TRUE)
 		return (IS_DIR); */
-	path = find_command_path(cmd_name);
+	path = find_command_path(cmd_name, cmd->ctx);
 	if (path == NULL)
 		return (CMD_NOT_FOUND);
 	if (access(path, X_OK) == SYSCALL_ERROR)

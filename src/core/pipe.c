@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:51:59 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/07 09:02:48 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:15:19 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,5 @@ int	count_pipes(t_cmd *cmd)
 		nb_of_pipes++;
 		current = current->next;
 	}
-	printf("DEBUG: Number of commands in pipeline: %d\n", nb_of_pipes);
     return (nb_of_pipes - 1);
 }

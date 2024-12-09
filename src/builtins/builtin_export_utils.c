@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 11:05:03 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/06 16:02:40 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 15:10:24 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ char *extract_value(const char *arg)
    if (!eq)
        return (NULL);
    tmp = ft_strdup(eq + 1); 
-   printf("ALLOC extract_value: %p\n", tmp);
    return (tmp);
 }
 

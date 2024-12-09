@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/03 11:32:40 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:41:33 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ int handle_command_error(t_cmd *cmd, int error_code)
 
     if (error_code == CMD_NOT_FOUND)
     {
-        print_error(NULL, cmd_name, "command not found");
+        if (!get_env_value(cmd->ctx->envp, "PATH"))
+            print_error(cmd_name, NULL, "No such file or directory");
+        else
+            print_error(NULL, cmd_name, "command not found");
         return (CMD_NOT_FOUND);
     }
-
     if (error_code == PERMISSION_DENIED)
     {
         print_error(cmd_name, NULL, "Permission denied");

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:21:31 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 13:25:44 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:11:44 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_str_isdigit(const char *str)
 int	execute_cmd_type(t_cmd *cmd, t_ctx *ctx, const char *cmd_name)
 {
 	int	status;
-
+    /* printf("DEBUG - execute_cmd_type : start\n"); */
     if (is_simple_command(cmd) == FALSE)
         status = exec_pipe(cmd, ctx);
 	else if (is_builtin(cmd_name) == TRUE)
