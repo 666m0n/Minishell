@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/03 16:44:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:25:59 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ int	execute_command(t_cmd *cmd, t_ctx *ctx)
 	}
 	cmd_name = get_cmd_name(cmd);
 	if (!cmd_name)
-		return (CMD_NOT_FOUND);
+		ctx->exit_code = CMD_NOT_FOUND;
 	status = process_heredocs(cmd);
 	if (status != SUCCESS)
 		return (status);

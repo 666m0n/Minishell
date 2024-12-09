@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 15:21:53 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/07 09:06:08 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	apply_input_redirection(t_cmd *cmd)
 	char	*file;
 
 	file = cmd->fd->last_in->file;
+    printf("DEBUG: Applying output redirection to file: %s\n", file);
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));

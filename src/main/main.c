@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/06 11:12:37 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:09:44 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static void	process_line(char *line, t_ctx *ctx)
 	tokens = lexer(line);
 	if (tokens)
 	{
-/*  		print_tokens(tokens);
- */		if (syntax_tokens(tokens, ctx) == SUCCESS)
+    	/* print_tokens(tokens); */
+        if (syntax_tokens(tokens, ctx) == SUCCESS)
 		{
 			cmd = parser(tokens, ctx);
 			if (cmd)
 			{
-/* 				print_command(cmd);
- */				execute_command(cmd, ctx);
+				/* print_command(cmd); */
+    			execute_command(cmd, ctx);
 				free_cmd(cmd);
 			}
 		}
