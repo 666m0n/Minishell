@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/03 17:26:15 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:50:38 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	process_pars(t_cmd *cmd, t_lexer *tokens, t_ctx *data)
 			}
 		}
 		else if (tokens->type == T_PIPE)
-			extend_cmd(&cmd, data);
+            extend_cmd(&cmd, data);
 		else if (is_redir(tokens->type))
 			handle_redir(cmd, &tokens);
 		tokens = tokens->next;

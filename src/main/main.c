@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/03 17:48:26 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:09:44 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static void	process_line(char *line, t_ctx *ctx)
 	tokens = lexer(line);
 	if (tokens)
 	{
-/*  		print_tokens(tokens);
- */		if (syntax_tokens(tokens, ctx) == SUCCESS)
+    	/* print_tokens(tokens); */
+        if (syntax_tokens(tokens, ctx) == SUCCESS)
 		{
 			cmd = parser(tokens, ctx);
 			if (cmd)
 			{
-/* 				print_command(cmd);
- */				execute_command(cmd, ctx);
+				/* print_command(cmd); */
+    			execute_command(cmd, ctx);
 				free_cmd(cmd);
 			}
 		}
@@ -50,6 +50,7 @@ t_return	handle_loop(t_ctx *ctx)
 		line = readline(PROMPT);
 		if (!line)
 		{
+            // JE PENSE QU'il FAUDRAIT APPELER FONCTION DE CLEAN DE LA MEMOIRE ICI
 			ft_putendl_fd("exit", STDERR_FILENO);
 			return (ctx->exit_code);
 		}

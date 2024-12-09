@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/03 16:44:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:32:39 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 {
 	pid_t	pid;
 	int		status;
-
+    /* printf("DEBUG execute_simple : start\n"); */
 	status = prepare_exec(cmd);
 	if (status != SUCCESS)
 		return (handle_command_error(cmd, status));
@@ -146,7 +146,7 @@ int	exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections)
 */
 int	execute_command(t_cmd *cmd, t_ctx *ctx)
 {
-	const char	*cmd_name;
+    const char	*cmd_name;
 	int			status;
 
 	if (!cmd || !ctx)
@@ -159,7 +159,7 @@ int	execute_command(t_cmd *cmd, t_ctx *ctx)
 	}
 	cmd_name = get_cmd_name(cmd);
 	if (!cmd_name)
-		return (CMD_NOT_FOUND);
+		ctx->exit_code = CMD_NOT_FOUND;
 	status = process_heredocs(cmd);
 	if (status != SUCCESS)
 		return (status);

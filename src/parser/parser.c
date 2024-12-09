@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 17:54:43 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:27:17 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ void	exit_error(const char *s)
 	perror(s);
 	exit(EXIT_FAILURE);
 }
-
-static void	init_cmd(t_cmd **head, t_cmd **curr)
+static void	init_cmd(t_cmd **head, t_cmd **curr, t_ctx *ctx)
 {
 	*head = ft_calloc(sizeof(t_cmd), 1);
 	*curr = *head;
 	(*curr)->next = NULL;
 	(*curr)->prev = NULL;
 	(*curr)->index = 0;
+    (*curr)->ctx = ctx; // ajout manu
 	(*curr)->fd = ft_calloc(sizeof(t_fd_state), 1);
 	if ((*curr)->fd)
 	{
@@ -73,7 +73,7 @@ t_cmd	*parser(t_lexer *tokens, t_ctx *data)
 	head = NULL;
 	current_cmd = NULL;
 	tmp = tokens;
-	init_cmd(&head, &current_cmd);
+	init_cmd(&head, &current_cmd, data);
 	handle_dollar(tmp, data);
 	process_pars(current_cmd, tmp, data);
 	return (head);

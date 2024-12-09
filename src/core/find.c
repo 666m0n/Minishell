@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:22:44 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/20 12:15:57 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:31:56 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** @return: chemin complet alloué ou NULL si non trouvé
 ** Note: le retour doit être libéré par l'appelant
 */
-char	*find_command_path(const char *cmd_name)
+char	*find_command_path(const char *cmd_name, t_ctx *ctx)
 {
 	char	*path;
 	char	**directories;
@@ -34,9 +34,9 @@ char	*find_command_path(const char *cmd_name)
 			return (ft_strdup(cmd_name));
 		return (NULL);
 	}
-	path = getenv("PATH");
+	path = get_env_value(ctx->envp, "PATH");
 	if (path == NULL)
-		path = DEFAULT_PATH;
+		return (NULL);
 	directories = ft_split(path, ':');
 	if (directories == NULL)
 		return (NULL);

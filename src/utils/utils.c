@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:21:31 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/02 11:06:34 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/09 19:11:44 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,15 @@ int	ft_str_isdigit(const char *str)
 int	execute_cmd_type(t_cmd *cmd, t_ctx *ctx, const char *cmd_name)
 {
 	int	status;
-
-	if (is_simple_command(cmd) == FALSE)
-		status = exec_pipe(cmd, ctx);
+    /* printf("DEBUG - execute_cmd_type : start\n"); */
+    if (is_simple_command(cmd) == FALSE)
+        status = exec_pipe(cmd, ctx);
 	else if (is_builtin(cmd_name) == TRUE)
 		status = exec_builtin(cmd, ctx, FALSE);
 	else
 		status = exec_simple(cmd, ctx);
 	set_exit_status(cmd, status);
+    ctx->exit_code = status;
 	cleanup_heredoc_files(cmd);
 	return (status);
 }
