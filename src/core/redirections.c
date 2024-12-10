@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/11/24 15:17:26 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:06:39 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,15 @@ void    find_final_redirections(t_cmd *cmd)
 int	restore_fds(t_cmd *cmd)
 {
 	if (dup2(cmd->fd->stdin_backup, STDIN_FILENO) == SYSCALL_ERROR)
+	{
+		close(cmd->fd->stdin_backup);
 		return (handle_system_error("dup2"));
+	}
 	if (dup2(cmd->fd->stdout_backup, STDOUT_FILENO) == SYSCALL_ERROR)
+	{
+		close(cmd->fd->stdout_backup);
 		return (handle_system_error("dup2"));
+	}
 	close(cmd->fd->stdin_backup);
 	close(cmd->fd->stdout_backup);
 	return (SUCCESS);
@@ -119,9 +125,11 @@ int setup_redirections(t_cmd *cmd)
 {
     int status;
 
+    /* debug_fds("Start setup_redirections", getpid()); */
     if (!cmd->fd)
         return (ERROR);
     status = save_fd(cmd);
+    /* debug_fds("in setup_redirections After save_fd", getpid()); */
     if (status != SUCCESS)
         return (status);
     find_final_redirections(cmd);
@@ -131,6 +139,6 @@ int setup_redirections(t_cmd *cmd)
         cleanup_fds(cmd);
         return (status);
     }
-
+    /* debug_fds("End setup_redirections", getpid()); */
     return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:51:59 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 15:15:19 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:01:21 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,18 +108,22 @@ void configure_pipe_fds(t_pipe *pipe_array, int cmd_pos, int nb_of_pipes)
     {
         if (dup2(pipe_array[cmd_pos][1], STDOUT_FILENO) == SYSCALL_ERROR)
             exit(handle_system_error("dup2"));
+        close(pipe_array[cmd_pos][1]); // ajout test debug fd
     }
     else if (cmd_pos == nb_of_pipes)
     {
         if (dup2(pipe_array[cmd_pos - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
             exit(handle_system_error("dup2"));
+        close(pipe_array[cmd_pos - 1][0]); // ajout test debug fd
     }
     else
     {
         if (dup2(pipe_array[cmd_pos - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
             exit(handle_system_error("dup2"));
+        close(pipe_array[cmd_pos - 1][0]); // ajout test debug fd
         if (dup2(pipe_array[cmd_pos][1], STDOUT_FILENO) == SYSCALL_ERROR)
             exit(handle_system_error("dup2"));
+        close(pipe_array[cmd_pos][1]); // ajout test debug fd
     }
 }
 

@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 15:15:26 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:07:56 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
 	int	status;
 
 	configure_pipe_fds(pipe_array, position, nb_of_pipes);
+    /* debug_fds("in exececute_pipeline_command after configure_pipe_fds", getpid()); */
 	close_unused_pipes(pipe_array, position, nb_of_pipes);
 	if (has_redirection(cmd))
 	{
@@ -46,6 +47,7 @@ void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
 		cleanup_fds(cmd);
 		exit(CMD_NOT_FOUND);
 	}
+    /* debug_fds("in exececute_pipeline_command before execve", getpid()); */
 	execve(cmd->path, cmd->args, NULL);
 	cleanup_fds(cmd);
 	exit(handle_system_error("execve"));
@@ -86,7 +88,10 @@ pid_t fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, int position, int nb
     if (pid == SYSCALL_ERROR)
         return (SYSCALL_ERROR);
     if (pid == 0)
+    {
+        /* debug_fds("in fork_pipeline_process in pid == 0", getpid()); */
         execute_pipeline_command(cmd, pipe_array, position, nb_of_pipes, ctx);
+    }
     else
     {
         if (handle_parent_pipes(pipe_array, position) == ERROR)
@@ -94,6 +99,7 @@ pid_t fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, int position, int nb
             cleanup_remaining_pipes(pipe_array, nb_of_pipes);
             return (SYSCALL_ERROR);
         }
+        /* debug_fds("in fork_pipeline_process after handle_parent_pipes", getpid()); */
     }
     return (pid);
 }

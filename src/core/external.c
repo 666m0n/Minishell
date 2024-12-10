@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 21:31:08 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:06:11 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,35 @@ void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
 	char	**env_array;
 	int		status;
 
+    /* debug_fds("Start of exec_in_child before setup signal", getpid()); */
     setup_child_signals();
+    /* debug_fds("Start of exec_in_child after setup signal", getpid()); */
 	env_array = NULL;
+ 
 	if (has_redirection(cmd))
 	{
+        /* debug_fds("Before setup redirections in child", getpid()); */
 		status = setup_redirections(cmd);
+        /* debug_fds("After setup redirections in child", getpid()); */
 		if (status != SUCCESS)
 		{
 			cleanup_fds(cmd);
 			exit(status);
 		}
 	}
+    // debut ajout test debug fd
+    if (cmd->fd->stdin_backup > 2)
+        close(cmd->fd->stdin_backup);
+    if (cmd->fd->stdout_backup > 2)
+        close(cmd->fd->stdout_backup);
+    //fin 
 	env_array = env_to_array(ctx->envp);
 	if (!env_array)
 	{
 		cleanup_fds(cmd);
 		exit(MEMORY_ERROR);
 	}
+    /* debug_fds("  exec_in_child Just before execve", getpid()); */
 	execve(cmd->path, cmd->args, env_array);
 	ft_free_array(env_array);
 	cleanup_fds(cmd);
