@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/09 13:09:44 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:42:48 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static void	process_line(char *line, t_ctx *ctx)
 	tokens = lexer(line);
 	if (tokens)
 	{
-    	/* print_tokens(tokens); */
-        if (syntax_tokens(tokens, ctx) == SUCCESS)
+		/* print_tokens(tokens); */
+		if (syntax_tokens(tokens, ctx) == SUCCESS)
 		{
 			cmd = parser(tokens, ctx);
 			if (cmd)
 			{
-				/* print_command(cmd); */
-    			execute_command(cmd, ctx);
+/* 				print_command(cmd);*/
+				execute_command(cmd, ctx);
 				free_cmd(cmd);
 			}
 		}
@@ -42,11 +42,10 @@ t_return	handle_loop(t_ctx *ctx)
 	char	*line;
 
 	line = NULL;
+	setup_interactive_signals();
 	printf("\033[2J\033[H");
 	while (1)
 	{
-		setup_interactive_signals();
-		g_sig_status = 0;
 		line = readline(PROMPT);
 		if (!line)
 		{

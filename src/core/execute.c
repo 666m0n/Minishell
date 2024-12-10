@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 21:32:39 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:20:05 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 	position = 0;
 	while (current)
 	{
-        pid_array[position] = fork_pipeline_process(current, pipe_array, position, nb_of_pipes, ctx);
+		pid_array[position] = fork_pipeline_process(current, pipe_array, position, nb_of_pipes, ctx);
 		if (pid_array[position] == SYSCALL_ERROR)
 		{
 			cleanup_remaining_pipes(pipe_array, nb_of_pipes);
@@ -93,14 +93,25 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 	if (pid == SYSCALL_ERROR)
 		return (handle_system_error("fork"));
 	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		exec_in_child(cmd, ctx);
-	if (waitpid(pid, &status, 0) == SYSCALL_ERROR)
-		return (handle_system_error("waitpid"));
+	}
+	while (waitpid(pid, &status, 0) == -1)
+	{
+		if (errno != EINTR)
+			return (handle_system_error("waitpid"));
+	}
 	cleanup_fds(cmd);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			write(STDERR_FILENO, "Quit (core dumped)\n\n", 19);
 		return (128 + WTERMSIG(status));
+	}
 	return (ERROR);
 }
 
@@ -146,17 +157,11 @@ int	exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections)
 */
 int	execute_command(t_cmd *cmd, t_ctx *ctx)
 {
-    const char	*cmd_name;
+	const char	*cmd_name;
 	int			status;
 
 	if (!cmd || !ctx)
 		return (ERROR);
-	if (g_sig_status)
-	{
-		status = g_sig_status + 128;
-		g_sig_status = 0;
-		return (status);
-	}
 	cmd_name = get_cmd_name(cmd);
 	if (!cmd_name)
 		ctx->exit_code = CMD_NOT_FOUND;

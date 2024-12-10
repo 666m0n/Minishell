@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/03 17:23:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:10:39 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,25 +72,18 @@ void	pipe_handler(t_lexer **tokens, char **str)
 	(*str)++;
 }
 
-void	space_handler(t_lexer **tokens, char **str)
+static char	*handle_empty_str(t_lexer **tokens, t_token type)
 {
-	char	*new;
+	char	*content;
 
-	new = malloc(sizeof(char) * 2);
-	if (!new)
-		return ;
-	new[0] = **str;
-	new[1] = '\0';
-	if (ft_isspace(**str))
-	{
-		create_token(T_SPACE, new, tokens);
-		while (**str && ft_isspace(**str))
-			(*str)++;
-	}
-	free(new);
+	content = (char *)malloc(1);
+	if (!content)
+		return (NULL);
+	*content = '\0';
+	create_token(type, "", tokens);
+	return (content);
 }
 
-// le probleme ici est surement lie a une incrementation en trop
 void	quotes_handler(t_lexer **tokens, char **str)
 {
 	char	quote;
@@ -98,21 +91,20 @@ void	quotes_handler(t_lexer **tokens, char **str)
 	char	*content;
 	int		effective_q;
 
-	if (!str || !*str)
-		return ;
 	quote = **str;
 	changed = quote;
 	skip_consecutive_quotes(str, &quote, &effective_q);
 	if (**str == '\0')
 	{
-		content = (char *)malloc(1);
-		*content = '\0';
-		create_token(get_quote_type(quote), "", tokens);
+		content = handle_empty_str(tokens, get_quote_type(quote));
+		if (content)
+			free(content);
+		return ;
 	}
 	if (**str == '\'' || **str == '"')
 		(*str)++;
 	content = get_quote_content(str, quote, changed);
-	if (content[0] == '\0')
+	if (!content || content[0] == '\0')
 		return (free(content));
 	create_token(get_quote_type(quote), content, tokens);
 	if (**str)

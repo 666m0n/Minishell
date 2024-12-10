@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/09 11:50:38 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:26:21 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,20 @@ static void	add_to_tab(char *str, t_cmd *cmd)
 
 static char	*copy_str(char *str, t_lexer **tokens)
 {
+	char	*new_str;
+	char	*tmp;
+
 	str = ft_strdup((*tokens)->content);
 	if (!str)
 		return (NULL);
 	while ((*tokens)->next && is_cmd((*tokens)->next->type))
 	{
-		str = ft_strjoin(str, (*tokens)->next->content);
-		if (!str)
+		tmp = str;
+		new_str = ft_strjoin(str, (*tokens)->next->content);
+		free(tmp);
+		if (!new_str)
 			return (NULL);
+		str = new_str;
 		(*tokens) = (*tokens)->next;
 	}
 	return (str);

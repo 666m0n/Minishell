@@ -49,7 +49,7 @@ au lieu de ligne vide
 ==2403733== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
 
 
-5 - SIMON echo ""wgger''fwger""ef'ege 'er t'3ret3t3t3'
+/////5 - SIMON echo ""wgger''fwger""ef'ege 'er t'3ret3t3t3'
 probleme de leaks dans copy str de cmd.c
 viens surement de la modif aui reperre les doubles quotes useless
 pour transformer en pointeur sur NULL

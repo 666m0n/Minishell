@@ -6,11 +6,29 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 16:53:16 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/02 14:58:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:11:10 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	space_handler(t_lexer **tokens, char **str)
+{
+	char	*new;
+
+	new = malloc(sizeof(char) * 2);
+	if (!new)
+		return ;
+	new[0] = **str;
+	new[1] = '\0';
+	if (ft_isspace(**str))
+	{
+		create_token(T_SPACE, new, tokens);
+		while (**str && ft_isspace(**str))
+			(*str)++;
+	}
+	free(new);
+}
 
 void	add_index_token(t_lexer *tokens)
 {
@@ -69,10 +87,7 @@ void	check_cmd_quotes(t_lexer *tokens)
 	current = tokens;
 	while (current)
 	{
-		if (current->type == T_CMD/* && ((current->content[0] == '\''
-					&& current->content[1] == '\'')
-				|| (current->content[0] == '"'
-					&& current->content[1] == '"')) */)
+		if (current->type == T_CMD)
 		{
 			trimmed = trim_quotes(current->content);
 			free(current->content);

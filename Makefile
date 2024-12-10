@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
+#    By: Simon <Simon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/12/03 16:51:07 by sviallon         ###   ########.fr        #
+#    Updated: 2024/12/08 23:19:51 by Simon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,7 @@ CORE		= cleanup error execute external find get has is pipe_executor pipe redire
 			redirections_2 set heredoc heredoc_handler
 
 MAIN_DIR	= main/
-MAIN		= main test signal
+MAIN		= main test signal signal_utils
 
 
 # Fichier contenant les tests
