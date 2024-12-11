@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 18:48:17 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/09 21:29:02 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:13:44 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static t_cmd	*create_node(t_ctx *data)
 	if (!new)
 		return (NULL);
 	ft_memset(new, 0, sizeof(t_cmd));
-    new->ctx = data; // ajout manu
+	new->ctx = data;
 	new->args = NULL;
 	new->next = NULL;
 	new->prev = NULL;
@@ -88,7 +88,5 @@ void	extend_cmd(t_cmd **cmd, t_ctx *data)
 	(*cmd)->next = create_node(data);
 	(*cmd)->next->prev = *cmd;
 	(*cmd)->next->index = (*cmd)->index + 1;
-	/*(*cmd)->next->flag_error = 0;*/
 	*cmd = (*cmd)->next;
-	/*data->nb_command++;*/
 }

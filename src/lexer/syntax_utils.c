@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 13:12:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 14:10:14 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:58:15 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,17 @@ static void	add_syntax_node(t_syntax **lst, t_syntax *new)
 void	free_syntax_list(t_syntax *list)
 {
 	t_syntax	*tmp;
+	t_syntax	*next;
 
-	while (list)
+	tmp = list;
+	while (tmp)
 	{
-		tmp = list;
-		list = list->next;
+		next = tmp->next;
 		if (tmp->content)
 			free(tmp->content);
 		free(tmp);
+		tmp = next;
 	}
-	free(list);
 }
 
 t_syntax	*create_syntax_list(t_lexer *tokens)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/09 17:10:31 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:36:10 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_fd_state
 /* Command structure */
 typedef struct s_cmd
 {
-    struct s_ctx    *ctx; 
+	struct s_ctx	*ctx;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;			/* Commande suivante dans le pipe */
 	t_redirection	*redirections;	/* Redirections (>, <, >>) */
@@ -110,6 +110,7 @@ typedef struct s_ctx
 	int				interrupt_flag;	/* Interrupt status pas utile encore ?*/
 	unsigned char	exit_code;		/* Last exit code */
 	t_lexer			*current_token;
+	struct s_cmd	*cmd;
 }	t_ctx;
 
 typedef struct s_syntax

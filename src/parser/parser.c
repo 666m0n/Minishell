@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/09 21:27:17 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:14:04 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	exit_error(const char *s)
 	perror(s);
 	exit(EXIT_FAILURE);
 }
+
 static void	init_cmd(t_cmd **head, t_cmd **curr, t_ctx *ctx)
 {
 	*head = ft_calloc(sizeof(t_cmd), 1);
@@ -51,7 +52,7 @@ static void	init_cmd(t_cmd **head, t_cmd **curr, t_ctx *ctx)
 	(*curr)->next = NULL;
 	(*curr)->prev = NULL;
 	(*curr)->index = 0;
-    (*curr)->ctx = ctx; // ajout manu
+	(*curr)->ctx = ctx;
 	(*curr)->fd = ft_calloc(sizeof(t_fd_state), 1);
 	if ((*curr)->fd)
 	{

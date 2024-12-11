@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 11:13:00 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:26:32 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	process_line(char *line, t_ctx *ctx)
 	t_cmd		*cmd;
 
 	tokens = lexer(line);
+	ctx->current_token = tokens;
 	if (tokens)
 	{
 		print_tokens(tokens);
@@ -54,12 +55,18 @@ static void	process_line(char *line, t_ctx *ctx)
 			cmd = parser(tokens, ctx);
 			if (cmd)
 			{
- 				print_command(cmd);
+				print_command(cmd);
+				ctx->cmd = cmd;
 				execute_command(cmd, ctx);
-				free_cmd(cmd);
+				if (cmd->args && ft_strncmp(cmd->args[0], "exit", 5) != 0)
+				{
+					free_cmd(cmd);
+					ctx->cmd = NULL;
+				}
 			}
+			free_token(tokens);
+			ctx->current_token = NULL;
 		}
-		free_token(tokens);
 	}
 }
 
@@ -75,7 +82,6 @@ t_return	handle_loop(t_ctx *ctx)
 		line = readline(PROMPT);
 		if (!line)
 		{
-            // JE PENSE QU'il FAUDRAIT APPELER FONCTION DE CLEAN DE LA MEMOIRE ICI
 			ft_putendl_fd("exit", STDERR_FILENO);
 			return (ctx->exit_code);
 		}

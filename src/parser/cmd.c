@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:31:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/10 14:26:21 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:15:21 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ static void	add_to_tab(char *str, t_cmd *cmd)
 		i = 0;
 		while (i < count)
 		{
-			tmp_tab[i] = cmd->args[i];
+			tmp_tab[i] = ft_strdup(cmd->args[i]);
 			i++;
 		}
 		tmp_tab[i] = ft_strdup(str);
 		tmp_tab[i + 1] = NULL;
-		free(cmd->args);
+		free_double(cmd->args);
 		cmd->args = tmp_tab;
 	}
 	else
@@ -104,7 +104,7 @@ void	process_pars(t_cmd *cmd, t_lexer *tokens, t_ctx *data)
 			}
 		}
 		else if (tokens->type == T_PIPE)
-            extend_cmd(&cmd, data);
+			extend_cmd(&cmd, data);
 		else if (is_redir(tokens->type))
 			handle_redir(cmd, &tokens);
 		tokens = tokens->next;
