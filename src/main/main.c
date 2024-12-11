@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 10:23:48 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:34:13 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	g_sig_status = 0;
 
 // debug fd
-void debug_fds(const char *location, pid_t pid)
+/* void debug_fds(const char *location, pid_t pid)
 {
     printf("\n[DEBUG FDs] %s (PID: %d)\n", location, pid);
     for (int fd = 0; fd < 256; fd++) {
@@ -37,7 +37,7 @@ void check_fds(void)
             ft_printf("FD %d is open\n", fd);
         fd++;
     }
-}
+} */
 
 
 static void	process_line(char *line, t_ctx *ctx)
@@ -46,7 +46,6 @@ static void	process_line(char *line, t_ctx *ctx)
 	t_cmd		*cmd;
     
 	tokens = lexer(line);
-    // fin
 	if (tokens)
 	{
 		/* print_tokens(tokens); */
