@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/11 10:46:21 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:51:47 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
         close(cmd->fd->stdin_backup);
     if (cmd->fd->stdout_backup > 2)
         close(cmd->fd->stdout_backup);
-	env_array = env_to_array(ctx->envp);
+    env_array = env_to_array(ctx->envp);
     if (!env_array)
     {
         cleanup_fds(cmd);
