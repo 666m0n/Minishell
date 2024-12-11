@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 10:17:00 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/10 17:07:17 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:44:30 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,10 @@ static int	process_single_heredoc(t_redirection *redir)
 	char	*temp_file;
 	int		status;
 
-    /* debug_fds("Before creating heredoc temp file", getpid()); */
 	temp_file = create_temp_file();
 	if (!temp_file)
 		return (MEMORY_ERROR);
 	status = handle_single_heredoc(redir->file, temp_file);
-    /* debug_fds("After heredoc handling", getpid()); */
 	if (status != SUCCESS)
 	{
 		free(temp_file);
@@ -96,19 +94,26 @@ int	process_heredocs(t_cmd *cmd)
 {
 	t_redirection	*redir;
 	int				status;
+	t_cmd			*current;
 
-	if (!cmd || !cmd->redirections)
-		return (SUCCESS);
-	redir = cmd->redirections;
-	while (redir)
+	current = cmd;
+	while (current)
 	{
-		if (redir->type == T_HEREDOC)
+		if (current->redirections)
 		{
-			status = process_single_heredoc(redir);
-			if (status != SUCCESS)
-				return (status);
+			redir = current->redirections;
+			while (redir)
+			{
+				if (redir->type == T_HEREDOC)
+				{
+					status = process_single_heredoc(redir);
+					if (status != SUCCESS)
+						return (status);
+				}
+				redir = redir->next;
+			}
 		}
-		redir = redir->next;
+		current = current->next;
 	}
 	return (SUCCESS);
 }

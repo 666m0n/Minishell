@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/11 10:30:33 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:48:49 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,10 @@ int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
 
 	nb_of_pipes = count_pipes(cmd);
 	pipe_array = create_pipe_array(nb_of_pipes);
-    /* debug_fds("in exec_pipe after create_pipe_array", getpid()); */
 	if (!pipe_array)
 		return (PIPE_ERROR);
 	status = run_pipeline(cmd, pipe_array, nb_of_pipes, ctx);
 	free(pipe_array);
-    /* debug_fds("in exec_pipe before cleanup_fds", getpid()); */
 	cleanup_fds(cmd);
 	return (status);
 }
@@ -87,11 +85,10 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 {
 	pid_t	pid;
 	int		status;
-    /* printf("DEBUG execute_simple : start\n"); */
+
 	status = prepare_exec(cmd);
 	if (status != SUCCESS)
 		return (handle_command_error(cmd, status));
-    /* debug_fds("in exec_simple before fork", getpid()); */
 	pid = fork();
 	if (pid == SYSCALL_ERROR)
 		return (handle_system_error("fork"));
@@ -139,16 +136,12 @@ int	exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections)
 		return (ERROR);
 	if (has_redirection(cmd) && skip_redirections == FALSE)
 	{
-        /* debug_fds("exec_builtin before redirections", getpid()); */
 		status = setup_redirections(cmd);
-        /* debug_fds("exec_builtin after redirections", getpid()); */
 		if (status != SUCCESS)
 			return (status);
 		status = builtin(cmd, ctx);
-        /* debug_fds("exec_builtin before restore", getpid()); */
 		if (restore_fds(cmd) != SUCCESS)
 			status = ERROR;
-        /* debug_fds("exec_builtin after restore", getpid()); */
 		return (status);
 	}
 	return (builtin(cmd, ctx));
@@ -172,11 +165,9 @@ int	execute_command(t_cmd *cmd, t_ctx *ctx)
 	cmd_name = get_cmd_name(cmd);
 	if (!cmd_name)
 		ctx->exit_code = CMD_NOT_FOUND;
-    /* debug_fds("in execute_command before process_heredoc", getpid()); */
 	status = process_heredocs(cmd);
 	if (status != SUCCESS)
 		return (status);
-    status = execute_cmd_type(cmd, ctx, cmd_name);
-    /* debug_fds("in execute_command after execute_cmd_type", getpid()); */
+	status = execute_cmd_type(cmd, ctx, cmd_name);
 	return (status);
 }

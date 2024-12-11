@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:37:26 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/10 10:39:19 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:45:10 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,34 +44,6 @@ static char	*read_heredoc_line(const char *delimiter)
 	}
 	return (line);
 }
-
-/*
-** Lit et écrit le contenu du heredoc dans le fichier
-** @param fd: descripteur du fichier
-** @param delimiter: chaîne qui termine le heredoc
-** @return: SUCCESS si ok, code d'erreur sinon
-*/
-/* static int	heredoc_to_file(int fd, const char *delimiter)
-{
-	char	*line;
-	int		status;
-
-	setup_heredoc_signals();
-	status = SUCCESS;
-	while (status == SUCCESS && g_sig_status == 0)
-	{
-		line = read_heredoc_line(delimiter);
-		if (!line || g_sig_status == SIGINT)
-			status = ERROR;
-		else if (line)
-			status = write_heredoc_line(fd, line);
-		free(line);
-		if (!line)
-			break ;
-	}
-	setup_interactive_signals();
-	return (status);
-} */
 
 static int	heredoc_to_file(int fd, const char *delimiter)
 {

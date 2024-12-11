@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:16:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 09:46:42 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:51:13 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,43 +85,38 @@ static t_redirection	*create_redir(t_token type, char *file)
 		cmd->redirections = new_tok;
 } */
 
-// MODIFICATION MANU pour éviter invalid read si le token suivant n'existe pas
 void    handle_redir(t_cmd *cmd, t_lexer **tokens)
 {
-    t_redirection    *new_tok;
-    t_token          type;
-    t_redirection    *tmp;
+	t_redirection	*new_tok;
+	t_token			type;
+	t_redirection	*tmp;
 
-    if (!tokens || !(*tokens))
-        return ;
-    type = (*tokens)->type;
-    // Vérifier l'existence d'un token suivant avant d'y accéder
-    if (!(*tokens)->next)
-        return ;
-    // Gérer le cas avec espace de manière plus sûre
-    if ((*tokens)->next->type == T_SPACE)
-    {
-        if (!(*tokens)->next->next)  // Pas de token après l'espace
-            return ;
-        *tokens = (*tokens)->next->next;
-    }
-    else
-        *tokens = (*tokens)->next;
-    // Vérifier que le token restant est valide pour un nom de fichier
-    if (!is_cmd((*tokens)->type))
-        return ;
-    // Créer et ajouter la redirection
-    new_tok = create_redir(type, (*tokens)->content);
-    if (!new_tok)
-        return ;
-    // Ajouter à la fin de la liste des redirections
-    if (cmd->redirections)
-    {
-        tmp = cmd->redirections;
-        while (tmp->next)
-            tmp = tmp->next;
-        tmp->next = new_tok;
-    }
-    else
-        cmd->redirections = new_tok;
+	if (!tokens || !(*tokens))
+		return ;
+	type = (*tokens)->type;
+	if (!(*tokens)->next)
+		return ;
+	if ((*tokens)->next->type == T_SPACE)
+	{
+		if (!(*tokens)->next->next)
+			return ;
+		*tokens = (*tokens)->next->next;
+	}
+	else
+		*tokens = (*tokens)->next;
+	if (!is_cmd((*tokens)->type))
+		return ;
+	new_tok = create_redir(type, (*tokens)->content);
+	if (!new_tok)
+		return ;
+	if (cmd->redirections)
+	{
+		tmp = cmd->redirections;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_tok;
+	}
+	else
+		cmd->redirections = new_tok;
 }
+
