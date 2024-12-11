@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:58:12 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/09 13:26:35 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:20:04 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ static int	check_syntax_rules(t_syntax *curr)
 	if (is_directory(curr->content) && (curr->next == NULL
 			&& curr->prev == NULL))
 		return (handle_misc(curr));
-	if (curr->content[0] == '#' || curr->content[0] == '!'
-		|| curr->content[0] == ':')
+	if (curr->type != T_DQUOTE && (curr->content[0] == '#'
+			|| curr->content[0] == '!'
+			|| curr->content[0] == ':'))
 		return (handle_misc(curr));
 	return (SUCCESS);
 }
@@ -67,14 +68,14 @@ t_return	syntax_tokens(t_lexer *tokens, t_ctx *data)
 		return (ERROR);
 	syntax_list = create_syntax_list(tokens);
 	if (!syntax_list)
-        return (ERROR);
+		return (ERROR);
 	curr = syntax_list;
 	while (curr)
 	{
 		status = check_syntax_rules(curr);
 		if (status != SUCCESS)
 		{
-            change_exit_code(status, data);
+			change_exit_code(status, data);
 			free_syntax_list(syntax_list);
 			return (status);
 		}
