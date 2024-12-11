@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:21:31 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 19:11:44 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:16:25 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,31 @@ int	ft_str_isdigit(const char *str)
 	return (1);
 }
 
+void	free_tab_partial(char **tab, int count)
+{
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
 int	execute_cmd_type(t_cmd *cmd, t_ctx *ctx, const char *cmd_name)
 {
 	int	status;
-    /* printf("DEBUG - execute_cmd_type : start\n"); */
-    if (is_simple_command(cmd) == FALSE)
-        status = exec_pipe(cmd, ctx);
+
+	if (is_simple_command(cmd) == FALSE)
+		status = exec_pipe(cmd, ctx);
 	else if (is_builtin(cmd_name) == TRUE)
 		status = exec_builtin(cmd, ctx, FALSE);
 	else
 		status = exec_simple(cmd, ctx);
 	set_exit_status(cmd, status);
-    ctx->exit_code = status;
+	ctx->exit_code = status;
 	cleanup_heredoc_files(cmd);
 	return (status);
 }

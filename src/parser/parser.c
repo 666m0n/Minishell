@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:43:15 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 14:14:04 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:37:04 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void	init_cmd(t_cmd **head, t_cmd **curr, t_ctx *ctx)
 	(*curr)->prev = NULL;
 	(*curr)->index = 0;
 	(*curr)->ctx = ctx;
+	(*curr)->str = NULL;
 	(*curr)->fd = ft_calloc(sizeof(t_fd_state), 1);
 	if ((*curr)->fd)
 	{

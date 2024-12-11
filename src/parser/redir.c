@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:16:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/22 09:46:42 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:15:35 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,7 @@ static t_redirection	*create_redir(t_token type, char *file)
 		cmd->redirections = new_tok;
 } */
 
-// MODIFICATION MANU pour éviter invalid read si le token suivant n'existe pas
-void    handle_redir(t_cmd *cmd, t_lexer **tokens)
+void	handle_redir(t_cmd *cmd, t_lexer **tokens)
 {
     t_redirection    *new_tok;
     t_token          type;
