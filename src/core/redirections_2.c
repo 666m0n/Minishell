@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/10 17:09:49 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:24:24 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,16 @@ int	apply_output_redirection(t_cmd *cmd)
 	t_token	type;
 	char	*file;
 
-    type = cmd->fd->last_out->type;
-    file = cmd->fd->last_out->file;
+	type = cmd->fd->last_out->type;
+	file = cmd->fd->last_out->file;
 	if (type == T_REDIROUT)
 	{
-	    flags = O_WRONLY | O_CREAT | O_TRUNC;
-    }
+		flags = O_WRONLY | O_CREAT | O_TRUNC;
+	}
 	else
 	{
-	    flags = O_WRONLY | O_CREAT | O_APPEND;
-    }
-   /*  debug_fds("Before opening output redirection", getpid()); */
+		flags = O_WRONLY | O_CREAT | O_APPEND;
+	}
 	new_fd = open(file, flags, 0644);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));
@@ -70,6 +69,6 @@ int	apply_output_redirection(t_cmd *cmd)
 		return (handle_system_error("dup2"));
 	}
 	close(new_fd);
-   /*  debug_fds("After applying output redirection", getpid()); */
 	return (SUCCESS);
 }
+

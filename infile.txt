@@ -1,0 +1,14 @@
+total 184
+-rw-r--r-- 1 emmmarti 2024_paris   5094 Dec 11 12:56 corrections.txt
+-rw-r--r-- 1 emmmarti 2024_paris     12 Dec 11 15:32 file1
+drwxr-xr-x 2 emmmarti 2024_paris     88 Dec 11 12:56 include
+-rw-r--r-- 1 emmmarti 2024_paris      0 Dec 11 15:51 infile.txt
+drwxr-xr-x 4 emmmarti 2024_paris     59 Dec 11 12:57 libft
+-rw-r--r-- 1 emmmarti 2024_paris  11566 Dec 11 12:56 Makefile
+-rwxr-xr-x 1 emmmarti 2024_paris 150544 Dec 11 13:31 minishell
+drwxr-xr-x 8 emmmarti 2024_paris     86 Dec 11 12:57 obj
+-rw-r--r-- 1 emmmarti 2024_paris      0 Dec 11 15:51 outfile.txt
+-rw-r--r-- 1 emmmarti 2024_paris     81 Dec 11 12:56 readline.supp
+-rw-r--r-- 1 emmmarti 2024_paris    111 Dec 11 12:56 README.md
+-rwxr-xr-x 1 emmmarti 2024_paris    286 Dec 11 13:27 run.sh
+drwxr-xr-x 8 emmmarti 2024_paris     86 Dec 11 12:56 src
