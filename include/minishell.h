@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/10 14:14:14 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:03:15 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void			find_final_redirections(t_cmd *cmd);
 int				save_fd(t_cmd *cmd);
 void            cleanup_heredoc_files(t_cmd *cmd);
 int	            handle_numeric_arg(const char *arg);
+void            debug_fds(const char *location, pid_t pid); // a effacer apres debug fd
 
 
 //Simon

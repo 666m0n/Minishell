@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 15:02:55 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:09:49 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	apply_input_redirection(t_cmd *cmd)
 	char	*file;
 
 	file = cmd->fd->last_in->file;
+    /* debug_fds("Before opening input redirection", getpid()); */
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));
@@ -32,6 +33,7 @@ int	apply_input_redirection(t_cmd *cmd)
 		return (handle_system_error("dup2"));
 	}
 	close(new_fd);
+    /* debug_fds("After applying input redirection", getpid()); */
 	return (SUCCESS);
 }
 
@@ -58,6 +60,7 @@ int	apply_output_redirection(t_cmd *cmd)
 	{
 	    flags = O_WRONLY | O_CREAT | O_APPEND;
     }
+   /*  debug_fds("Before opening output redirection", getpid()); */
 	new_fd = open(file, flags, 0644);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));
@@ -67,5 +70,6 @@ int	apply_output_redirection(t_cmd *cmd)
 		return (handle_system_error("dup2"));
 	}
 	close(new_fd);
+   /*  debug_fds("After applying output redirection", getpid()); */
 	return (SUCCESS);
 }

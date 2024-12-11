@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 10:17:00 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/02 11:14:49 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:07:17 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,12 @@ static int	process_single_heredoc(t_redirection *redir)
 	char	*temp_file;
 	int		status;
 
+    /* debug_fds("Before creating heredoc temp file", getpid()); */
 	temp_file = create_temp_file();
 	if (!temp_file)
 		return (MEMORY_ERROR);
 	status = handle_single_heredoc(redir->file, temp_file);
+    /* debug_fds("After heredoc handling", getpid()); */
 	if (status != SUCCESS)
 	{
 		free(temp_file);
