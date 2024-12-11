@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:58:12 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 11:20:04 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:53:57 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static int	check_syntax_rules(t_syntax *curr)
 	if (is_directory(curr->content) && (curr->next == NULL
 			&& curr->prev == NULL))
 		return (handle_misc(curr));
-	if (curr->type != T_DQUOTE && (curr->content[0] == '#'
+	if (curr->prev == NULL && curr->next == NULL
+		&& (curr->content[0] == '#'
 			|| curr->content[0] == '!'
 			|| curr->content[0] == ':'))
 		return (handle_misc(curr));
