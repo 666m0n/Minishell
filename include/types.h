@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 13:36:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:56:57 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,14 @@ typedef struct s_syntax
 	t_token			type;
 	int				index;
 }	t_syntax;
+
+typedef struct s_quote_state
+{
+    char    current_type;     /* Type de quote actuel (' ou ") */
+    char    prev_type;        /* Type de quote précédent */
+    int     in_quotes;        /* Si on est dans des quotes (1) ou non (0) */
+    int     quote_count;      /* Nombre de quotes consécutives du même type */
+}   t_quote_state;
 
 /*gestion des retours
 typedef struct s_minishell
