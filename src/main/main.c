@@ -3,41 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/12 14:53:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:54:58 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_sig_status = 0;
-
-// debug fd
-/* void debug_fds(const char *location, pid_t pid)
-{
-    printf("\n[DEBUG FDs] %s (PID: %d)\n", location, pid);
-    for (int fd = 0; fd < 256; fd++) {
-        if (fcntl(fd, F_GETFD) != -1) {
-            printf("FD %d is open\n", fd);
-        }
-    }
-    printf("--------------------\n");
-}
-
-void check_fds(void)
-{
-    int fd;
-
-    fd = 0;
-    while (fd < 10)
-    {
-        if (fcntl(fd, F_GETFL) != -1)
-            ft_printf("FD %d is open\n", fd);
-        fd++;
-    }
-} */
 
 static void	process_line(char *line, t_ctx *ctx)
 {

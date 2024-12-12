@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 13:58:09 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:52:08 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** @param ctx: contexte du shell
 ** @return: code de sortie du dernier processus
 */
-int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
+int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes)
 {
 	t_cmd	*current;
 	pid_t	*pid_array;
@@ -34,7 +34,7 @@ int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 	while (current)
 	{
 		pid_array[position] = \
-		fork_pipeline_process(current, pipe_array, position, nb_of_pipes, ctx);
+		fork_pipeline_process(current, pipe_array, position, nb_of_pipes);
 		if (pid_array[position] == SYSCALL_ERROR)
 		{
 			cleanup_remaining_pipes(pipe_array, nb_of_pipes);
@@ -56,7 +56,7 @@ int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 ** @return: code de sortie du pipeline ou erreur
 ** Note: crée les pipes, lance l'exécution et nettoie
 */
-int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
+int	exec_pipe(t_cmd *cmd)
 {
 	int		status;
 	int		nb_of_pipes;
@@ -66,7 +66,7 @@ int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
 	pipe_array = create_pipe_array(nb_of_pipes);
 	if (!pipe_array)
 		return (PIPE_ERROR);
-	status = run_pipeline(cmd, pipe_array, nb_of_pipes, ctx);
+	status = run_pipeline(cmd, pipe_array, nb_of_pipes);
 	free(pipe_array);
 	cleanup_fds(cmd);
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/12 15:23:16 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:30:04 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int				execute_cmd_type(t_cmd *cmd, t_ctx *ctx, const char *cmd_name);
 
 /* Command Execution */
 int				exec_simple(t_cmd *cmd, t_ctx *ctx);
-int				exec_pipe(t_cmd *cmd, t_ctx *ctx);
+int				exec_pipe(t_cmd *cmd);
 int				exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections);
 void			exec_in_child(t_cmd *cmd, t_ctx *ctx);
 int				prepare_exec(t_cmd *cmd);
@@ -82,7 +82,7 @@ void			close_unused_pipes(t_pipe *pipe_array, int cmd_position, \
 					int nb_of_pipes);
 int				wait_for_processes(pid_t *pids, int count);
 int				run_pipeline(t_cmd *cmd, t_pipe *pipe_array, \
-					int nb_of_pipes, t_ctx *ctx);
+					int nb_of_pipes);
 int				init_pipeline(int nb_of_pipes, pid_t **pid_array_ptr);
 pid_t			fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
 							int position, int nb_of_pipes);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:21:31 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 10:40:32 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:30:41 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	execute_cmd_type(t_cmd *cmd, t_ctx *ctx, const char *cmd_name)
 	int	status;
 
 	if (is_simple_command(cmd) == FALSE)
-		status = exec_pipe(cmd, ctx);
+		status = exec_pipe(cmd);
 	else if (is_builtin(cmd_name) == TRUE)
 		status = exec_builtin(cmd, ctx, FALSE);
 	else
