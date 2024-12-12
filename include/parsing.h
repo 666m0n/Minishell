@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/12 13:17:12 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:19:45 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int			handle_misc(t_syntax *token, t_ctx *data);
 void		change_exit_code(int status, t_ctx *data);
 void		check_cmd_quotes(t_lexer *tokens);
 int			is_env_var_dir(char *content, t_ctx *data);
-
 
 //parser
 t_cmd		*parser(t_lexer *tokens, t_ctx *data);

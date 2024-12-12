@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/12 15:30:04 by emmmarti         ###   ########.fr       */
+/*   Created: 2024/05/14 16:11:41 by sviallon          #+#    #+#             */
+/*   Updated: 2024/12/12 19:19:23 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include "libft.h"
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
@@ -31,8 +31,6 @@
 
 extern int	g_sig_status;
 
-//MODIF DE SIMON mis ici car il faut d'abord declarer les struct avant de les
-// utiliser sinn erreur a la compilation
 /* typedef pour rendre certains prototypes de fonctions plus facile à lire */
 typedef int	t_pipe[2];
 typedef int	(*builtin_func)(t_cmd *, t_ctx *);
@@ -144,7 +142,7 @@ int				save_fd(t_cmd *cmd);
 void			cleanup_heredoc_files(t_cmd *cmd);
 int				handle_numeric_arg(const char *arg);
 void			execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
-						int position, int nb_of_pipes);
+					int position, int nb_of_pipes);
 
 //Simon
 // Main functions
@@ -160,6 +158,7 @@ void			setup_child_signals(void);
 void			setup_heredoc_signals(void);
 void			restore_default_signals(void);
 void			quit_handler(int signum);
+void			heredoc_signal_handler(int signum);
 
 // Utils
 char			*ft_realloc(void *s, int old_size, int new_size);
