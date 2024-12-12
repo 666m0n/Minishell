@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 10:17:00 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/10 17:07:17 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:27:51 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,15 @@ char	*create_temp_file(void)
 ** @param redir: structure de redirection à traiter
 ** @return: SUCCESS si ok, code d'erreur sinon
 */
-static int	process_single_heredoc(t_redirection *redir)
+static int	process_single_heredoc(t_redirection *redir, t_ctx *data)
 {
 	char	*temp_file;
 	int		status;
 
-    /* debug_fds("Before creating heredoc temp file", getpid()); */
 	temp_file = create_temp_file();
 	if (!temp_file)
 		return (MEMORY_ERROR);
-	status = handle_single_heredoc(redir->file, temp_file);
-    /* debug_fds("After heredoc handling", getpid()); */
+	status = handle_single_heredoc(redir->file, temp_file, redir->expand, data);
 	if (status != SUCCESS)
 	{
 		free(temp_file);
@@ -104,7 +102,7 @@ int	process_heredocs(t_cmd *cmd)
 	{
 		if (redir->type == T_HEREDOC)
 		{
-			status = process_single_heredoc(redir);
+			status = process_single_heredoc(redir, cmd->ctx);
 			if (status != SUCCESS)
 				return (status);
 		}

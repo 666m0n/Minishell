@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:16:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 17:15:35 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:15:57 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static t_redirection	*create_redir(t_token type, char *file)
 		exit_error("malloc failed");
 	new->type = type;
 	new->file = ft_strdup(file);
+	new->expand = 1;
 	if (!new->file)
 	{
 		free(new);
@@ -85,42 +86,52 @@ static t_redirection	*create_redir(t_token type, char *file)
 		cmd->redirections = new_tok;
 } */
 
+static int	should_expand_heredoc(t_token token_type)
+{
+	if (token_type == T_SQUOTE)
+		return (0);
+	if (token_type == T_DQUOTE)
+		return (0);
+	return (1);
+}
+
+static void	add_redir_to_list(t_cmd *cmd, t_redirection *new_tok)
+{
+	t_redirection	*tmp;
+
+	if (cmd->redirections)
+	{
+		tmp = cmd->redirections;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_tok;
+	}
+	else
+		cmd->redirections = new_tok;
+}
+
 void	handle_redir(t_cmd *cmd, t_lexer **tokens)
 {
-    t_redirection    *new_tok;
-    t_token          type;
-    t_redirection    *tmp;
+	t_redirection	*new_tok;
+	t_token			type;
 
-    if (!tokens || !(*tokens))
-        return ;
-    type = (*tokens)->type;
-    // Vérifier l'existence d'un token suivant avant d'y accéder
-    if (!(*tokens)->next)
-        return ;
-    // Gérer le cas avec espace de manière plus sûre
-    if ((*tokens)->next->type == T_SPACE)
-    {
-        if (!(*tokens)->next->next)  // Pas de token après l'espace
-            return ;
-        *tokens = (*tokens)->next->next;
-    }
-    else
-        *tokens = (*tokens)->next;
-    // Vérifier que le token restant est valide pour un nom de fichier
-    if (!is_cmd((*tokens)->type))
-        return ;
-    // Créer et ajouter la redirection
-    new_tok = create_redir(type, (*tokens)->content);
-    if (!new_tok)
-        return ;
-    // Ajouter à la fin de la liste des redirections
-    if (cmd->redirections)
-    {
-        tmp = cmd->redirections;
-        while (tmp->next)
-            tmp = tmp->next;
-        tmp->next = new_tok;
-    }
-    else
-        cmd->redirections = new_tok;
+	if (!tokens || !(*tokens) || !(*tokens)->next)
+		return ;
+	type = (*tokens)->type;
+	if ((*tokens)->next->type == T_SPACE)
+	{
+		if (!(*tokens)->next->next)
+			return ;
+		*tokens = (*tokens)->next->next;
+	}
+	else
+		*tokens = (*tokens)->next;
+	if (!is_cmd((*tokens)->type))
+		return ;
+	new_tok = create_redir(type, (*tokens)->content);
+	if (!new_tok)
+		return ;
+	if (type == T_HEREDOC)
+		new_tok->expand = should_expand_heredoc((*tokens)->type);
+	add_redir_to_list(cmd, new_tok);
 }

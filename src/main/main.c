@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 17:14:20 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:50:58 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static void	process_line(char *line, t_ctx *ctx)
 					ctx->cmd = NULL;
 				}
 			}
-			free_token(tokens);
-			ctx->current_token = NULL;
 		}
+		free_token(tokens);
+		ctx->current_token = NULL;
 	}
 }
 

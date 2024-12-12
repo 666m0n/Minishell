@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/11 17:20:45 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:27:30 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int				apply_output_redirection(t_cmd *cmd);
 /* Heredoc Management */
 int				process_heredocs(t_cmd *cmd);
 char			*create_temp_file(void);
-int				handle_single_heredoc(const char *delimiter, const char *file);
+int				handle_single_heredoc(const char *delimiter, const char *file,
+					int should_expand, t_ctx *data);
 int				write_heredoc_line(int fd, const char *line);
 
 /* Environment Management */
