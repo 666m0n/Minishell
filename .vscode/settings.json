@@ -4,5 +4,6 @@
 		"compare": "c",
 		"type_traits": "c",
 		"minishell.h": "c"
-	}
+    },
+    "editor.detectIndentation": false
 }

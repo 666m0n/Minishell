@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:26:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/10 17:07:30 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 12:12:08 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	cleanup_heredoc_files(t_cmd *cmd)
 	{
 		if (redir->type == T_HEREDOC && redir->file)
 		{
-			// Le fichier commence par .heredoc_ donc c'est un fichier temporaire
 			if (!strncmp(redir->file, ".heredoc_", 9))
 			{
 				unlink(redir->file);
@@ -37,7 +36,6 @@ void	cleanup_heredoc_files(t_cmd *cmd)
 */
 void	cleanup_fds(t_cmd *cmd)
 {
-    /* debug_fds("cleanup_fds start", getpid()); */
 	if (!cmd || !cmd->fd)
 		return ;
 	if (cmd->fd->stdin_backup > 2)
@@ -54,7 +52,6 @@ void	cleanup_fds(t_cmd *cmd)
 	cmd->fd->pipe_write = -1;
 	cmd->fd->last_in = NULL;
 	cmd->fd->last_out = NULL;
-    /* debug_fds("cleanup_fds end", getpid()); */
 }
 
 /*

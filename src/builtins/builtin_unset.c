@@ -6,7 +6,7 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 15:09:21 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 21:31:25 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 12:11:30 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,29 @@
 ** @param var_name: nom de la variable à supprimer
 ** @return: SUCCESS ou ERROR si échec système
 */
-static int remove_env_var(t_ctx *ctx, const char *var_name)
+static int  remove_env_var(t_ctx *ctx, const char *var_name)
 {
-    t_env    *current;
-    t_env    *prev;
+	t_env	*current;
+	t_env	*prev;
 
-    current = ctx->envp;
-    prev = NULL;
-    while (current)
-    {
-        if (ft_strcmp(current->id, var_name) == 0)
-        {
-            if (prev == NULL)
-                ctx->envp = current->next;
-            else 
-                prev->next = current->next;
-            free(current->raw);
-            free(current);
-            return (SUCCESS);
-        }
-        prev = current;  
-        current = current->next;
-    }
-    return (SUCCESS);
+	current = ctx->envp;
+	prev = NULL;
+	while (current)
+	{
+		if (ft_strcmp(current->id, var_name) == 0)
+		{
+			if (prev == NULL)
+				ctx->envp = current->next;
+			else
+				prev->next = current->next;
+			free(current->raw);
+			free(current);
+			return (SUCCESS);
+		}
+		prev = current;
+		current = current->next;
+	}
+	return (SUCCESS);
 }
 
 /*
