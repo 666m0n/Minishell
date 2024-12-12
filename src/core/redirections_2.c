@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:08:15 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/11 16:24:24 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:52:51 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	apply_input_redirection(t_cmd *cmd)
 	char	*file;
 
 	file = cmd->fd->last_in->file;
-    /* debug_fds("Before opening input redirection", getpid()); */
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == SYSCALL_ERROR)
 		return (handle_system_error("open"));
@@ -33,7 +32,6 @@ int	apply_input_redirection(t_cmd *cmd)
 		return (handle_system_error("dup2"));
 	}
 	close(new_fd);
-    /* debug_fds("After applying input redirection", getpid()); */
 	return (SUCCESS);
 }
 
@@ -71,4 +69,3 @@ int	apply_output_redirection(t_cmd *cmd)
 	close(new_fd);
 	return (SUCCESS);
 }
-

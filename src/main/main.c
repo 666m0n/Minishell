@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/12 10:35:06 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:53:10 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static void	process_line(char *line, t_ctx *ctx)
 					ctx->cmd = NULL;
 				}
 			}
-			free_token(tokens);
-			ctx->current_token = NULL;
 		}
+		free_token(tokens);
+		ctx->current_token = NULL;
 	}
 }
 

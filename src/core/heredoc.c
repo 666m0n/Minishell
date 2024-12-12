@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 10:17:00 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/11 18:44:30 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:52:28 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*create_temp_file(void)
 ** @param redir: structure de redirection à traiter
 ** @return: SUCCESS si ok, code d'erreur sinon
 */
-static int	process_single_heredoc(t_redirection *redir)
+static int	process_single_heredoc(t_redirection *redir, t_ctx *data)
 {
 	char	*temp_file;
 	int		status;
@@ -74,7 +74,7 @@ static int	process_single_heredoc(t_redirection *redir)
 	temp_file = create_temp_file();
 	if (!temp_file)
 		return (MEMORY_ERROR);
-	status = handle_single_heredoc(redir->file, temp_file);
+	status = handle_single_heredoc(redir->file, temp_file, redir->expand, data);
 	if (status != SUCCESS)
 	{
 		free(temp_file);
@@ -94,26 +94,19 @@ int	process_heredocs(t_cmd *cmd)
 {
 	t_redirection	*redir;
 	int				status;
-	t_cmd			*current;
 
-	current = cmd;
-	while (current)
+	if (!cmd || !cmd->redirections)
+		return (SUCCESS);
+	redir = cmd->redirections;
+	while (redir)
 	{
-		if (current->redirections)
+		if (redir->type == T_HEREDOC)
 		{
-			redir = current->redirections;
-			while (redir)
-			{
-				if (redir->type == T_HEREDOC)
-				{
-					status = process_single_heredoc(redir);
-					if (status != SUCCESS)
-						return (status);
-				}
-				redir = redir->next;
-			}
+			status = process_single_heredoc(redir, cmd->ctx);
+			if (status != SUCCESS)
+				return (status);
 		}
-		current = current->next;
+		redir = redir->next;
 	}
 	return (SUCCESS);
 }

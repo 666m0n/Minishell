@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 17:19:33 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:13:13 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_redirection
 	struct s_redirection	*next;
 	char					*file;
 	t_token					type;
+	int						expand;
 }	t_redirection;
 
 /* FDs management */

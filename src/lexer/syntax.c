@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 18:58:12 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 12:53:57 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:43:11 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	check_pipe(t_syntax *tokens)
 	return (SUCCESS);
 }
 
-static int	check_syntax_rules(t_syntax *curr)
+static int	check_syntax_rules(t_syntax *curr, t_ctx *data)
 {
 	if (!curr || !curr->content)
 		return (SUCCESS);
@@ -48,14 +48,14 @@ static int	check_syntax_rules(t_syntax *curr)
 		return (check_redirection(curr));
 	if (curr->type == T_PIPE)
 		return (check_pipe(curr));
-	if (is_directory(curr->content) && (curr->next == NULL
-			&& curr->prev == NULL))
-		return (handle_misc(curr));
+	if ((is_directory(curr->content) || is_env_var_dir(curr->content, data))
+		&& (!curr->next && !curr->prev))
+		return (handle_misc(curr, data));
 	if (curr->prev == NULL && curr->next == NULL
 		&& (curr->content[0] == '#'
 			|| curr->content[0] == '!'
 			|| curr->content[0] == ':'))
-		return (handle_misc(curr));
+		return (handle_misc(curr, data));
 	return (SUCCESS);
 }
 
@@ -73,7 +73,7 @@ t_return	syntax_tokens(t_lexer *tokens, t_ctx *data)
 	curr = syntax_list;
 	while (curr)
 	{
-		status = check_syntax_rules(curr);
+		status = check_syntax_rules(curr, data);
 		if (status != SUCCESS)
 		{
 			change_exit_code(status, data);
