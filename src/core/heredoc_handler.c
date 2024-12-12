@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:37:26 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 16:16:45 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:34:53 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	write_heredoc_line(int fd, const char *line)
 ** @param delimiter: chaîne qui termine le heredoc
 ** @return: ligne lue ou NULL si délimiteur ou erreur
 */
-static char	*read_heredoc_line(const char *delimiter, t_ctx *data, int *status)
+/* static char	*read_heredoc_line(const char *delimiter,
+			 t_ctx *data, int *status)
 {
 	char	*line;
 
@@ -61,20 +62,13 @@ static char	*read_heredoc_line(const char *delimiter, t_ctx *data, int *status)
 		ft_putstr_fd("')\n", 2);
 		return (NULL);
 	}
-	if (g_sig_status == SIGINT)
-	{
-		free(line);
-		*status = 130;
-		return (NULL);
-	}
-	add_history(line);
 	if (ft_strcmp(line, delimiter) == 0)
 	{
 		free(line);
 		return (NULL);
 	}
 	return (line);
-}
+} */
 
 /*
 ** Lit et écrit le contenu du heredoc dans le fichier
@@ -105,7 +99,8 @@ static char	*read_heredoc_line(const char *delimiter, t_ctx *data, int *status)
 } */
 
 /* heredoc_handler.c */
-static int	heredoc_to_file(int fd, const char *delimiter, int should_expand, t_ctx *data)
+/* static int	heredoc_to_file(int fd, const char *delimiter,
+	int should_expand, t_ctx *data)
 {
 	char	*line;
 	char	*expanded_line;
@@ -118,6 +113,13 @@ static int	heredoc_to_file(int fd, const char *delimiter, int should_expand, t_c
 		line = read_heredoc_line(delimiter, data, &status);
 		if (!line)
 			break ;
+		if (g_sig_status == SIGINT)
+		{
+			free(line);
+			close(fd);
+			setup_interactive_signals();
+			return (130);
+		}
 		if (should_expand && ft_strchr(line, '$'))
 		{
 			expanded_line = expand_heredoc_line(line, data);
@@ -130,6 +132,44 @@ static int	heredoc_to_file(int fd, const char *delimiter, int should_expand, t_c
 	}
 	setup_interactive_signals();
 	return (status);
+} */
+
+static void	report_heredoc_eof_warning(const char *delimiter)
+{
+	ft_putstr_fd("minishell: warning: here-document ", 2);
+	ft_putstr_fd("delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd((char *)delimiter, 2);
+	ft_putstr_fd("')\n", 2);
+	exit(0);
+}
+
+static void	process_heredoc_content(int fd, const char *delimiter,
+			int should_expand, t_ctx *data)
+{
+	char	*line;
+	char	*expanded_line;
+
+	setup_heredoc_signals();
+	while (1)
+	{
+		line = readline(HEREDOC_PROMPT);
+		if (!line)
+			report_heredoc_eof_warning(delimiter);
+		if (ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			exit(0);
+		}
+		if (should_expand && ft_strchr(line, '$'))
+		{
+			expanded_line = expand_heredoc_line(line, data);
+			write_heredoc_line(fd, expanded_line);
+			free(expanded_line);
+		}
+		else
+			write_heredoc_line(fd, line);
+		free(line);
+	}
 }
 
 /*
@@ -139,15 +179,23 @@ static int	heredoc_to_file(int fd, const char *delimiter, int should_expand, t_c
 ** @return: SUCCESS si ok, code d'erreur sinon
 */
 int	handle_single_heredoc(const char *delimiter, const char *file,
-		int should_expand, t_ctx *data)
+	int should_expand, t_ctx *data)
 {
+	pid_t	pid;
 	int		fd;
 	int		status;
 
 	fd = open(file, O_WRONLY);
 	if (fd == -1)
 		return (handle_system_error("open"));
-	status = heredoc_to_file(fd, delimiter, should_expand, data);
+	pid = fork();
+	if (pid == -1)
+		return (handle_system_error("fork"));
+	if (pid == 0)
+		process_heredoc_content(fd, delimiter, should_expand, data);
+	waitpid(pid, &status, 0);
 	close(fd);
-	return (status);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (130);
 }

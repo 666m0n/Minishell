@@ -6,13 +6,12 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:11:41 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/18 17:23:14 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:14:21 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
-
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42

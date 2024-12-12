@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 16:53:16 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/10 16:11:10 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:12:42 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	check_cmd_quotes(t_lexer *tokens)
 			trimmed = trim_quotes(current->content);
 			free(current->content);
 			current->content = trimmed;
-
 		}
 		current = current->next;
 	}

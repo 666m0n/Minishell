@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/12 19:19:20 by emmmarti         ###   ########.fr       */
+/*   Created: 2024/05/14 16:11:41 by sviallon          #+#    #+#             */
+/*   Updated: 2024/12/12 19:31:20 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include "libft.h"
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
@@ -31,8 +31,6 @@
 
 extern int	g_sig_status;
 
-//MODIF DE SIMON mis ici car il faut d'abord declarer les struct avant de les
-// utiliser sinn erreur a la compilation
 /* typedef pour rendre certains prototypes de fonctions plus facile à lire */
 typedef int	t_pipe[2];
 typedef int	(*t_builtin_func)(t_cmd *, t_ctx *);
@@ -117,7 +115,7 @@ const char		*get_cmd_name(t_cmd *cmd);
 t_redirection	*get_redirections(t_cmd *cmd);
 int				get_exit_status(t_cmd *cmd);
 char			*get_cmd_path(t_cmd *cmd);
-builtin_func	get_builtin_function(const char *cmd_name);
+t_builtin_func	get_builtin_function(const char *cmd_name);
 
 /* Setters */
 void			set_exit_status(t_cmd *cmd, int status);
@@ -150,16 +148,8 @@ void			handle_input_redirection(t_fd_state *cmd_fd,
 					t_redirection *redir);
 void			handle_output_redirection(t_fd_state *cmd_fd,
 					t_redirection *redir);
-t_env			*update_env_variable(t_ctx *ctx, const char *arg);
-int				is_valid_identifier(const char *str);
-void			free_env_var(t_env *var);
-int				execute_command(t_cmd *cmd, t_ctx *ctx);
-int				count_pipes(t_cmd *cmd);
-t_pipe			*create_pipe_array(int nb_of_pipes);
-void			configure_pipe_fds(t_pipe *pipe_array, int cmd_pos,
-					int nb_of_pipes);
-int				print_error(const char *cmd_name, const char *arg,
-					const char *msg);
+int				print_error(const char *cmd_name,
+					const char *arg, const char *msg);
 t_env			*update_existing_var(t_env *var, const char *arg);
 
 //Simon
@@ -176,6 +166,7 @@ void			setup_child_signals(void);
 void			setup_heredoc_signals(void);
 void			restore_default_signals(void);
 void			quit_handler(int signum);
+void			heredoc_signal_handler(int signum);
 
 // Utils
 char			*ft_realloc(void *s, int old_size, int new_size);

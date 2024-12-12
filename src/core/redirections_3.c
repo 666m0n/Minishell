@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:46:42 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/12/12 18:49:20 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:35:18 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	handle_output_redirection(t_fd_state *cmd_fd, t_redirection *redir)
 	fd = open(redir->file, flags, 0644);
 	if (fd != -1)
 		close(fd);
-
 	cmd_fd->curr_out = 1;
 	cmd_fd->last_out = redir;
 }

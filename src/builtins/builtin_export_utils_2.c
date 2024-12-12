@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export_utils_2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:53:25 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/12/12 18:56:41 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:32:42 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	is_valid_identifier(const char *str)
 			return (FALSE);
 		str++;
 	}
-
 	return (TRUE);
 }
 

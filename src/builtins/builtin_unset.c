@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 15:09:21 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 12:11:30 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:32:19 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** @param var_name: nom de la variable à supprimer
 ** @return: SUCCESS ou ERROR si échec système
 */
-static int  remove_env_var(t_ctx *ctx, const char *var_name)
+static int	remove_env_var(t_ctx *ctx, const char *var_name)
 {
 	t_env	*current;
 	t_env	*prev;

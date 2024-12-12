@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:03:21 by emmmarti          #+#    #+#             */
-/*   Updated: 2024/12/12 19:04:45 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:32:53 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 */
 void	configure_pipe_fds(t_pipe *pipe_array, int cmd_pos, int nb_of_pipes)
 {
-
 	if (cmd_pos == 0)
 	{
 		if (dup2(pipe_array[cmd_pos][1], STDOUT_FILENO) == SYSCALL_ERROR)

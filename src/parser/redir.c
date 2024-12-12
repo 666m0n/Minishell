@@ -6,12 +6,11 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:16:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/12 14:53:33 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:12:12 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 /* void	handle_redir(t_cmd *cmd, t_lexer **tokens)
 {
