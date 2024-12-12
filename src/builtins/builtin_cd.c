@@ -6,11 +6,11 @@
 /*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:28:37 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/06 15:22:03 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 11:04:15 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "minishell.h"
+#include "minishell.h"
 
 /*
 ** Vérifie si le chemin est relatif spécial (., .., ./ ou ../)
@@ -54,6 +54,7 @@ int	builtin_cd(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**args;
 	(void)ctx;
+
 	if (!cmd || !cmd->args)
 		return (ERROR);
 	args = cmd->args;
@@ -63,4 +64,3 @@ int	builtin_cd(t_cmd *cmd, t_ctx *ctx)
 		return (handle_builtin_error("cd", NULL, "too many arguments"));
 	return (change_directory(args[1]));
 }
-

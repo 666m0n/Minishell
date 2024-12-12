@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:09:40 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/11 10:51:47 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:10:43 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,35 @@ static char	**env_to_array(t_env *env)
 	return (array);
 }
 
-/*
-** Exécute une commande dans le processus fils
-** - Configure les redirections si présentes
-** - Exécute la commande via execve
-** @param cmd: commande à exécuter
-** @param ctx: contexte du shell
-** Note: ne retourne jamais, termine le processus en cas d'erreur
-*/
-void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
+static void	setup_child_env(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**env_array;
-	int		status;
 
-    setup_child_signals();
 	env_array = NULL;
-	if (has_redirection(cmd))
+	env_array = env_to_array(ctx->envp);
+	if (!env_array)
 	{
-		status = setup_redirections(cmd);
-		if (status != SUCCESS)
-		{
-			cleanup_fds(cmd);
-			exit(status);
-		}
+		cleanup_fds(cmd);
+		exit(MEMORY_ERROR);
 	}
-    if (cmd->fd->stdin_backup > 2)
-        close(cmd->fd->stdin_backup);
-    if (cmd->fd->stdout_backup > 2)
-        close(cmd->fd->stdout_backup);
-    env_array = env_to_array(ctx->envp);
-    if (!env_array)
-    {
-        cleanup_fds(cmd);
-        exit(MEMORY_ERROR);
-    }
 	execve(cmd->path, cmd->args, env_array);
 	ft_free_array(env_array);
 	cleanup_fds(cmd);
 	exit(handle_system_error("execve"));
+}
+
+void	exec_in_child(t_cmd *cmd, t_ctx *ctx)
+{
+	setup_child_signals();
+	if (has_redirection(cmd))
+	{
+		if (setup_redirections(cmd) != SUCCESS)
+		{
+			cleanup_fds(cmd);
+			exit(ERROR);
+		}
+	}
+	setup_child_env(cmd, ctx);
 }
 
 /*
@@ -97,8 +88,6 @@ int	prepare_exec(t_cmd *cmd)
 	cmd_name = get_cmd_name(cmd);
 	if (!cmd_name || !*cmd_name)
 		return (CMD_NOT_FOUND);
-/* 	if (is_dir(cmd_name) == TRUE)
-		return (IS_DIR); */
 	path = find_command_path(cmd_name, cmd->ctx);
 	if (path == NULL)
 		return (CMD_NOT_FOUND);

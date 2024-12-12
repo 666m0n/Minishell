@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 21:41:33 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:46:27 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,45 +39,64 @@ static int	print_error(const char *cmd_name, const char *arg, const char *msg)
 }
 
 /*
-** Gère les erreurs d'exécution de commande
-** - CMD_NOT_FOUND: commande introuvable
-** - PERMISSION_DENIED: pas les droits d'exécution
-** - IS_DIR: tentative d'exécuter un dossier
-** @param cmd: commande concernée
-** @param error_code: code d'erreur
-** @return: code d'erreur approprié
+** Gère l'erreur CMD_NOT_FOUND
+** Affiche le message approprié selon la présence de PATH
+** @param cmd_name : nom de la commande non trouvée
+** @param env : variables d'environnement pour vérifier PATH
+** @return : code d'erreur CMD_NOT_FOUND
 */
-int handle_command_error(t_cmd *cmd, int error_code)
+static int	handle_not_found_error(const char *cmd_name, t_env *env)
 {
-    const char *cmd_name;
+	if (!get_env_value(env, "PATH"))
+		print_error(cmd_name, NULL, "No such file or directory");
+	else
+		print_error(NULL, cmd_name, "command not found");
+	return (CMD_NOT_FOUND);
+}
 
-    cmd_name = get_cmd_name(cmd);
-    if (cmd_name == NULL)
-        cmd_name = "";  // Pour le cas ""
+/*
+** Gère les erreurs de type permissions et dossier
+** Affiche le message d'erreur correspondant
+** @param cmd_name : nom de la commande
+** @param error_code : code d'erreur spécifique à traiter
+** @return : code d'erreur correspondant ou ERROR
+*/
+static int	handle_specific_error(const char *cmd_name, int error_code)
+{
+	if (error_code == PERMISSION_DENIED)
+	{
+		print_error(cmd_name, NULL, "Permission denied");
+		return (PERMISSION_DENIED);
+	}
+	if (error_code == IS_DIR)
+	{
+		print_error(cmd_name, NULL, "Is a directory");
+		return (IS_DIR);
+	}
+	return (ERROR);
+}
 
-    if (error_code == CMD_NOT_FOUND)
-    {
-        if (!get_env_value(cmd->ctx->envp, "PATH"))
-            print_error(cmd_name, NULL, "No such file or directory");
-        else
-            print_error(NULL, cmd_name, "command not found");
-        return (CMD_NOT_FOUND);
-    }
-    if (error_code == PERMISSION_DENIED)
-    {
-        print_error(cmd_name, NULL, "Permission denied");
-        return (PERMISSION_DENIED);
-    }
+/*
+** Point d'entrée principal pour la gestion des erreurs de commande
+** Redirige vers les handlers spécifiques ou gère errno
+** @param cmd : commande ayant échoué
+** @param error_code : code d'erreur à traiter
+** @return : code d'erreur approprié pour le shell
+*/
+int	handle_command_error(t_cmd *cmd, int error_code)
+{
+	const char	*cmd_name;
 
-    if (error_code == IS_DIR)
-    {
-        print_error(cmd_name, NULL, "Is a directory");
-        return (IS_DIR);
-    }
-
-    if (errno)
-        print_error(cmd_name, NULL, strerror(errno));
-    return (ERROR);
+	cmd_name = get_cmd_name(cmd);
+	if (!cmd_name)
+		cmd_name = "";
+	if (error_code == CMD_NOT_FOUND)
+		return (handle_not_found_error(cmd_name, cmd->ctx->envp));
+	if (error_code == PERMISSION_DENIED || error_code == IS_DIR)
+		return (handle_specific_error(cmd_name, error_code));
+	if (errno)
+		print_error(cmd_name, NULL, strerror(errno));
+	return (ERROR);
 }
 
 /*

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_executor.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:08:23 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/10 17:07:56 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:24:02 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,11 @@
 ** Note: ne retourne jamais, termine le processus
 */
 void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
-						int position, int nb_of_pipes, t_ctx *ctx)
+						int position, int nb_of_pipes)
 {
-	int	status;
+	int		status;
 
 	configure_pipe_fds(pipe_array, position, nb_of_pipes);
-    /* debug_fds("in exececute_pipeline_command after configure_pipe_fds", getpid()); */
 	close_unused_pipes(pipe_array, position, nb_of_pipes);
 	if (has_redirection(cmd))
 	{
@@ -39,7 +38,7 @@ void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
 		}
 	}
 	if (is_builtin(cmd->args[0]))
-		exit(exec_builtin(cmd, ctx, TRUE));
+		exit(exec_builtin(cmd, cmd->ctx, TRUE));
 	status = prepare_exec(cmd);
 	if (status != SUCCESS)
 	{
@@ -47,7 +46,6 @@ void	execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
 		cleanup_fds(cmd);
 		exit(CMD_NOT_FOUND);
 	}
-    /* debug_fds("in exececute_pipeline_command before execve", getpid()); */
 	execve(cmd->path, cmd->args, NULL);
 	cleanup_fds(cmd);
 	exit(handle_system_error("execve"));
@@ -80,28 +78,25 @@ static int	handle_parent_pipes(t_pipe *pipe_array, int position)
 ** @param ctx: contexte du shell
 ** @return: PID du processus créé ou -1 si erreur
 */
-pid_t fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, int position, int nb_of_pipes, t_ctx *ctx)
+pid_t	fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
+		int position, int nb_of_pipes)
 {
-    pid_t pid;
+	pid_t	pid;
 
-    pid = fork();
-    if (pid == SYSCALL_ERROR)
-        return (SYSCALL_ERROR);
-    if (pid == 0)
-    {
-        /* debug_fds("in fork_pipeline_process in pid == 0", getpid()); */
-        execute_pipeline_command(cmd, pipe_array, position, nb_of_pipes, ctx);
-    }
-    else
-    {
-        if (handle_parent_pipes(pipe_array, position) == ERROR)
-        {
-            cleanup_remaining_pipes(pipe_array, nb_of_pipes);
-            return (SYSCALL_ERROR);
-        }
-        /* debug_fds("in fork_pipeline_process after handle_parent_pipes", getpid()); */
-    }
-    return (pid);
+	pid = fork();
+	if (pid == SYSCALL_ERROR)
+		return (SYSCALL_ERROR);
+	if (pid == 0)
+		execute_pipeline_command(cmd, pipe_array, position, nb_of_pipes);
+	else
+	{
+		if (handle_parent_pipes(pipe_array, position) == ERROR)
+		{
+			cleanup_remaining_pipes(pipe_array, nb_of_pipes);
+			return (SYSCALL_ERROR);
+		}
+	}
+	return (pid);
 }
 
 /*

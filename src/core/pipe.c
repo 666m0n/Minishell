@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:51:59 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/10 12:01:21 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:09:51 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,53 +46,71 @@ int	wait_for_processes(pid_t *pids, int count)
 	return (last_status);
 }
 
-/*
-** Ferme les descripteurs de pipe inutilisés pour une position donnée
-** @param pipe_array: tableau des pipes
-** @param cmd_position: position de la commande dans le pipeline
-** @param nb_of_pipes: nombre total de pipes
-*/
-void	close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
+static void	close_first_cmd_pipes(t_pipe *pipe_array, int nb_of_pipes)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < nb_of_pipes)
 	{
-		if (cmd_position == 0)
-		{
-			if (i == 0)
-				close(pipe_array[i][0]);
-			else
-			{
-				close(pipe_array[i][0]);
-				close(pipe_array[i][1]);
-			}
-		}
-		else if (cmd_position == nb_of_pipes)
-		{
-			if (i == cmd_position - 1)
-				close(pipe_array[i][1]);
-			else
-			{
-				close(pipe_array[i][0]);
-				close(pipe_array[i][1]);
-			}
-		}
+		if (i == 0)
+			close(pipe_array[i][0]);
 		else
 		{
-			if (i == cmd_position - 1)
-				close(pipe_array[i][1]);
-			else if (i == cmd_position)
-				close(pipe_array[i][0]);
-			else
-			{
-				close(pipe_array[i][0]);
-				close(pipe_array[i][1]);
-			}
+			close(pipe_array[i][0]);
+			close(pipe_array[i][1]);
 		}
 		i++;
 	}
+}
+
+static void	close_last_cmd_pipes(t_pipe *pipe_array, int pos, int nb_of_pipes)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb_of_pipes)
+	{
+		if (i == pos - 1)
+			close(pipe_array[i][1]);
+		else
+		{
+			close(pipe_array[i][0]);
+			close(pipe_array[i][1]);
+		}
+		i++;
+	}
+}
+
+static void	close_middle_cmd_pipes(t_pipe *pipe_array, int pos, int nb_of_pipes)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb_of_pipes)
+	{
+		if (i == pos - 1)
+			close(pipe_array[i][1]);
+		else if (i == pos)
+			close(pipe_array[i][0]);
+		else
+		{
+			close(pipe_array[i][0]);
+			close(pipe_array[i][1]);
+		}
+		i++;
+	}
+}
+
+void	close_unused_pipes(t_pipe *pipe_array, int cmd_position, \
+					int nb_of_pipes)
+{
+	if (cmd_position == 0)
+		close_first_cmd_pipes(pipe_array, nb_of_pipes);
+	else if (cmd_position == nb_of_pipes)
+		close_last_cmd_pipes(pipe_array, cmd_position, nb_of_pipes);
+	else
+		close_middle_cmd_pipes(pipe_array, cmd_position, nb_of_pipes);
 }
 
 /*
@@ -104,27 +122,27 @@ void	close_unused_pipes(t_pipe *pipe_array, int cmd_position, int nb_of_pipes)
 */
 void configure_pipe_fds(t_pipe *pipe_array, int cmd_pos, int nb_of_pipes)
 {
-    if (cmd_pos == 0)
-    {
-        if (dup2(pipe_array[cmd_pos][1], STDOUT_FILENO) == SYSCALL_ERROR)
-            exit(handle_system_error("dup2"));
-        close(pipe_array[cmd_pos][1]); // ajout test debug fd
-    }
-    else if (cmd_pos == nb_of_pipes)
-    {
-        if (dup2(pipe_array[cmd_pos - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
-            exit(handle_system_error("dup2"));
-        close(pipe_array[cmd_pos - 1][0]); // ajout test debug fd
-    }
-    else
-    {
-        if (dup2(pipe_array[cmd_pos - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
-            exit(handle_system_error("dup2"));
-        close(pipe_array[cmd_pos - 1][0]); // ajout test debug fd
-        if (dup2(pipe_array[cmd_pos][1], STDOUT_FILENO) == SYSCALL_ERROR)
-            exit(handle_system_error("dup2"));
-        close(pipe_array[cmd_pos][1]); // ajout test debug fd
-    }
+	if (cmd_pos == 0)
+	{
+		if (dup2(pipe_array[cmd_pos][1], STDOUT_FILENO) == SYSCALL_ERROR)
+			exit(handle_system_error("dup2"));
+		close(pipe_array[cmd_pos][1]);
+	}
+	else if (cmd_pos == nb_of_pipes)
+	{
+		if (dup2(pipe_array[cmd_pos - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
+			exit(handle_system_error("dup2"));
+		close(pipe_array[cmd_pos - 1][0]);
+	}
+	else
+	{
+		if (dup2(pipe_array[cmd_pos - 1][0], STDIN_FILENO) == SYSCALL_ERROR)
+			exit(handle_system_error("dup2"));
+		close(pipe_array[cmd_pos - 1][0]);
+		if (dup2(pipe_array[cmd_pos][1], STDOUT_FILENO) == SYSCALL_ERROR)
+			exit(handle_system_error("dup2"));
+		close(pipe_array[cmd_pos][1]);
+	}
 }
 
 /*
@@ -179,5 +197,5 @@ int	count_pipes(t_cmd *cmd)
 		nb_of_pipes++;
 		current = current->next;
 	}
-    return (nb_of_pipes - 1);
+	return (nb_of_pipes - 1);
 }
