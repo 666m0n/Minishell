@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 10:17:00 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 14:52:28 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:55:48 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,26 @@ int	process_heredocs(t_cmd *cmd)
 {
 	t_redirection	*redir;
 	int				status;
+	t_cmd			*current;
 
-	if (!cmd || !cmd->redirections)
-		return (SUCCESS);
-	redir = cmd->redirections;
-	while (redir)
+	current = cmd;
+	while (current)
 	{
-		if (redir->type == T_HEREDOC)
+		if (current->redirections)
 		{
-			status = process_single_heredoc(redir, cmd->ctx);
-			if (status != SUCCESS)
-				return (status);
+			redir = current->redirections;
+			while (redir)
+			{
+				if (redir->type == T_HEREDOC)
+				{
+					status = process_single_heredoc(redir, cmd->ctx);
+					if (status != SUCCESS)
+						return (status);
+				}
+				redir = redir->next;
+			}
 		}
-		redir = redir->next;
+		current = current->next;
 	}
 	return (SUCCESS);
 }
