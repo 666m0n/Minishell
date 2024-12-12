@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:28:37 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 11:04:15 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:52:06 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	change_directory(const char *path)
 }
 
 /*
-** Implémente la commande cd 
+** Implémente la commande cd
 ** Gère les chemins relatifs et absolus
 ** @param cmd: structure commande
 ** @param ctx: contexte shell
@@ -53,8 +53,8 @@ static int	change_directory(const char *path)
 int	builtin_cd(t_cmd *cmd, t_ctx *ctx)
 {
 	char	**args;
-	(void)ctx;
 
+	(void)ctx;
 	if (!cmd || !cmd->args)
 		return (ERROR);
 	args = cmd->args;

@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 15:19:32 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:06:02 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,38 +40,19 @@ int	handle_redirections(t_cmd *cmd)
 /*
 ** Identifie les dernières redirections d'entrée et sortie dans la liste
 ** @param cmd: structure de commande
-** Met à jour curr_in et curr_out avec les dernières redirections valides
 */
 void	find_final_redirections(t_cmd *cmd)
 {
 	t_redirection	*current;
-	int				flags;
-	int				fd;
 
-	cmd->fd->curr_in = -1;
-	cmd->fd->curr_out = -1;
-	cmd->fd->last_in = NULL;
-	cmd->fd->last_out = NULL;
+	initialize_fd(cmd->fd);
 	current = cmd->redirections;
 	while (current)
 	{
 		if (current->type == T_REDIRIN || current->type == T_HEREDOC)
-		{
-			cmd->fd->curr_in = 1;
-			cmd->fd->last_in = current;
-		}
+			handle_input_redirection(cmd->fd, current);
 		else if (current->type == T_REDIROUT || current->type == T_APPEND)
-		{
-			if (current->type == T_REDIROUT)
-				flags = O_WRONLY | O_CREAT | O_TRUNC;
-			else
-				flags = O_WRONLY | O_CREAT | O_APPEND;
-			fd = open(current->file, flags, 0644);
-			if (fd != -1)
-				close(fd);
-			cmd->fd->curr_out = 1;
-			cmd->fd->last_out = current;
-		}
+			handle_output_redirection(cmd->fd, current);
 		current = current->next;
 	}
 }

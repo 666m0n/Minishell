@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
+#    By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/12/11 17:22:54 by sviallon         ###   ########.fr        #
+#    Updated: 2024/12/12 19:05:20 by emmmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,11 +69,12 @@ PRS			= cmd parser_utils parser redir var var2
 
 BUILTINS	= builtins/
 BLTN		= env builtinstest builtin_unset builtin_pwd builtin_export builtin_export_utils \
-			builtin_exit builtin_exit_utils builtin_env builtin_echo builtin_cd
+			builtin_export_utils_2 builtin_exit builtin_exit_utils builtin_env builtin_echo builtin_cd
 
 CORE_DIR	= core/
 CORE		= cleanup error execute external find get has is pipe_executor pipe redirections \
-			redirections_2 set heredoc heredoc_handler
+			redirections_2 redirection_3 set heredoc heredoc_handler error_2 execute_2 \
+			pipe_2
 
 MAIN_DIR	= main/
 MAIN		= main signal signal_utils

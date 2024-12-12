@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/12 15:30:04 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:05:02 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,24 @@ int				save_fd(t_cmd *cmd);
 void			cleanup_heredoc_files(t_cmd *cmd);
 int				handle_numeric_arg(const char *arg);
 void			execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
-						int position, int nb_of_pipes);
+					int position, int nb_of_pipes);
+void			initialize_fd(t_fd_state *fd);
+void			handle_input_redirection(t_fd_state *cmd_fd,
+					t_redirection *redir);
+void			handle_output_redirection(t_fd_state *cmd_fd,
+					t_redirection *redir);
+t_env			*update_env_variable(t_ctx *ctx, const char *arg);
+int				is_valid_identifier(const char *str);
+void			free_env_var(t_env *var);
+int				execute_command(t_cmd *cmd, t_ctx *ctx);
+int				count_pipes(t_cmd *cmd);
+t_pipe			*create_pipe_array(int nb_of_pipes);
+void			configure_pipe_fds(t_pipe *pipe_array, int cmd_pos,
+					int nb_of_pipes);
+
+
+
+
 
 //Simon
 // Main functions
