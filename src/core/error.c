@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:17:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 18:58:12 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:09:27 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** @param msg: message d'erreur
 ** @return: ERROR
 */
-static int	print_error(const char *cmd_name, const char *arg, const char *msg)
+int	print_error(const char *cmd_name, const char *arg, const char *msg)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (cmd_name)

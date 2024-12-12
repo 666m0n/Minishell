@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/12 19:05:02 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:11:13 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,9 @@ int				count_pipes(t_cmd *cmd);
 t_pipe			*create_pipe_array(int nb_of_pipes);
 void			configure_pipe_fds(t_pipe *pipe_array, int cmd_pos,
 					int nb_of_pipes);
-
+int				print_error(const char *cmd_name, const char *arg,
+					const char *msg);
+t_env			*update_existing_var(t_env *var, const char *arg);
 
 
 

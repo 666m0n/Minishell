@@ -6,7 +6,7 @@
 #    By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/12/12 19:05:20 by emmmarti         ###   ########.fr        #
+#    Updated: 2024/12/12 19:08:34 by emmmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,7 @@ BLTN		= env builtinstest builtin_unset builtin_pwd builtin_export builtin_export
 
 CORE_DIR	= core/
 CORE		= cleanup error execute external find get has is pipe_executor pipe redirections \
-			redirections_2 redirection_3 set heredoc heredoc_handler error_2 execute_2 \
+			redirections_2 redirections_3 set heredoc heredoc_handler error_2 execute_2 \
 			pipe_2
 
 MAIN_DIR	= main/

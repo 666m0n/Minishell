@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 11:05:03 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 18:54:00 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:10:49 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char	*extract_value(const char *arg)
 ** @param arg: nouvel argument (VAR=value)
 ** @return: pointeur sur la variable mise à jour, NULL si erreur
 */
-static t_env	*update_existing_var(t_env *var, const char *arg)
+t_env	*update_existing_var(t_env *var, const char *arg)
 {
 	char	*equals;
 
