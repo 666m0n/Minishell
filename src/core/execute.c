@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/12 19:01:41 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:19:50 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 */
 int	exec_builtin(t_cmd *cmd, t_ctx *ctx, t_bool skip_redirections)
 {
-	builtin_func	builtin;
+	t_builtin_func	builtin;
 	const char		*cmd_name;
 	int				status;
 

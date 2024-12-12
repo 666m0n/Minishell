@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 19:26:38 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/09 17:53:19 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:20:04 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*get_cmd_path(t_cmd *cmd)
 ** @param cmd_name: nom de la commande
 ** @return: NULL si pas un builtin, sinon pointeur vers la fonction
 */
-builtin_func	get_builtin_function(const char *cmd_name)
+t_builtin_func	get_builtin_function(const char *cmd_name)
 {
 	if (!ft_strcmp(cmd_name, "echo"))
 		return (builtin_echo);

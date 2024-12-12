@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/12 19:11:13 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:19:20 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ extern int	g_sig_status;
 // utiliser sinn erreur a la compilation
 /* typedef pour rendre certains prototypes de fonctions plus facile à lire */
 typedef int	t_pipe[2];
-typedef int	(*builtin_func)(t_cmd *, t_ctx *);
+typedef int	(*t_builtin_func)(t_cmd *, t_ctx *);
 
 # define PROMPT "\001\033[1;93m\002minishell >$ \001\033[0m\002"
 # define HEREDOC_PROMPT "\001\033[0;93m\002  › \001\033[38;2;255;255;255m\002"
@@ -161,9 +161,6 @@ void			configure_pipe_fds(t_pipe *pipe_array, int cmd_pos,
 int				print_error(const char *cmd_name, const char *arg,
 					const char *msg);
 t_env			*update_existing_var(t_env *var, const char *arg);
-
-
-
 
 //Simon
 // Main functions
