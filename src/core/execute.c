@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 18:30:19 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/11 18:48:49 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:58:09 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	run_pipeline(t_cmd *cmd, t_pipe *pipe_array, int nb_of_pipes, t_ctx *ctx)
 	position = 0;
 	while (current)
 	{
-		pid_array[position] = fork_pipeline_process(current, pipe_array, position, nb_of_pipes, ctx);
+		pid_array[position] = \
+		fork_pipeline_process(current, pipe_array, position, nb_of_pipes, ctx);
 		if (pid_array[position] == SYSCALL_ERROR)
 		{
 			cleanup_remaining_pipes(pipe_array, nb_of_pipes);
@@ -72,14 +73,36 @@ int	exec_pipe(t_cmd *cmd, t_ctx *ctx)
 }
 
 /*
-** Exécute une commande simple (sans pipe)
+** Attend la fin d'un processus et traite son statut de sortie
+** @param pid: identifiant du processus à attendre
+** @return: code de sortie standard ou code d'erreur si échec
+** Note: gère les interruptions et les signaux spéciaux (SIGQUIT)
+*/
+int	wait_process_status(pid_t pid)
+{
+	int	status;
+
+	while (waitpid(pid, &status, 0) == -1)
+	{
+		if (errno != EINTR)
+			return (handle_system_error("waitpid"));
+	}
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			write(STDERR_FILENO, "Quit (core dumped)\n\n", 19);
+		return (128 + WTERMSIG(status));
+	}
+	return (ERROR);
+}
+
+/*
+** Exécute une commande simple (sans pipe) en créant un processus fils
 ** @param cmd: commande à exécuter
 ** @param ctx: contexte du shell
-** @return: code de sortie de la commande ou erreur
-** Note: fork et attend la fin du processus fils
-**
-** TO DO :
-** Géstion des signaux et nettoyage dans le cas d'interruption (ctrl C, ...)
+** @return: code de sortie de la commande ou code d'erreur
 */
 int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 {
@@ -93,26 +116,10 @@ int	exec_simple(t_cmd *cmd, t_ctx *ctx)
 	if (pid == SYSCALL_ERROR)
 		return (handle_system_error("fork"));
 	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
 		exec_in_child(cmd, ctx);
-	}
-	while (waitpid(pid, &status, 0) == -1)
-	{
-		if (errno != EINTR)
-			return (handle_system_error("waitpid"));
-	}
+	status = wait_process_status(pid);
 	cleanup_fds(cmd);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGQUIT)
-			write(STDERR_FILENO, "Quit (core dumped)\n\n", 19);
-		return (128 + WTERMSIG(status));
-	}
-	return (ERROR);
+	return (status);
 }
 
 /*

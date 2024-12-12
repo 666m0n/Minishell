@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/11 17:20:45 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:19:07 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int				run_pipeline(t_cmd *cmd, t_pipe *pipe_array, \
 					int nb_of_pipes, t_ctx *ctx);
 int				init_pipeline(int nb_of_pipes, pid_t **pid_array_ptr);
 pid_t			fork_pipeline_process(t_cmd *cmd, t_pipe *pipe_array, \
-							int position, int nb_of_pipes, t_ctx *ctx);
+							int position, int nb_of_pipes);
 
 /* Redirection Management */
 int				setup_redirections(t_cmd *cmd);
@@ -142,6 +142,8 @@ void			find_final_redirections(t_cmd *cmd);
 int				save_fd(t_cmd *cmd);
 void			cleanup_heredoc_files(t_cmd *cmd);
 int				handle_numeric_arg(const char *arg);
+void			execute_pipeline_command(t_cmd *cmd, t_pipe *pipe_array,
+						int position, int nb_of_pipes);
 
 //Simon
 // Main functions

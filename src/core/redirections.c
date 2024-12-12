@@ -6,7 +6,7 @@
 /*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 11:19:47 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/11 16:23:35 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:19:32 by emmmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	find_final_redirections(t_cmd *cmd)
 		}
 		else if (current->type == T_REDIROUT || current->type == T_APPEND)
 		{
-			// debut debug creation file
 			if (current->type == T_REDIROUT)
 				flags = O_WRONLY | O_CREAT | O_TRUNC;
 			else
@@ -70,7 +69,6 @@ void	find_final_redirections(t_cmd *cmd)
 			fd = open(current->file, flags, 0644);
 			if (fd != -1)
 				close(fd);
-			// fin
 			cmd->fd->curr_out = 1;
 			cmd->fd->last_out = current;
 		}
@@ -136,11 +134,9 @@ int	setup_redirections(t_cmd *cmd)
 {
 	int	status;
 
-	/* debug_fds("Start setup_redirections", getpid()); */
 	if (!cmd->fd)
 		return (ERROR);
 	status = save_fd(cmd);
-	/* debug_fds("in setup_redirections After save_fd", getpid()); */
 	if (status != SUCCESS)
 		return (status);
 	find_final_redirections(cmd);
@@ -150,6 +146,5 @@ int	setup_redirections(t_cmd *cmd)
 		cleanup_fds(cmd);
 		return (status);
 	}
-	/* debug_fds("End setup_redirections", getpid()); */
 	return (SUCCESS);
 }
