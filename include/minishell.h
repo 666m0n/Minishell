@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/11 10:03:15 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:20:45 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int				builtin_env(t_cmd *cmd, t_ctx *ctx);
 int				builtin_exit(t_cmd *cmd, t_ctx *ctx);
 
 /* Path Management */
-char	*find_command_path(const char *cmd_name, t_ctx *ctx);
+char			*find_command_path(const char *cmd_name, t_ctx *ctx);
 char			*search_in_directory(char **directories, const char *cmd_name);
 
 /* Pipeline Management */
@@ -135,15 +135,13 @@ t_bool			is_valid_command(t_cmd *cmd);
 /* a trier */
 char			*extract_value(const char *arg);
 t_env			*create_var(const char *arg, char *value);
-t_env           *update_env_variable(t_ctx *ctx, const char *arg);
+t_env			*update_env_variable(t_ctx *ctx, const char *arg);
 int				is_valid_identifier(const char *str);
 int				handle_redirections(t_cmd *cmd);
 void			find_final_redirections(t_cmd *cmd);
 int				save_fd(t_cmd *cmd);
-void            cleanup_heredoc_files(t_cmd *cmd);
-int	            handle_numeric_arg(const char *arg);
-void            debug_fds(const char *location, pid_t pid); // a effacer apres debug fd
-
+void			cleanup_heredoc_files(t_cmd *cmd);
+int				handle_numeric_arg(const char *arg);
 
 //Simon
 // Main functions
@@ -165,9 +163,5 @@ char			*ft_realloc(void *s, int old_size, int new_size);
 char			*ft_strjoin_free(char *s1, char *s2);
 size_t			ft_strcpy(char *dest, const char *src);
 size_t			ft_strcat(char *dest, char *src);
-
-// Debug functions
-void			print_tokens(t_lexer *tokens);
-void			print_command(t_cmd *cmd);
 
 #endif

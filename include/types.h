@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:51:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/09 17:10:31 by emmanuel         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:19:33 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,56 +60,58 @@ typedef enum e_bool
 /* Environment variables */
 typedef struct s_env
 {
-	struct s_env	*next;			/* Next environment variable */
-	char			*raw;			/* Full "name=value" string */
-	char			*id;			/* Variable name */
-	char			*value;			/* Variable value */
+	struct s_env	*next;
+	char			*raw;
+	char			*id;
+	char			*value;
 }	t_env;
 
 /* Redirection management */
 typedef struct s_redirection
 {
-	struct s_redirection	*next;	/* Next redirection */
-	char					*file;	/* Redirection target */
-	t_token					type;	/* Redirection type */
+	struct s_redirection	*next;
+	char					*file;
+	t_token					type;
 }	t_redirection;
 
 /* FDs management */
 typedef struct s_fd_state
 {
-	int	stdin_backup;				/* FD d'entrée par défaut */
-	int	stdout_backup;				/* FD de sortie par défaut */
-	int	pipe_read;					/* Pour heredoc */
-	int	pipe_write;					/* Pour heredoc */
-	int	curr_in;					/* FD d'entrée actuel */
-	int	curr_out;					/* FD de sortie actuel */
-    t_redirection   *last_in;       // Pour garder la dernière redirection d'entrée
-    t_redirection   *last_out;      // Pour garder la dernière redirection de sortie
+	int				stdin_backup;
+	int				stdout_backup;
+	int				pipe_read;
+	int				pipe_write;
+	int				curr_in;
+	int				curr_out;
+	t_redirection	*last_in;
+	t_redirection	*last_out;
 }	t_fd_state;
 
 /* Command structure */
 typedef struct s_cmd
 {
-    struct s_ctx    *ctx; 
-	struct s_cmd	*prev;
-	struct s_cmd	*next;			/* Commande suivante dans le pipe */
-	t_redirection	*redirections;	/* Redirections (>, <, >>) */
-	char			**args;			/* Arguments de la commande */
-	char			*path;			/* Chemin de la commande */
-	t_fd_state		*fd;
-	int				index;
-	int				exit_status;	/* Command exit status */
+	struct s_ctx		*ctx;
+	struct s_cmd		*prev;
+	struct s_cmd		*next;
+	t_redirection		*redirections;
+	char				**args;
+	char				**str;
+	char				*path;
+	t_fd_state			*fd;
+	int					index;
+	int					exit_status;
 }	t_cmd;
 
 /* Shell context */
 typedef struct s_ctx
 {
-	t_env			*envp;			/* Environment variables */
-	int				def_in;			/* Default input */
-	int				def_out;		/* Default output */
-	int				interrupt_flag;	/* Interrupt status pas utile encore ?*/
-	unsigned char	exit_code;		/* Last exit code */
+	t_env			*envp;
+	int				def_in;
+	int				def_out;
+	int				interrupt_flag;
+	unsigned char	exit_code;
 	t_lexer			*current_token;
+	struct s_cmd	*cmd;
 }	t_ctx;
 
 typedef struct s_syntax
@@ -120,12 +122,5 @@ typedef struct s_syntax
 	t_token			type;
 	int				index;
 }	t_syntax;
-
-/*gestion des retours
-typedef struct s_minishell
-{
-	char	*line;
-	int		i;
-}	t_minishell; */
 
 #endif

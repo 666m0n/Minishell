@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:40:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/25 14:49:27 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:55:32 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_ctx	*init_ctx(char **envp)
 {
 	t_ctx	*ctx;
 
-	ctx = malloc(sizeof(t_ctx));
+	ctx = ft_calloc(1, sizeof(t_ctx));
 	if (!ctx)
 		return (NULL);
 	ctx->envp = create_env_list(envp);
@@ -29,6 +29,8 @@ t_ctx	*init_ctx(char **envp)
 	ctx->def_in = STDIN_FILENO;
 	ctx->def_out = STDOUT_FILENO;
 	ctx->exit_code = 0;
+	ctx->current_token = NULL;
+	ctx->cmd = NULL;
 	return (ctx);
 }
 

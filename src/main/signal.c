@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:03:50 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/10 14:53:42 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:07:27 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	signal_handler(int signum)
 		write(STDERR_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		/* rl_redisplay(); */
 	}
 }
 

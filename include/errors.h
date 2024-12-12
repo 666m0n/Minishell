@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:58:45 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/03 18:39:39 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:22:34 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define ERRORS_H
 
 /* Valeurs de retour système standards */
-# define SYSCALL_ERROR			-1		// Valeur de retour d'erreur standard des appels système
+# define SYSCALL_ERROR			-1
 # define SYSCALL_SUCCESS		0
 
 // Erreur pour la built in exit
@@ -22,34 +22,27 @@
 
 /* Guide des codes d'erreur principaux */
 // Succès
-# define SUCCESS				0		// La commande s'est exécutée avec succès
+# define SUCCESS				0
 
 // Erreurs générales (1-2)
-# define ERROR					1		// Erreur générale (ex: cd vers un dossier inexistant)
-# define MISUSE					2		// Mauvaise utilisation (ex: export sans argument)
+# define ERROR					1
+# define MISUSE					2
 
 // Erreurs spécifiques à minishell (3-125)
-# define FORK_ERROR				3		// Erreur lors du fork
-# define PIPE_ERROR				4		// Erreur lors de la création d'un pipe
-# define MEMORY_ERROR			5		// Erreur d'allocation mémoire
-# define SYNTAX_ERROR			6		// Erreur de syntaxe dans la commande
-# define INTERRUPT				7		// Interruption (Ctrl-C/Ctrl-D)
+# define FORK_ERROR				3
+# define PIPE_ERROR				4
+# define MEMORY_ERROR			5
+# define SYNTAX_ERROR			6
+# define INTERRUPT				7
 
 // Erreurs d'exécution (126-127)
-# define PERMISSION_DENIED		126		// Fichier existe mais pas les droits
-# define IS_DIR					126		// Tentative d'exécuter un dossier
-# define CANT_EXECUTE			9		// Fichier non exécutable
-# define CMD_NOT_FOUND			127		// Commande introuvable
+# define PERMISSION_DENIED		126
+# define IS_DIR					126
+# define CANT_EXECUTE			9
+# define CMD_NOT_FOUND			127
 
 // Erreurs de signal (128+)
-# define EXIT_CTRL_C			130		// Interruption par Ctrl+C (128 + SIGINT)
-# define EXIT_CTRL_BS			131		// Quit par Ctrl+\ (128 + SIGQUIT)
-
-// Macros utiles pour les signaux
-# define EXIT_BY_SIGNAL(sig) (128 + sig)  // Calcule le code de sortie pour un signal
-
-// Macros de vérification
-# define IS_ERROR(code)     ((code) != SUCCESS)
-# define IS_FATAL(code)     ((code) == MEMORY_ERROR || (code) == FORK_ERROR)
+# define EXIT_CTRL_C			130
+# define EXIT_CTRL_BS			131
 
 #endif

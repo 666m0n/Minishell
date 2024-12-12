@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:36:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/10 16:10:39 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:40:08 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	pipe_handler(t_lexer **tokens, char **str)
 	(*str)++;
 }
 
-static char	*handle_empty_str(t_lexer **tokens, t_token type)
+/* static char	*handle_empty_str(t_lexer **tokens, t_token type)
 {
 	char	*content;
 
@@ -82,32 +82,41 @@ static char	*handle_empty_str(t_lexer **tokens, t_token type)
 	*content = '\0';
 	create_token(type, "", tokens);
 	return (content);
+} */
+
+static char	*extract_quote_content(char **str, char quote)
+{
+	char	*start;
+	char	*content;
+	int		len;
+
+	start = *str;
+	len = 0;
+	while ((*str)[len] && (*str)[len] != quote)
+		len++;
+	if (!(*str)[len])
+		return (NULL);
+	content = ft_substr(start, 0, len);
+	*str += len + 1;
+	return (content);
 }
 
 void	quotes_handler(t_lexer **tokens, char **str)
 {
-	char	quote;
-	char	changed;
 	char	*content;
-	int		effective_q;
+	char	quote;
+	t_token	type;
 
 	quote = **str;
-	changed = quote;
-	skip_consecutive_quotes(str, &quote, &effective_q);
-	if (**str == '\0')
+	(*str)++;
+	content = extract_quote_content(str, quote);
+	if (content)
 	{
-		content = handle_empty_str(tokens, get_quote_type(quote));
-		if (content)
-			free(content);
-		return ;
+		if (quote == '"')
+			type = T_DQUOTE;
+		else
+			type = T_SQUOTE;
+		create_token(type, content, tokens);
+		free(content);
 	}
-	if (**str == '\'' || **str == '"')
-		(*str)++;
-	content = get_quote_content(str, quote, changed);
-	if (!content || content[0] == '\0')
-		return (free(content));
-	create_token(get_quote_type(quote), content, tokens);
-	if (**str)
-		(*str)++;
-	free(content);
 }

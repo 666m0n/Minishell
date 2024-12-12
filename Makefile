@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
+#    By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/12/11 10:38:00 by emmanuel         ###   ########.fr        #
+#    Updated: 2024/12/11 17:22:54 by sviallon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,7 @@ CORE		= cleanup error execute external find get has is pipe_executor pipe redire
 			redirections_2 set heredoc heredoc_handler
 
 MAIN_DIR	= main/
-MAIN		= main test signal signal_utils
+MAIN		= main signal signal_utils
 
 
 # Fichier contenant les tests
@@ -135,12 +135,12 @@ export SHELL_LOGO
 
 
 define MINISHELL_LOGO
-$(BG)                                                                                
-$(BG)                                ██████  ██        ████████  ██        ██        
-$(BG)                              ██        ██████    ██    ██  ██        ██        
-$(BG)              ██          ██  ████████  ██    ██  ████████  ██        ██        
-$(BG)    ██  ██          ██              ██  ██    ██  ██        ██        ██        
-$(BG)  ██  ██  ██  ██  ██  ██  ██  ████████  ██    ██    ██████    ██████    ██████  
+$(BG)
+$(BG)                                ██████  ██        ████████  ██        ██
+$(BG)                              ██        ██████    ██    ██  ██        ██
+$(BG)              ██          ██  ████████  ██    ██  ████████  ██        ██
+$(BG)    ██  ██          ██              ██  ██    ██  ██        ██        ██
+$(BG)  ██  ██  ██  ██  ██  ██  ██  ████████  ██    ██    ██████    ██████    ██████
 $(BG)                                                                                $(DEF_COLOR)
 endef
 export MINISHELL_LOGO

@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   var2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42Paris.fr>     +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 14:30:54 by sviallon          #+#    #+#             */
-/*   Updated: 2024/11/26 17:57:58 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:55:21 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_cmd(t_token type)
+{
+	if (type == T_STRING)
+		return (TRUE);
+	if (type == T_CMD)
+		return (TRUE);
+	if (type == T_OPTIONS)
+		return (TRUE);
+	if (type == T_SQUOTE)
+		return (TRUE);
+	if (type == T_DQUOTE)
+		return (TRUE);
+	return (FALSE);
+}
 
 static char	*end_expand(char *tofind, char *to_ret, t_ctx *data)
 {

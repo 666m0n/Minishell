@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 11:16:13 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/11 18:51:13 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 10:39:31 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static t_redirection	*create_redir(t_token type, char *file)
 		cmd->redirections = new_tok;
 } */
 
-void    handle_redir(t_cmd *cmd, t_lexer **tokens)
+void	handle_redir(t_cmd *cmd, t_lexer **tokens)
 {
 	t_redirection	*new_tok;
 	t_token			type;

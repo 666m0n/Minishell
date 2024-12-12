@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 18:21:31 by emmanuel          #+#    #+#             */
-/*   Updated: 2024/12/11 18:51:59 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/12 10:40:32 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,19 @@ int	ft_str_isdigit(const char *str)
 		str++;
 	}
 	return (1);
+}
+
+void	free_tab_partial(char **tab, int count)
+{
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }
 
 int	execute_cmd_type(t_cmd *cmd, t_ctx *ctx, const char *cmd_name)

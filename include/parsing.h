@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:55:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/02 15:03:53 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:57:06 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		extend_cmd(t_cmd **cmd, t_ctx *data);
 void		handle_redir(t_cmd *cmd, t_lexer **tokens);
 void		process_pars(t_cmd *cmd, t_lexer *tokens, t_ctx *data);
 size_t		get_var_len(char *s, size_t *i);
-
+void		free_tab_partial(char **tab, int count);
 
 //dollar expansion
 void		handle_dollar(t_lexer *token, t_ctx *data);

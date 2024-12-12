@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 20:33:28 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/10 15:47:48 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:12:23 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ void	skip_consecutive_quotes(char **str, char *quote_type, int *effective_q)
 			*quote_type = '"';
 		return ;
 	}
-	else
-		*str += count - 1;
 	return ;
 }
 
@@ -94,8 +92,6 @@ char	*get_quote_content(char **str, char quote, char changed)
 	if (!str || !*str)
 		return (NULL);
 	start = *str;
-/* 	if (changed != quote)
-		quote = changed; */
 	while (**str && **str != quote)
 	{
 		if (!*str)

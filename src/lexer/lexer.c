@@ -6,7 +6,7 @@
 /*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 10:17:46 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/02 15:03:40 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:41:09 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,5 @@ t_lexer	*lexer(char *input)
 		}
 	}
 	add_index_token(tokens);
-/*	check_cmd_quotes(tokens); */
 	return (tokens);
 }
