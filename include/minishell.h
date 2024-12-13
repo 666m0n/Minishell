@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:11:41 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/12 19:31:20 by sviallon         ###   ########.fr       */
+/*   Updated: 2024/12/13 01:21:21 by emmanuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,12 @@ void			handle_output_redirection(t_fd_state *cmd_fd,
 int				print_error(const char *cmd_name,
 					const char *arg, const char *msg);
 t_env			*update_existing_var(t_env *var, const char *arg);
+int				change_directory(const char *path, t_ctx *ctx);
+t_bool			is_special_path(const char *path);
+char			*get_current_dir(void);
+int				update_pwd_vars(t_ctx *ctx, char *old_pwd);
+char			*get_home_directory(t_ctx *ctx);
+int				check_directory_access(const char *path);
 
 //Simon
 // Main functions

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+         #
+#    By: emmanuel <emmanuel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2024/12/12 19:08:34 by emmmarti         ###   ########.fr        #
+#    Updated: 2024/12/13 01:17:13 by emmanuel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,8 @@ PRS			= cmd parser_utils parser redir var var2
 
 BUILTINS	= builtins/
 BLTN		= env builtinstest builtin_unset builtin_pwd builtin_export builtin_export_utils \
-			builtin_export_utils_2 builtin_exit builtin_exit_utils builtin_env builtin_echo builtin_cd
+			builtin_export_utils_2 builtin_exit builtin_exit_utils builtin_env builtin_echo \
+			builtin_cd builtin_cd_2
 
 CORE_DIR	= core/
 CORE		= cleanup error execute external find get has is pipe_executor pipe redirections \
