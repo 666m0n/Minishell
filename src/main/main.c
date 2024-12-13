@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emmmarti <emmmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sviallon <sviallon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:37:35 by sviallon          #+#    #+#             */
-/*   Updated: 2024/12/12 15:54:58 by emmmarti         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:57:05 by sviallon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,20 +82,25 @@ int	main(int ac, char **av, char **envp)
 	t_ctx		*ctx;
 	t_return	status;
 
-	(void) av;
-	(void) ac;
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, SIG_IGN);
-	ctx = init_ctx(envp);
-	if (!ctx)
-		return (EXIT_FAILURE);
-	status = handle_loop(ctx);
-	if (status != SUCCESS)
+	if (*envp)
 	{
-		status = ctx->exit_code;
+		(void) av;
+		(void) ac;
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
+		ctx = init_ctx(envp);
+		if (!ctx)
+			return (EXIT_FAILURE);
+		status = handle_loop(ctx);
+		if (status != SUCCESS)
+		{
+			status = ctx->exit_code;
+			free_all(ctx);
+			exit(status);
+		}
 		free_all(ctx);
-		exit(status);
+		return (0);
 	}
-	free_all(ctx);
+	ft_putstr_fd("remet l'environnement avant de me lancer petit malin", 2);
 	return (0);
 }
